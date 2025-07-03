@@ -79,7 +79,7 @@ function ForgetPasswordOtp({ route, navigation }) {
         navigation.navigate("ResetPassword", {
           email: email,
         });
-        notifyMessage("Otp Verified Successfully!");
+
       } else {
         notifyMessage("Invalid Otp, please try again.");
       }
@@ -262,9 +262,8 @@ function ForgetPasswordOtp({ route, navigation }) {
               disabled={timeLeft > 0}
             >
               <Text
-                className={`text-[#43506C] ml-1 font-medium ${
-                  timeLeft > 0 ? "opacity-50" : ""
-                }`}
+                className={`text-[#43506C] ml-1 font-medium ${timeLeft > 0 ? "opacity-50" : ""
+                  }`}
               >
                 Resend OTP
               </Text>

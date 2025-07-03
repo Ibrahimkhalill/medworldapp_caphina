@@ -4,7 +4,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, Platform } from 'react-native';
 import WelcomeScreen from './app/screen/WelcomeScreen';
 import UserLogin from './app/screen/authentication/UserLogin';
@@ -26,7 +26,6 @@ import Profile from './app/screen/user/Profile';
 import Notification from './app/screen/component/Notification';
 import AddSurgeries from './app/screen/user/AddSurgeries';
 import AddCourses from './app/screen/user/AddCourses';
-import SurgergeruDcoument from './app/screen/user/SurgergeryDcoument';
 import BudgetDcoument from './app/screen/user/BudgetDcoument';
 import ScientificDcoument from './app/screen/user/ScientificDcoument';
 import CoursesDocument from './app/screen/user/CoursesDocument';
@@ -40,15 +39,20 @@ import EidtSurgeries from './app/screen/user/EidtSurgeries';
 import { I18nextProvider } from 'react-i18next'; // Import the provider
 import i18n from './app/screen/component/language/i18n'; // Import your i18n instance
 import { SubscriptionProvider } from './app/screen/component/SubscriptionContext';
+import NoInternetScreen from './app/screen/component/NoInternetScreen';
 const Stack = createNativeStackNavigator();
+import NetInfo from '@react-native-community/netinfo';
+import MainTabNavigation from './app/navigation/MainTabNavigation';
+import SurgeryDocument from './app/screen/user/SurgeryDocument';
 
 function UserStack() {
 	return (
 		<Stack.Navigator
-			initialRouteName="UserHome"
+			initialRouteName="MainTabs"
 			screenOptions={{
 				headerShown: false,
 			}}>
+			<Stack.Screen name="MainTabs" component={MainTabNavigation} />
 			<Stack.Screen
 				name="WELCOME"
 				component={WelcomeScreen}
@@ -81,7 +85,7 @@ function UserStack() {
 			/>
 			<Stack.Screen
 				name="SurgergeryDcoument"
-				component={SurgergeruDcoument}
+				component={SurgeryDocument}
 				options={{ title: 'Surgery Document' }}
 			/>
 			<Stack.Screen
@@ -182,6 +186,26 @@ function AuthStack() {
 function AppContent() {
 	const { isLoggedIn } = useAuth();
 	console.log(isLoggedIn);
+	const [isConnected, setIsConnected] = useState(true);
+
+	const checkConnection = () => {
+		NetInfo.fetch().then((state) => {
+			setIsConnected(state.isConnected);
+		});
+	};
+
+	useEffect(() => {
+		const unsubscribe = NetInfo.addEventListener((state) => {
+			setIsConnected(state.isConnected);
+		});
+		checkConnection();
+		return () => unsubscribe();
+	}, []);
+
+	if (!isConnected) {
+		return <NoInternetScreen onRetry={checkConnection} />;
+	}
+
 
 	if (isLoggedIn) {
 		return <UserStack />;

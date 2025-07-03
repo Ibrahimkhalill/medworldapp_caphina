@@ -19,7 +19,6 @@ import {
 import SimpleLineIcon from "react-native-vector-icons/MaterialIcons";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Feather from "react-native-vector-icons/Feather";
-import BottomTabNavigator from "../component/BottomTabNavigator";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useFocusEffect } from "@react-navigation/native";
@@ -389,7 +388,7 @@ function CoursesDocument({ navigation }) {
             setData={setData}
             value={"name"}
           />
-          <BottomTabNavigator navigation={navigation} />
+         
         </SafeAreaView>
       </TouchableWithoutFeedback>
     </KeyboardAvoidingView>

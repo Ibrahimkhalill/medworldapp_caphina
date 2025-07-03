@@ -91,8 +91,15 @@ export default function UserLogin({ navigation }) {
 			}
 		} catch (err) {
 			console.log('Login error:', err);
-			const msg =
-				err.response?.data?.error || 'Network error. Please try again.';
+			let msg = 'Something went wrong. Please try again.';
+
+			if (err.message === 'Request timed out') {
+				msg = 'Login timed out. Please check your internet connection.';
+			} else if (err.response?.data?.error) {
+				msg = err.response.data.error;
+			} else if (err.message === 'Network Error') {
+				msg = 'Network error. Please check your internet and try again.';
+			}
 			setError(msg);
 			setErrorVisible(true);
 		} finally {

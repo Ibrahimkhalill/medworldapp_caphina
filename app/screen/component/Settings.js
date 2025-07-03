@@ -19,7 +19,6 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import Navbar from '../component/Navbar';
-import NavigationBar from '../component/BottomTabNavigator';
 import CustomSelector from '../component/CustomSelector';
 import DeleteModal from './DeleteModal';
 import { useAuth } from '../authentication/Auth';
@@ -266,7 +265,7 @@ const Settings = ({ navigation }) => {
 					</View>
 				</View>
 			</ScrollView>
-			<NavigationBar navigation={navigation} />
+
 			<DeleteModal
 				setIsVisible={setIsdelete}
 				isVisible={isDelete}

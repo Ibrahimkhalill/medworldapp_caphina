@@ -73,7 +73,7 @@ function ForgetPassWord({ navigation }) {
 			}
 		} catch (error) {
 			notifyMessage(
-				'Error: ' + (error.response?.data?.message || error.message)
+				(error.response?.data?.message || error.message)
 			);
 		} finally {
 			setIsLoading(false);

@@ -17,7 +17,7 @@ import {
 import SimpleLineIcon from "react-native-vector-icons/MaterialIcons";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Feather from "react-native-vector-icons/Feather";
-import BottomTabNavigator from "../component/BottomTabNavigator";
+
 import AntDesign from "react-native-vector-icons/AntDesign";
 
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -392,7 +392,7 @@ function BudgetDcoument({ navigation }) {
           setData={setData}
           value={"category"}
         />
-        <BottomTabNavigator navigation={navigation} />
+        
       </SafeAreaView>
     </TouchableWithoutFeedback>
   );

@@ -24,7 +24,6 @@ import {
 } from 'react-native-safe-area-context';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
-import NavigationBar from '../component/BottomTabNavigator';
 import axiosInstance from '../component/axiosInstance';
 import { useTranslation } from 'react-i18next';
 import * as ImagePicker from 'expo-image-picker';
@@ -249,8 +248,8 @@ function Profile({ navigation }) {
 													imageUri
 														? { uri: imageUri }
 														: {
-																uri: `https://medworld.duckdns.org${profile_picture}`,
-														  }
+															uri: `https://admin.medworld.online${profile_picture}`,
+														}
 												}
 												style={styles.Profileimage}
 											/>
@@ -459,7 +458,7 @@ function Profile({ navigation }) {
 				</View>
 			)}
 
-			<NavigationBar navigation={navigation} />
+
 		</SafeAreaView>
 	);
 }

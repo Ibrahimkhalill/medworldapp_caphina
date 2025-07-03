@@ -22,7 +22,6 @@ import axiosInstance from '../component/axiosInstance';
 import { useFocusEffect } from '@react-navigation/native';
 import NotificationButton from '../component/NotificationButton';
 import { useTranslation } from 'react-i18next';
-import NavigationBar from '../component/BottomTabNavigator';
 import { useSubscription } from '../component/SubscriptionContext';
 
 function UserHome({ navigation }) {
@@ -171,7 +170,7 @@ function UserHome({ navigation }) {
 
 	return (
 		<SafeAreaView style={styles.safeArea} className="px-5">
-			<StatusBar style="dark" backgroundColor="white" />
+
 			<ScrollView
 				contentContainerStyle={{ flexGrow: 1 }}
 				showsVerticalScrollIndicator={false}
@@ -283,7 +282,7 @@ function UserHome({ navigation }) {
 				navigation={navigation}
 				existingSurgeryNames={surgeryData}
 			/>
-			<NavigationBar navigation={navigation} />
+
 		</SafeAreaView>
 	);
 }

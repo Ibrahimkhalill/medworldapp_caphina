@@ -20,7 +20,6 @@ import SimpleLineIcon from "react-native-vector-icons/MaterialIcons";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Feather from "react-native-vector-icons/Feather";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import BottomTabNavigator from "../component/BottomTabNavigator";
 import { SafeAreaView } from "react-native-safe-area-context";
 import CompeleteDcoument from "../component/CompeleteDcoument";
 import InCompeleteDocument from "../component/InCompeleteDocument";
@@ -38,7 +37,7 @@ import * as Notifications from "expo-notifications";
 import { useSubscription } from "../component/SubscriptionContext";
 import NotificationButton from "../component/NotificationButton";
 import DownloadModal from "../component/DownloadModal";
-function SurgergeruDcoument({ navigation }) {
+function SurgeryDocument({ navigation }) {
   const [isVisible, setIsVisible] = useState(false);
   const { token } = useAuth();
   const { height } = Dimensions.get("window");
@@ -272,7 +271,7 @@ function SurgergeruDcoument({ navigation }) {
             </TouchableOpacity>
             <TouchableOpacity
               className=" border-b-4 border-[#FFDC58] py-1"
-              onPress={() => navigation.navigate("SurgergeryDcoument")}
+              onPress={() => navigation.navigate("SurgeryDocument")}
             >
               <Text style={styles.navButtonText}>{t("surgeries")}</Text>
             </TouchableOpacity>
@@ -297,18 +296,16 @@ function SurgergeruDcoument({ navigation }) {
                 }}
               >
                 <Text
-                  className={`text-[14px] font-[600]  ${
-                    incompleteVisible ? "" : "border-b-4 border-[#FFDC58] pb-1"
-                  }`}
+                  className={`text-[14px] font-[600]  ${incompleteVisible ? "" : "border-b-4 border-[#FFDC58] pb-1"
+                    }`}
                 >
                   {t("complete")}
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity onPress={() => setInCompleteVisible(true)}>
                 <Text
-                  className={`text-[14px] font-[600] ml-3 ${
-                    incompleteVisible ? "border-b-4 border-[#FFDC58] pb-1" : ""
-                  }`}
+                  className={`text-[14px] font-[600] ml-3 ${incompleteVisible ? "border-b-4 border-[#FFDC58] pb-1" : ""
+                    }`}
                 >
                   {t("incomplete")}
                 </Text>
@@ -354,7 +351,7 @@ function SurgergeruDcoument({ navigation }) {
           contentContainerStyle={{ flexGrow: 1 }}
           showsVerticalScrollIndicator={false}
           style={{ height: scrollViewHeight }}
-          onScroll={()=>setDownloadModal(false)}
+          onScroll={() => setDownloadModal(false)}
         >
           <View className="mt-1 flex" onStartShouldSetResponder={() => true}>
             <Pressable onPress={() => setDownloadModal(false)}>
@@ -389,7 +386,7 @@ function SurgergeruDcoument({ navigation }) {
           value={"name_of_surgery"}
         />
 
-        <BottomTabNavigator navigation={navigation} />
+
       </SafeAreaView>
     </TouchableWithoutFeedback>
   );
@@ -519,4 +516,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SurgergeruDcoument;
+export default SurgeryDocument;
