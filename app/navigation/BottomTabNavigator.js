@@ -5,7 +5,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
-export default function NavigationBar({ state, descriptors, navigation }) {
+export default function NavigationBar({ state, navigation }) {
   const insets = useSafeAreaInsets();
 
   const tabs = [
@@ -14,36 +14,46 @@ export default function NavigationBar({ state, descriptors, navigation }) {
     { name: 'Settings', icon: <AntDesign name="setting" size={25} /> },
     { name: 'Profile', icon: <FontAwesome6 name="circle-user" size={23} /> },
   ];
+  const getActiveRouteName = (state) => {
+    if (!state || !state.routes || state.index == null) return null;
+
+    const route = state.routes[state.index];
+    if (route.state) {
+      // Nested navigator
+      return getActiveRouteName(route.state);
+    }
+    return route.name;
+  };
 
   return (
-    <View
-      style={[
-        styles.navBar,
-
-      ]}
-    >
+    <View style={styles.navBar}>
       {tabs.map((tab, index) => {
-        const isFocused = state.index === index;
+
+
+        const currentRoute = getActiveRouteName(state);
+        const isFocused = currentRoute === tab.name;
+
+
 
         const onPress = () => {
-          const event = navigation.emit({
-            type: 'tabPress',
-            target: state.routes[index].key,
-            canPreventDefault: true,
-          });
-
-          if (!isFocused && !event.defaultPrevented) {
+          if (!isFocused) {
             navigation.navigate(tab.name);
           }
         };
 
+        console.log("isFocused", isFocused);
+
+
+
         const iconWithColor = React.cloneElement(tab.icon, {
-          color: isFocused ? '#000' : '#555',
+          color: isFocused ? '#000' : 'gray',
         });
 
         return (
           <TouchableOpacity key={tab.name} onPress={onPress} style={styles.navItem}>
-            {iconWithColor}
+            <View style={[styles.iconContainer, isFocused && styles.activeIconContainer]}>
+              {iconWithColor}
+            </View>
           </TouchableOpacity>
         );
       })}
@@ -65,11 +75,19 @@ const styles = StyleSheet.create({
     left: 10,
     right: 10,
     elevation: 5,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
   },
   navItem: {
     alignItems: 'center',
     justifyContent: 'center',
     flex: 1,
-    paddingVertical: 10,
   },
+  iconContainer: {
+    padding: 10,
+    borderRadius: 20,
+  },
+
 });

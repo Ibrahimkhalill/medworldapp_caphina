@@ -1,7 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { createDrawerNavigator } from '@react-navigation/drawer';
 import 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import React, { useEffect, useState } from 'react';
@@ -10,7 +9,6 @@ import WelcomeScreen from './app/screen/WelcomeScreen';
 import UserLogin from './app/screen/authentication/UserLogin';
 
 import { AuthProvider, useAuth } from './app/screen/authentication/Auth';
-import Logout from './app/screen/authentication/Logout';
 import AddScientific from './app/screen/user/AddScientific';
 import UserSignup from './app/screen/authentication/UserSignup';
 import ForgetPassWord from './app/screen/authentication/ForgetPassword';
@@ -44,126 +42,130 @@ const Stack = createNativeStackNavigator();
 import NetInfo from '@react-native-community/netinfo';
 import MainTabNavigation from './app/navigation/MainTabNavigation';
 import SurgeryDocument from './app/screen/user/SurgeryDocument';
+import NavigationBarWrapper from './app/navigation/NavigationBarWrapper';
 
 function UserStack() {
 	return (
-		<Stack.Navigator
-			initialRouteName="MainTabs"
-			screenOptions={{
-				headerShown: false,
-			}}>
-			<Stack.Screen name="MainTabs" component={MainTabNavigation} />
-			<Stack.Screen
-				name="WELCOME"
-				component={WelcomeScreen}
-				options={{ title: 'Home' }}
-			/>
-			<Stack.Screen
-				name="UserHome"
-				component={UserHome}
-				options={{ title: 'User Home' }}
-			/>
-			<Stack.Screen
-				name="HelpSupport"
-				component={HelpSupport}
-				options={{ title: 'Help & Support' }}
-			/>
-			<Stack.Screen
-				name="TermsAndCondition"
-				component={TermsAndCondition}
-				options={{ title: 'Terms & Conditions' }}
-			/>
-			<Stack.Screen
-				name="PrivacyPolicy"
-				component={PrivacyPolicy}
-				options={{ title: 'Privacy Policy' }}
-			/>
-			<Stack.Screen
-				name="Profile"
-				component={Profile}
-				options={{ title: 'Profile' }}
-			/>
-			<Stack.Screen
-				name="SurgergeryDcoument"
-				component={SurgeryDocument}
-				options={{ title: 'Surgery Document' }}
-			/>
-			<Stack.Screen
-				name="PercantagePage"
-				component={PercantagePage}
-				options={{ title: 'Percentage' }}
-			/>
-			<Stack.Screen
-				name="Subscriptions"
-				component={Subscriptions}
-				options={{ title: 'Subscriptions' }}
-			/>
-			<Stack.Screen
-				name="BudgetDcoument"
-				component={BudgetDcoument}
-				options={{ title: 'Budget Document' }}
-			/>
-			<Stack.Screen
-				name="ScientificDcoument"
-				component={ScientificDcoument}
-				options={{ title: 'Scientific Document' }}
-			/>
-			<Stack.Screen
-				name="CoursesDocument"
-				component={CoursesDocument}
-				options={{ title: 'Courses Document' }}
-			/>
-			<Stack.Screen
-				name="AddScientific"
-				component={AddScientific}
-				options={{ title: 'Add Scientific' }}
-			/>
-			<Stack.Screen
-				name="AddCourses"
-				component={AddCourses}
-				options={{ title: 'Add Courses' }}
-			/>
-			<Stack.Screen
-				name="AddSurgeries"
-				component={AddSurgeries}
-				options={{ title: 'Add Surgeries' }}
-			/>
-			<Stack.Screen
-				name="EditScientific"
-				component={EditScientific}
-				options={{ title: 'EditScientific' }}
-			/>
-			<Stack.Screen
-				name="EditBudget"
-				component={EditBudget}
-				options={{ title: 'EditBudget' }}
-			/>
-			<Stack.Screen
-				name="EditCourse"
-				component={EditCourse}
-				options={{ title: 'EditCourse' }}
-			/>
-			<Stack.Screen
-				name="EidtSurgeries"
-				component={EidtSurgeries}
-				options={{ title: 'EidtSurgeries' }}
-			/>
-			<Stack.Screen
-				name="Notification"
-				component={Notification}
-				options={{ title: 'Notifications' }}
-			/>
-			<Stack.Screen
-				name="AddBudget"
-				component={AddBudget}
-				options={{ title: 'Add Budget' }}
-			/>
-			<Stack.Screen
-				name="Settings"
-				component={Settings}
-				options={{ title: 'Settings' }}
-			/>
-		</Stack.Navigator>
+		<>
+			<Stack.Navigator
+				initialRouteName="MainTabs"
+				screenOptions={{
+					headerShown: false,
+				}}>
+				<Stack.Screen name="MainTabs" component={MainTabNavigation} />
+				<Stack.Screen
+					name="WELCOME"
+					component={WelcomeScreen}
+					options={{ title: 'Home' }}
+				/>
+				<Stack.Screen
+					name="UserHome"
+					component={UserHome}
+					options={{ title: 'User Home' }}
+				/>
+				<Stack.Screen
+					name="HelpSupport"
+					component={HelpSupport}
+					options={{ title: 'Help & Support' }}
+				/>
+				<Stack.Screen
+					name="TermsAndCondition"
+					component={TermsAndCondition}
+					options={{ title: 'Terms & Conditions' }}
+				/>
+				<Stack.Screen
+					name="PrivacyPolicy"
+					component={PrivacyPolicy}
+					options={{ title: 'Privacy Policy' }}
+				/>
+				<Stack.Screen
+					name="Profile"
+					component={Profile}
+					options={{ title: 'Profile' }}
+				/>
+				<Stack.Screen
+					name="SurgergeryDcoument"
+					component={SurgeryDocument}
+					options={{ title: 'Surgery Document' }}
+				/>
+				<Stack.Screen
+					name="PercantagePage"
+					component={PercantagePage}
+					options={{ title: 'Percentage' }}
+				/>
+				<Stack.Screen
+					name="Subscriptions"
+					component={Subscriptions}
+					options={{ title: 'Subscriptions' }}
+				/>
+				<Stack.Screen
+					name="BudgetDcoument"
+					component={BudgetDcoument}
+					options={{ title: 'Budget Document' }}
+				/>
+				<Stack.Screen
+					name="ScientificDcoument"
+					component={ScientificDcoument}
+					options={{ title: 'Scientific Document' }}
+				/>
+				<Stack.Screen
+					name="CoursesDocument"
+					component={CoursesDocument}
+					options={{ title: 'Courses Document' }}
+				/>
+				<Stack.Screen
+					name="AddScientific"
+					component={AddScientific}
+					options={{ title: 'Add Scientific' }}
+				/>
+				<Stack.Screen
+					name="AddCourses"
+					component={AddCourses}
+					options={{ title: 'Add Courses' }}
+				/>
+				<Stack.Screen
+					name="AddSurgeries"
+					component={AddSurgeries}
+					options={{ title: 'Add Surgeries' }}
+				/>
+				<Stack.Screen
+					name="EditScientific"
+					component={EditScientific}
+					options={{ title: 'EditScientific' }}
+				/>
+				<Stack.Screen
+					name="EditBudget"
+					component={EditBudget}
+					options={{ title: 'EditBudget' }}
+				/>
+				<Stack.Screen
+					name="EditCourse"
+					component={EditCourse}
+					options={{ title: 'EditCourse' }}
+				/>
+				<Stack.Screen
+					name="EidtSurgeries"
+					component={EidtSurgeries}
+					options={{ title: 'EidtSurgeries' }}
+				/>
+				<Stack.Screen
+					name="Notification"
+					component={Notification}
+					options={{ title: 'Notifications' }}
+				/>
+				<Stack.Screen
+					name="AddBudget"
+					component={AddBudget}
+					options={{ title: 'Add Budget' }}
+				/>
+				<Stack.Screen
+					name="Settings"
+					component={Settings}
+					options={{ title: 'Settings' }}
+				/>
+			</Stack.Navigator>
+			<NavigationBarWrapper />
+		</>
 	);
 }
 

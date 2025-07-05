@@ -21,6 +21,7 @@ export default function MainTabNavigation() {
             <Tab.Screen name="SurgergeryDcoument" component={SurgeryDocument} />
             <Tab.Screen name="Settings" component={Settings} />
             <Tab.Screen name="Profile" component={Profile} />
+
         </Tab.Navigator>
     );
 }

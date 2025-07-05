@@ -121,6 +121,8 @@ function ForgetPassWord({ navigation }) {
 							placeholder="Enter email"
 							onChangeText={handleOnchange}
 							value={email}
+							keyboardType="email-address"
+							autoCapitalize="none"
 						/>
 					</View>
 
