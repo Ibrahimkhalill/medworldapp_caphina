@@ -1615,6 +1615,11 @@
   dependencies:
     nanoid "^3.1.23"
 
+"@revenuecat/purchases-typescript-internal@14.0.2":
+  version "14.0.2"
+  resolved "https://registry.yarnpkg.com/@revenuecat/purchases-typescript-internal/-/purchases-typescript-internal-14.0.2.tgz#633e4f2b2dc544a33049566cd3e9975c9617d354"
+  integrity sha512-JmfbWqSUe5Su0z7+MKExP7LzkwslxKQ4oDaT560qX269nwBRbORVMPswKwwJ42twyH8ZKsQoudmLmgoZKoMXQg==
+
 "@segment/loosely-validate-event@^2.0.0":
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/@segment/loosely-validate-event/-/loosely-validate-event-2.0.0.tgz#87dfc979e5b4e7b82c5f1d8b722dfd5d77644681"
@@ -5552,6 +5557,13 @@ react-native-masked-view@^0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/react-native-masked-view/-/react-native-masked-view-0.2.0.tgz#cdc522126eab39fbb82465737188745b883a0d25"
   integrity sha512-xIlOBr555Yctn2GI/+X+xd/NnhXyhDmYgsKJOk94213lPnDqPXIJo1tk6p/0m6f31wYdhsb8ND1ODaxKKaj7Mg==
+
+react-native-purchases@^8.11.8:
+  version "8.11.8"
+  resolved "https://registry.yarnpkg.com/react-native-purchases/-/react-native-purchases-8.11.8.tgz#8980853cbc32d905d35b94f802fa3f0e6d33ea8e"
+  integrity sha512-mTWEDYnvRj3kTfUt2zriq0UxPQQZFOEyOWOkTZ2Xex+AsaSDG7RQdjAd+RwehpKJhgXAVEVgZaEiN5wbxLxJpw==
+  dependencies:
+    "@revenuecat/purchases-typescript-internal" "14.0.2"
 
 react-native-reanimated@^3.16.6:
   version "3.16.6"

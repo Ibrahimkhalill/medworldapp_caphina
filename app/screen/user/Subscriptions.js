@@ -14,6 +14,7 @@ import { Ionicons, MaterialIcons } from "react-native-vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTranslation } from "react-i18next";
 import { WebView } from "react-native-webview";
+import Purchases from 'react-native-purchases';
 
 import Navbar from "../component/Navbar";
 import axiosInstance from "../component/axiosInstance";
@@ -76,6 +77,55 @@ const Subscriptions = ({ navigation }) => {
     );
   }
 
+
+  const [premiumPackage, setPremiumPackage] = useState(null);
+
+
+
+  useEffect(() => {
+    const setupRevenueCat = async () => {
+      Purchases.configure({
+        apiKey: Platform.select({
+          ios: 'appl_KUweuHaYGjDyNKcLhvtozkzFyHM',
+
+        }),
+
+      });
+
+      const offerings = await Purchases.getOfferings();
+      if (offerings.current) {
+        setPremiumPackage(offerings.current.availablePackages[0]); // you can choose a specific one
+      }
+    };
+
+    setupRevenueCat();
+  }, []);
+  console.log("Premium Package:", premiumPackage);
+
+  const handlePurchase = async () => {
+    if (!premiumPackage) {
+      Alert.alert("Product not loaded");
+      return;
+    }
+
+    try {
+      const purchaserInfo = await Purchases.purchasePackage(premiumPackage);
+      const isPro = purchaserInfo.entitlements.active["entl56bb5f09ad"]; // Set in RevenueCat dashboard
+
+      if (isPro) {
+        Alert.alert("Success", "You are now premium!");
+        // Optionally: Notify your Django backend
+      }
+    } catch (error) {
+      if (!error.userCancelled) {
+        Alert.alert("Error", error.message);
+      }
+    }
+  };
+
+
+
+
   return (
     <SafeAreaView style={styles.safeArea} className="px-5">
       <Navbar navigation_Name={t("user_home")} navigation={navigation} />
@@ -119,7 +169,7 @@ const Subscriptions = ({ navigation }) => {
             </View>
             <TouchableOpacity
               style={styles.sentButton}
-              onPress={createCheckoutSession}
+              onPress={handlePurchase}
               disabled={loading}
             >
               <MaterialIcons name="euro" size={24} color="white" />

@@ -46,6 +46,7 @@
     "plugins": [
       "expo-font",
       "expo-localization",
+      
       [
         "expo-splash-screen",
         {
