@@ -16,14 +16,17 @@ import Navbar from "../component/Navbar";
 import CustomDatePicker from "../component/CustomDatePicker";
 import axiosInstance from "../component/axiosInstance";
 import { useAuth } from "../authentication/Auth";
+import { useTranslation } from "react-i18next";
 
 function EditCourse({ navigation, route }) {
   const [date, setDate] = useState(new Date());
   const [name, setName] = useState("");
+  const [location, setLocation] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState({ date: "", name: "" });
   const { token } = useAuth();
   const { params } = route; // Get route params for the course data
+  const {t} = useTranslation()
 
   // Notify message utility
   function notifyMessage(msg) {
@@ -46,6 +49,7 @@ function EditCourse({ navigation, route }) {
       const course = params.data;
       setDate(new Date(course.date));
       setName(course.name);
+      setLocation(course.location);
     }
   }, [params]);
 
@@ -72,6 +76,7 @@ function EditCourse({ navigation, route }) {
     const payload = {
       date,
       name,
+      location
     };
 
     setIsLoading(true);
@@ -121,37 +126,14 @@ function EditCourse({ navigation, route }) {
           className="px-5"
         >
           <Navbar navigation={navigation} navigation_Name={"UserHome"} />
-          <View className="flex flex-row gap-3 my-3 mb-5">
-            <TouchableOpacity
-              className="py-1"
-              onPress={() => navigation.navigate("ScientificDcoument")}
-            >
-              <Text style={styles.navButtonText}>Scientific</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              className="py-1"
-              onPress={() => navigation.navigate("SurgergeryDcoument")}
-            >
-              <Text style={styles.navButtonText}>Surgeries</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              className="py-1 border-b-4 border-[#FFDC58]"
-              onPress={() => navigation.navigate("CoursesDocument")}
-            >
-              <Text style={styles.navButtonText}>Courses</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              className="py-1"
-              onPress={() => navigation.navigate("BudgetDcoument")}
-            >
-              <Text style={styles.navButtonText}>Budget</Text>
-            </TouchableOpacity>
+          <View className="flex justify-center flex-row gap-3 my-3 mb-5">
+            <Text style={styles.navButtonText}>{t("edit_courses")} </Text>
           </View>
           <View style={styles.container}>
             {/* Date Input */}
             <View style={styles.inputContainerDouble}>
               <View style={styles.inputContainerFIrst}>
-                <Text style={styles.labelFirst}>Date</Text>
+                <Text style={styles.labelFirst}>{t("date")}</Text>
                 <CustomDatePicker
                   onDateChange={(selectedDate) =>
                     handleInputChange(setDate, selectedDate, "date")
@@ -167,7 +149,7 @@ function EditCourse({ navigation, route }) {
 
             {/* Name Input */}
             <View style={styles.inputContainer}>
-              <Text style={styles.label}>Name</Text>
+              <Text style={styles.label}>{t("name")}</Text>
               <View
                 style={[
                   styles.inputWrapper,
@@ -187,10 +169,31 @@ function EditCourse({ navigation, route }) {
                 <Text style={styles.errorText}>{errors.name}</Text>
               ) : null}
             </View>
+             <View style={styles.inputContainer}>
+                          <Text style={styles.label}>{t("location")}</Text>
+            
+                          <View
+                            style={[
+                              styles.inputWrapper,
+                              errors.name ? styles.inputErrorBorder : null, // Apply red border if error exists
+                            ]}
+                          >
+                            <TextInput
+                              style={styles.input}
+                              placeholder={t("enter_location")}
+                              value={location}
+                              onChangeText={(text) => {
+                                setLocation(text);
+                               
+                              }}
+                            />
+                          </View>
+                        
+                        </View>
           </View>
           <View className="flex items-center justify-center mb-10">
             <TouchableOpacity style={styles.loginButton} onPress={handleUpdate}>
-              <Text style={styles.loginButtonText}>Update</Text>
+              <Text style={styles.loginButtonText}>{t("update")}</Text>
             </TouchableOpacity>
           </View>
         </ScrollView>
@@ -276,7 +279,8 @@ const styles = StyleSheet.create({
     borderColor: "red", // Red border for error
   },
   navButtonText: {
-    fontWeight: "500",
+    fontWeight: "400",
+    fontSize: 20
   },
 });
 

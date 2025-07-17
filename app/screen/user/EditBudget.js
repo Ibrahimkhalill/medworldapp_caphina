@@ -16,6 +16,7 @@ import Navbar from "../component/Navbar";
 import CustomDatePicker from "../component/CustomDatePicker";
 import { useAuth } from "../authentication/Auth";
 import axiosInstance from "../component/axiosInstance";
+import { useTranslation } from "react-i18next";
 
 function EditBudget({ navigation, route }) {
   const [date, setDate] = useState(new Date());
@@ -51,7 +52,7 @@ function EditBudget({ navigation, route }) {
       alert(msg);
     }
   }
-  console.log("params.budget", params.budget);
+  const {t} = useTranslation()
 
   // Prefill data when navigating to this screen
   useEffect(() => {
@@ -169,34 +170,14 @@ function EditBudget({ navigation, route }) {
           className="px-5"
         >
           <Navbar navigation={navigation} navigation_Name={"UserHome"} />
-          <View className="flex flex-row gap-3 my-3 mb-5">
-            <TouchableOpacity
-              className="py-1"
-              onPress={() => navigation.navigate("ScientificDcoument")}
-            >
-              <Text style={styles.navButtonText}>Scientific</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              className="py-1"
-              onPress={() => navigation.navigate("SurgergeryDcoument")}
-            >
-              <Text style={styles.navButtonText}>Surgeries</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              className="py-1"
-              onPress={() => navigation.navigate("CoursesDocument")}
-            >
-              <Text style={styles.navButtonText}>Courses</Text>
-            </TouchableOpacity>
-            <TouchableOpacity className="border-b-4 border-[#FFDC58] py-1">
-              <Text style={styles.navButtonText}>Budget</Text>
-            </TouchableOpacity>
-          </View>
+        <View className="flex justify-center flex-row gap-3 my-3 mb-5">
+                    <Text style={styles.navButtonText}>{t("edit_budget")} </Text>
+         </View>
           <View style={styles.container}>
             {/* Date and Category */}
             <View style={styles.inputContainerDouble}>
               <View style={styles.inputContainerFIrst}>
-                <Text style={styles.labelFirst}>Date</Text>
+                 <Text style={styles.labelFirst}>{t("date")}</Text>
                 <CustomDatePicker
                   onDateChange={handleDateChange}
                   date={date}
@@ -207,7 +188,7 @@ function EditBudget({ navigation, route }) {
                 ) : null}
               </View>
               <View style={styles.inputContainerFIrst}>
-                <Text style={styles.labelFirst}>Category</Text>
+                <Text style={styles.labelFirst}>{t("category")}</Text>
                 <TextInput
                   style={[
                     styles.inputFirst,
@@ -228,7 +209,7 @@ function EditBudget({ navigation, route }) {
 
             {/* Name */}
             <View style={styles.inputContainer}>
-              <Text style={styles.label}>Name</Text>
+              <Text style={styles.label}>{t("name")}</Text>
               <View
                 style={[
                   styles.inputWrapper,
@@ -253,7 +234,7 @@ function EditBudget({ navigation, route }) {
             {/* Fees */}
             <View className="my-5">
               <View style={styles.inputRowContainer}>
-                <Text style={styles.Rowlabel}>Registration fee:</Text>
+               <Text style={styles.Rowlabel}>{t("registration_fee")}:</Text>
                 <View className="flex items-start flex-col w-[50%]">
                   <TextInput
                     style={[
@@ -276,7 +257,7 @@ function EditBudget({ navigation, route }) {
                 </View>
               </View>
               <View style={styles.inputRowContainer}>
-                <Text style={styles.Rowlabel}>Travel fee:</Text>
+               <Text style={styles.Rowlabel}>{t("travel_fee")}:</Text>
                 <View className="flex items-start flex-col w-[50%]">
                   <TextInput
                     style={[
@@ -297,7 +278,9 @@ function EditBudget({ navigation, route }) {
                 </View>
               </View>
               <View style={styles.inputRowContainer}>
-                <Text style={styles.Rowlabel}>Accommodation expenses:</Text>
+                 <Text style={styles.Rowlabel}>
+                  {t("accommodation_expense")}:
+                </Text>
                 <View className="flex items-start flex-col w-[50%]">
                   <TextInput
                     style={[
@@ -322,14 +305,14 @@ function EditBudget({ navigation, route }) {
                 </View>
               </View>
               <View style={styles.inputRowContainer}>
-                <Text style={styles.Rowlabel}>Total Fee:</Text>
+               <Text style={styles.Rowlabel}>{t("total_fee")}:</Text>
                 <View className="flex items-start flex-col w-[50%]">
                   <TextInput style={styles.RowInput} value={totalFee} />
                 </View>
               </View>
             </View>
             <TouchableOpacity style={styles.loginButton} onPress={handleUpdate}>
-              <Text style={styles.loginButtonText}>Update</Text>
+               <Text style={styles.loginButtonText}>{t("update")}</Text>
             </TouchableOpacity>
 
             {/* Update Button */}
@@ -455,7 +438,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     borderColor: "gray",
     paddingHorizontal: 10,
-    height: 50,
+    height: 54,
     width: "95%",
   },
   loginButton: {
@@ -501,7 +484,8 @@ const styles = StyleSheet.create({
     height: 11.5,
   },
   navButtonText: {
-    fontWeight: "500",
+    fontWeight: "400",
+    fontSize: 20,
   },
   errorText: {
     color: "red",

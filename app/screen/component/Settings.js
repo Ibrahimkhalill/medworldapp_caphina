@@ -299,7 +299,7 @@ const styles = StyleSheet.create({
 		paddingLeft: 10,
 	},
 	optionText: {
-		marginLeft: 15,
+		marginLeft: 12,
 		fontSize: 17,
 		color: 'black',
 	},

@@ -45,6 +45,7 @@ const CustomDatePicker = ({ onDateChange, date, setDate }) => {
           value={formattedDate}
           editable={false}
           pointerEvents="none"
+          
         />
       </TouchableOpacity>
 
@@ -95,7 +96,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     borderWidth: 1,
-    borderColor: "#00000",
+    borderColor: "gray",
     borderRadius: 8,
     paddingHorizontal: 10,
     height: 55,
@@ -106,6 +107,7 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     fontSize: 16,
     color: "#333",
+    
   },
   modalContainer: {
     flex: 1,

@@ -30,8 +30,11 @@ import CustomDatePicker from "../component/CustomDatePicker";
 import CustomCheckbox from "../component/CheckBox";
 import { useAuth } from "../authentication/Auth";
 import axiosInstance from "../component/axiosInstance";
+import { useTranslation } from "react-i18next";
+
 function EidtSurgeries({ route, navigation }) {
   const { data } = route.params || {};
+   const { t } = useTranslation();
 
   const [fieldOfSurgery, setFieldOfSurgery] = useState(
     data?.field_of_surgery || ""
@@ -130,36 +133,20 @@ function EidtSurgeries({ route, navigation }) {
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
           Style={{ flexGrow: 1 }}
+           contentContainerStyle ={{paddingBottom: 70}}
           keyboardShouldPersistTaps="handled"
         >
           <Navbar navigation={navigation} navigation_Name={"UserHome"} />
-          <View className="flex flex-row gap-3 my-3 mb-5">
-            <TouchableOpacity
-              className=" py-1"
-              onPress={() => navigation.navigate("ScientificDcoument")}
-            >
-              <Text style={styles.navButtonText}>Scientific</Text>
-            </TouchableOpacity>
-            <TouchableOpacity className="border-b-4 border-[#FFDC58] py-1">
-              <Text style={styles.navButtonText}>Surgeries</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              className=" py-1"
-              onPress={() => navigation.navigate("CoursesDocument")}
-            >
-              <Text style={styles.navButtonText}>Courses</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              className=" py-1"
-              onPress={() => navigation.navigate("BudgetDcoument")}
-            >
-              <Text style={styles.navButtonText}>Budget</Text>
-            </TouchableOpacity>
+          <View className="flex items-center justify-center flex-row gap-3 my-3 mb-5">
+          
+              <Text style={styles.navButtonText}>{t("edit_surgeries")} </Text>
+          
+           
           </View>
           <View style={styles.container}>
             <View style={styles.inputContainerDouble}>
               <View style={styles.inputContainerFIrst}>
-                <Text style={styles.labelFirst}>Field of Surgery</Text>
+                  <Text style={styles.labelFirst}>{t("field_of_surgery")}</Text>
                 <TextInput
                   style={styles.inputFirst}
                   value={fieldOfSurgery}
@@ -167,7 +154,7 @@ function EidtSurgeries({ route, navigation }) {
                 />
               </View>
               <View style={styles.inputContainerFIrst}>
-                <Text style={styles.labelFirst}>Date</Text>
+               <Text style={styles.label}>{t("date")}</Text>
                 <CustomDatePicker
                   onDateChange={handleDateChange}
                   date={date}
@@ -177,7 +164,7 @@ function EidtSurgeries({ route, navigation }) {
             </View>
 
             <View style={styles.inputContainer}>
-              <Text style={styles.label}>Surgery Name</Text>
+              <Text style={styles.label}>{t("surgery_name")}</Text>
               <TextInput
                 style={styles.inputWrapper}
                 value={surgeryName}
@@ -186,7 +173,7 @@ function EidtSurgeries({ route, navigation }) {
             </View>
 
             <View style={styles.inputContainer}>
-              <Text style={styles.label}>Type of Surgery</Text>
+                 <Text style={styles.label}>{t("type_of_surgery")}</Text>
               <TextInput
                 style={styles.inputWrapper}
                 value={typeOfSurgery}
@@ -196,16 +183,16 @@ function EidtSurgeries({ route, navigation }) {
 
             <View style={styles.inputContainerDouble}>
               <View style={styles.inputContainerFIrst}>
-                <Text style={styles.labelFirst}>Main Surgeon</Text>
+                <Text style={styles.labelFirst}>{t("main_surgeon")}</Text>
                 <View style={{ flexDirection: "row" }}>
                   <CustomCheckbox
-                    label="Yes"
+                    label={t("yes")}
                     onValueChange={() => setMainSurgeon(true)}
                     value={mainSurgeon === true}
                   />
                   <View className="ml-3">
                     <CustomCheckbox
-                      label="No"
+                      label={t("no")}
                       onValueChange={() => setMainSurgeon(false)}
                       value={mainSurgeon === false}
                     />
@@ -213,16 +200,16 @@ function EidtSurgeries({ route, navigation }) {
                 </View>
               </View>
               <View style={styles.inputContainerFIrst}>
-                <Text style={styles.labelFirst}>Histology</Text>
+                 <Text style={styles.labelFirst}>{t("histology")}</Text>
                 <View style={{ flexDirection: "row" }}>
                   <CustomCheckbox
-                    label="Yes"
+                    label={t("yes")}
                     onValueChange={() => setHistology(true)}
                     value={histology === true}
                   />
                   <View className="ml-3">
                     <CustomCheckbox
-                      label="No"
+                      label={t("no")}
                       onValueChange={() => setHistology(false)}
                       value={histology === false}
                     />
@@ -232,17 +219,17 @@ function EidtSurgeries({ route, navigation }) {
             </View>
             <View style={styles.inputContainerDouble}>
               <View style={styles.inputContainerFIrst}>
-                <Text style={styles.labelFirst}>Complications</Text>
+                <Text style={styles.labelFirst}>{t("complications")}</Text>
 
                 <View className="flex  flex-row ">
                   <CustomCheckbox
-                    label="Yes"
+                    label={t("yes")}
                     onValueChange={() => setComplications(true)}
                     value={complications === true}
                   />
                   <View className="ml-3">
                     <CustomCheckbox
-                      label="NO"
+                      label={t("no")}
                       onValueChange={() => setComplications(false)}
                       value={complications === false}
                     />
@@ -251,7 +238,7 @@ function EidtSurgeries({ route, navigation }) {
               </View>
             </View>
             <View style={styles.inputContainer}>
-              <Text style={styles.label}>Histology Description</Text>
+              <Text style={styles.label}>{t("histology_description")}</Text>
               <TextInput
                 style={styles.textArea}
                 multiline
@@ -261,7 +248,9 @@ function EidtSurgeries({ route, navigation }) {
             </View>
 
             <View style={styles.inputContainer}>
-              <Text style={styles.label}>Complication Description</Text>
+             <Text style={styles.label}>
+                  {t("complication_description")}
+                </Text>
               <TextInput
                 style={styles.textArea}
                 multiline
@@ -271,7 +260,7 @@ function EidtSurgeries({ route, navigation }) {
             </View>
 
             <View style={styles.inputContainer}>
-              <Text style={styles.label}>Notes 1</Text>
+              <Text style={styles.label}>{t("notes_1")}</Text>
               <TextInput
                 style={styles.textArea}
                 multiline
@@ -281,7 +270,7 @@ function EidtSurgeries({ route, navigation }) {
             </View>
 
             <View style={styles.inputContainer}>
-              <Text style={styles.label}>Notes 2</Text>
+              <Text style={styles.label}>{t("notes_2")}</Text>
               <TextInput
                 style={styles.textArea}
                 multiline
@@ -291,7 +280,7 @@ function EidtSurgeries({ route, navigation }) {
             </View>
 
             <TouchableOpacity style={styles.loginButton} onPress={handleupdate}>
-              <Text style={styles.loginButtonText}>Update</Text>
+              <Text style={styles.loginButtonText}>{t("update")}</Text>
             </TouchableOpacity>
           </View>
         </ScrollView>
@@ -391,7 +380,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     borderColor: "gray",
     paddingHorizontal: 10,
-    height: 50,
+    height: 54,
     width: "95%",
   },
   loginButton: {
@@ -437,7 +426,9 @@ const styles = StyleSheet.create({
     height: 11.5,
   },
   navButtonText: {
-    fontWeight: "500",
+    fontWeight: "400",
+    textAlign: "center",
+    fontSize: 20
   },
 });
 

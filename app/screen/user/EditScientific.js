@@ -27,6 +27,7 @@ import CustomCheckbox from "../component/CheckBox";
 import { useAuth } from "../authentication/Auth";
 import axiosInstance from "../component/axiosInstance";
 import { useFocusEffect } from "@react-navigation/native";
+import { useTranslation } from "react-i18next";
 function EditScientific({ navigation, route }) {
   const [typesWorks, setTypesWorks] = useState("");
   const [isInternational, setIsInternational] = useState(false);
@@ -52,6 +53,7 @@ function EditScientific({ navigation, route }) {
       alert(msg); // Fallback for iOS
     }
   }
+  const {t} = useTranslation()
 
   useEffect(() => {
     if (params && params.data) {
@@ -127,31 +129,8 @@ function EditScientific({ navigation, route }) {
           keyboardShouldPersistTaps="handled"
         >
           <Navbar navigation={navigation} navigation_Name={"UserHome"} />
-          <View className="flex flex-row gap-3 my-3 mb-5">
-            <TouchableOpacity
-              className="border-b-4 border-[#FFDC58] py-1"
-              onPress={() => navigation.navigate("ScientificDcoument")}
-            >
-              <Text style={styles.navButtonText}>Scientific</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              className=" py-1"
-              onPress={() => navigation.navigate("SurgergeryDcoument")}
-            >
-              <Text style={styles.navButtonText}>Surgeries</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              className=" py-1"
-              onPress={() => navigation.navigate("CoursesDocument")}
-            >
-              <Text style={styles.navButtonText}>Courses</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              className=" py-1"
-              onPress={() => navigation.navigate("BudgetDcoument")}
-            >
-              <Text style={styles.navButtonText}>Budget</Text>
-            </TouchableOpacity>
+          <View className="flex justify-center flex-row gap-3 my-3 mb-5">
+           <Text style={styles.navButtonText} className="text-xl">{t("edit_scientific")} </Text>
           </View>
           <View style={styles.container}>
             <View style={styles.inputContainerDouble}>
@@ -164,7 +143,7 @@ function EditScientific({ navigation, route }) {
                 />
               </View>
               <View style={styles.inputContainerFIrst}>
-                <Text style={styles.labelFirst}>Type of Works</Text>
+                   <Text style={styles.labelFirst}>{t("type_of_work")}</Text>
                 <TextInput
                   style={styles.inputFirst}
                   placeholder="Type of Works"
@@ -176,7 +155,7 @@ function EditScientific({ navigation, route }) {
             <View style={styles.inputContainer}>
               <View className="flex flex-row">
                 <CustomCheckbox
-                  label="International"
+                  label={t("international")}
                   fontSize={16}
                   onValueChange={(value) => {
                     setIsInternational(value);
@@ -186,7 +165,7 @@ function EditScientific({ navigation, route }) {
                 />
                 <View className="ml-3">
                   <CustomCheckbox
-                    label="National"
+                    label={t("national")}
                     fontSize={16}
                     onValueChange={(value) => {
                       setIsNational(value);
@@ -199,17 +178,17 @@ function EditScientific({ navigation, route }) {
             </View>
             <View style={styles.inputContainerDouble}>
               <View style={styles.inputContainerFIrst}>
-                <Text style={styles.labelFirst}>What is your role?</Text>
+                 <Text style={styles.labelFirst}>{t("role")}</Text>
                 <View className="flex flex-row">
                   <CustomCheckbox
-                    label="Author"
+                    label={t("author")}
                     fontSize={16}
                     onValueChange={() => setRole("Author")}
                     value={role === "Author"}
                   />
                   <View className="ml-3">
                     <CustomCheckbox
-                      label="Co-Author"
+                    label={t("coauthor")}
                       fontSize={16}
                       onValueChange={() => setRole("Co-Author")}
                       value={role === "Co-Author"}
@@ -219,7 +198,7 @@ function EditScientific({ navigation, route }) {
               </View>
             </View>
             <View style={styles.inputContainer}>
-              <Text style={styles.label}>Name</Text>
+           <Text style={styles.label}>{t("name")}</Text>
               <View style={styles.inputWrapper}>
                 <TextInput
                   style={styles.input}
@@ -229,7 +208,7 @@ function EditScientific({ navigation, route }) {
               </View>
             </View>
             <View style={styles.inputContainer}>
-              <Text style={styles.label}>Co-Authors</Text>
+              <Text style={styles.label}>{t("co_author")}</Text>
               <View style={styles.inputWrapper}>
                 <TextInput
                   style={styles.input}
@@ -385,7 +364,7 @@ const styles = StyleSheet.create({
     height: 11.5,
   },
   navButtonText: {
-    fontWeight: "500",
+    fontWeight: "400",
   },
 });
 

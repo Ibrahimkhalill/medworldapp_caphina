@@ -1,8 +1,6 @@
 import React from "react";
-import { StatusBar } from "expo-status-bar";
 import { useState, useEffect } from "react";
 import {
-  Image,
   StyleSheet,
   Text,
   View,
@@ -15,6 +13,7 @@ import {
   Keyboard,
   KeyboardAvoidingView,
   Pressable,
+  Dimensions
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Navbar from "../component/Navbar";
@@ -26,6 +25,7 @@ import { useTranslation } from "react-i18next";
 import { useFocusEffect } from "@react-navigation/native";
 
 function AddSurgeries({ route, navigation }) {
+  const windowHeight = Dimensions.get('window').height;
   const { t } = useTranslation();
   const [fieldOfSurgery, setFieldOfSurgery] = useState("");
   const [surgeryName, setSurgeryName] = useState("");
@@ -228,32 +228,33 @@ function AddSurgeries({ route, navigation }) {
               className=" py-1"
               onPress={() => navigation.navigate("AddScientific")}
             >
-              <Text style={styles.navButtonText}>Scientific</Text>
+              <Text style={styles.navButtonText}>{t("scientific")}</Text>
             </TouchableOpacity>
             <TouchableOpacity className="border-b-4 border-[#FFDC58] py-1">
-              <Text style={styles.navButtonText}>Surgeries</Text>
+              <Text style={styles.navButtonText}>{t("surgeries")}</Text>
             </TouchableOpacity>
             <TouchableOpacity
               className=" py-1"
               onPress={() => navigation.navigate("AddCourses")}
             >
-              <Text style={styles.navButtonText}>Courses</Text>
+              <Text style={styles.navButtonText}>{t("courses")}</Text>
             </TouchableOpacity>
             <TouchableOpacity
               className=" py-1"
               onPress={() => navigation.navigate("AddBudget")}
             >
-              <Text style={styles.navButtonText}>Budget</Text>
+              <Text style={styles.navButtonText}>{t("budget")}</Text>
             </TouchableOpacity>
           </View>
           <ScrollView
             showsVerticalScrollIndicator={false}
             keyboardShouldPersistTaps="handled"
-            style={{ flex: 1 }} // Ensure full height usage
+            contentContainerStyle ={{paddingBottom: 50}}
+           
             onScroll={() => setDropdownVisible(false)}
           >
             <Pressable
-              style={styles.container}
+              style={[styles.container]}
               onStartShouldSetResponder={() => true}
               onPress={() => setDropdownVisible(false)}
             >
@@ -355,7 +356,7 @@ function AddSurgeries({ route, navigation }) {
                   <Text style={styles.labelFirst}>{t("main_surgeon")}</Text>
                   <View style={{ flexDirection: "row" }}>
                     <CustomCheckbox
-                      label="Yes"
+                        label={t("yes")}
                       onValueChange={() => {
                         setMainSurgeon(true);
                         setErrors((prevErrors) => ({
@@ -367,7 +368,7 @@ function AddSurgeries({ route, navigation }) {
                     />
                     <View className="ml-3">
                       <CustomCheckbox
-                        label="No"
+                      label={t("no")}
                         onValueChange={() => {
                           setMainSurgeon(false);
                           setErrors((prevErrors) => ({
@@ -392,7 +393,7 @@ function AddSurgeries({ route, navigation }) {
                   <Text style={styles.labelFirst}>{t("histology")}</Text>
                   <View style={{ flexDirection: "row" }}>
                     <CustomCheckbox
-                      label="Yes"
+                        label={t("yes")}
                       onValueChange={() => {
                         setHistology(true);
                         setErrors((prevErrors) => ({
@@ -404,7 +405,7 @@ function AddSurgeries({ route, navigation }) {
                     />
                     <View className="ml-3">
                       <CustomCheckbox
-                        label="No"
+                      label={t("no")}
                         onValueChange={() => {
                           setHistology(false);
                           setErrors((prevErrors) => ({
@@ -432,7 +433,7 @@ function AddSurgeries({ route, navigation }) {
 
                   <View className="flex  flex-row ">
                     <CustomCheckbox
-                      label="Yes"
+                        label={t("yes")}
                       onValueChange={() => {
                         setComplications(true);
                         setErrors((prevErrors) => ({
@@ -444,7 +445,7 @@ function AddSurgeries({ route, navigation }) {
                     />
                     <View className="ml-3">
                       <CustomCheckbox
-                        label="NO"
+                      label={t("no")}
                         onValueChange={() => {
                           setComplications(false);
                           setErrors((prevErrors) => ({
@@ -539,8 +540,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#fff",
-
-    paddingBottom: 10,
+    paddingBottom: 40,
+   
   },
   imageContainer: {
     marginBottom: 30,

@@ -30,9 +30,10 @@ import { useFocusEffect } from "@react-navigation/native";
 function AddCourses({ navigation }) {
   const [date, setDate] = useState(new Date());
   const [name, setName] = useState("");
+  const [location, setLocation] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const { token } = useAuth();
-  const [errors, setErrors] = useState({ date: "", name: "" });
+  const [errors, setErrors] = useState({ date: "", name: "" , location: "" });
   const { t } = useTranslation();
   const { height } = Dimensions.get("window");
   const scrollViewHeight = height * 0.55; // 90% of the screen height
@@ -54,7 +55,7 @@ function AddCourses({ navigation }) {
   // Handle Add Course
   const handleAdd = async () => {
     let hasError = false;
-    let newErrors = { date: "", name: "" };
+    let newErrors = { date: "", name: "" , location : ""};
 
     if (!date) {
       newErrors.date = "Date is required";
@@ -74,6 +75,7 @@ function AddCourses({ navigation }) {
     const payload = {
       date,
       name,
+      location
     };
 
     setIsLoading(true);
@@ -104,7 +106,7 @@ function AddCourses({ navigation }) {
   const clearForm = () => {
     setDate(new Date());
     setName("");
-    setErrors({ date: "", name: "" });
+    setErrors({ date: "", name: "" , location: "" });
   };
 
   // Handle Date Change
@@ -196,6 +198,27 @@ function AddCourses({ navigation }) {
               {errors.name ? (
                 <Text style={styles.errorText}>{errors.name}</Text>
               ) : null}
+            </View>
+            <View style={styles.inputContainer}>
+              <Text style={styles.label}>{t("location")}</Text>
+
+              <View
+                style={[
+                  styles.inputWrapper,
+                  errors.name ? styles.inputErrorBorder : null, // Apply red border if error exists
+                ]}
+              >
+                <TextInput
+                  style={styles.input}
+                  placeholder={t("enter_location")}
+                  value={location}
+                  onChangeText={(text) => {
+                    setLocation(text);
+                   
+                  }}
+                />
+              </View>
+            
             </View>
           </View>
           <View className="flex items-center justify-center mb-10">
