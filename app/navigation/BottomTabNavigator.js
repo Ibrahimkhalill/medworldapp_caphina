@@ -51,7 +51,7 @@ export default function NavigationBar({ state, navigation }) {
 
         return (
           <TouchableOpacity key={tab.name} onPress={onPress} style={styles.navItem}>
-            <View style={[styles.iconContainer, isFocused && styles.activeIconContainer]}>
+            <View style={[styles.iconContainer, isFocused && styles]}>
               {iconWithColor}
             </View>
           </TouchableOpacity>

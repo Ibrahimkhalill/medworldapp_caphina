@@ -129,6 +129,7 @@ function EidtSurgeries({ route, navigation }) {
         style={{ flex: 1 }}
         behavior={Platform.OS === "ios" ? "padding" : "height"}
       >
+        <Navbar navigation={navigation} navigation_Name={"UserHome"} />
         <ScrollView
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
@@ -136,7 +137,6 @@ function EidtSurgeries({ route, navigation }) {
            contentContainerStyle ={{paddingBottom: 70}}
           keyboardShouldPersistTaps="handled"
         >
-          <Navbar navigation={navigation} navigation_Name={"UserHome"} />
           <View className="flex items-center justify-center flex-row gap-3 my-3 mb-5">
           
               <Text style={styles.navButtonText}>{t("edit_surgeries")} </Text>

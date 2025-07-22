@@ -1,10 +1,10 @@
 import { StatusBar } from 'expo-status-bar';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer  } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Platform } from 'react-native';
+import { StyleSheet, Platform, Dimensions } from 'react-native';
 import WelcomeScreen from './app/screen/WelcomeScreen';
 import UserLogin from './app/screen/authentication/UserLogin';
 
@@ -43,7 +43,7 @@ import NetInfo from '@react-native-community/netinfo';
 import MainTabNavigation from './app/navigation/MainTabNavigation';
 import SurgeryDocument from './app/screen/user/SurgeryDocument';
 import NavigationBarWrapper from './app/navigation/NavigationBarWrapper';
-
+  const { height } = Dimensions.get("window");
 function UserStack() {
 	return (
 		<>
@@ -186,6 +186,7 @@ function AuthStack() {
 }
 
 function AppContent() {
+	
 	const { isLoggedIn } = useAuth();
 	console.log(isLoggedIn);
 	const [isConnected, setIsConnected] = useState(true);
@@ -221,8 +222,8 @@ export default function App() {
 		<I18nextProvider i18n={i18n}>
 			<AuthProvider>
 				<SubscriptionProvider>
-					<SafeAreaProvider>
-						<NavigationContainer>
+					<SafeAreaProvider  >
+						<NavigationContainer >
 							<AppContent />
 						</NavigationContainer>
 						<StatusBar style="dark" backgroundColor="white" />

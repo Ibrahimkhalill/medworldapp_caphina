@@ -122,13 +122,14 @@ function EditScientific({ navigation, route }) {
         style={{ flex: 1 }}
         behavior={Platform.OS === "ios" ? "padding" : "height"}
       >
+        <Navbar navigation={navigation} navigation_Name={"UserHome"} />
         <ScrollView
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
           Style={{ flexGrow: 1 }}
+          contentContainerStyle={{ flexGrow: 1, paddingBottom: height * 0.1 }}
           keyboardShouldPersistTaps="handled"
         >
-          <Navbar navigation={navigation} navigation_Name={"UserHome"} />
           <View className="flex justify-center flex-row gap-3 my-3 mb-5">
            <Text style={styles.navButtonText} className="text-xl">{t("edit_scientific")} </Text>
           </View>
@@ -318,7 +319,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     borderColor: "gray",
     paddingHorizontal: 10,
-    height: 50,
+    height: 55,
     width: "95%",
   },
   loginButton: {

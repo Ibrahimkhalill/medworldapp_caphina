@@ -10,6 +10,7 @@ import {
   ToastAndroid,
   Platform,
   KeyboardAvoidingView,
+  Dimensions
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import Navbar from "../component/Navbar";
@@ -27,7 +28,7 @@ function EditCourse({ navigation, route }) {
   const { token } = useAuth();
   const { params } = route; // Get route params for the course data
   const {t} = useTranslation()
-
+  const { height } = Dimensions.get("window");
   // Notify message utility
   function notifyMessage(msg) {
     if (Platform.OS === "android") {
@@ -118,14 +119,15 @@ function EditCourse({ navigation, route }) {
         style={{ flex: 1 }}
         behavior={Platform.OS === "ios" ? "padding" : "height"}
       >
+        <Navbar navigation={navigation} navigation_Name={"UserHome"} />
         <ScrollView
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
-          Style={{ flexGrow: 1 }}
+       
           keyboardShouldPersistTaps="handled"
           className="px-5"
+          contentContainerStyle={{ flexGrow: 1, paddingBottom: height * 0.1 }}
         >
-          <Navbar navigation={navigation} navigation_Name={"UserHome"} />
           <View className="flex justify-center flex-row gap-3 my-3 mb-5">
             <Text style={styles.navButtonText}>{t("edit_courses")} </Text>
           </View>
@@ -208,6 +210,7 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
     paddingTop: 40,
     backgroundColor: "white",
+    paddingHorizontal: 10,
   },
   container: {
     flex: 1,

@@ -13,11 +13,14 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import { useAuth } from "../authentication/Auth";
 import axiosInstance from "./axiosInstance";
 import { useTranslation } from "react-i18next";
+import ExportButtonGoogle from "./ExportButtonGoogle";
 const DownloadModal = ({
   downloadModal,
   setDownloadModal,
   generatePdf,
   exportDataToExcel,
+  excel_data,
+  title,
 }) => {
   const { t } = useTranslation();
   if (!downloadModal) {
@@ -28,8 +31,7 @@ const DownloadModal = ({
     <TouchableWithoutFeedback>
       <View
         className=" justify-center items-center absolute top-10 right-0 bg-gray-200 z-50 w-[50vw] px-4 rounded-md "
-        style={styles.shadow}
-      >
+        style={styles.shadow}>
         {/* DownloadModal */}
         <View className="flex items-center justify-center w-full">
           <TouchableOpacity
@@ -37,19 +39,18 @@ const DownloadModal = ({
             onPress={() => {
               generatePdf();
               setDownloadModal(false);
-            }}
-          >
+            }}>
             <Text className="text-[15px]">{t("export_pdf")}</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            className="py-3 w-full"
+            className="border-b py-3 w-full"
             onPress={() => {
               exportDataToExcel();
               setDownloadModal(false);
-            }}
-          >
+            }}>
             <Text className="text-[15px]">{t("export_excell")}</Text>
           </TouchableOpacity>
+          {/* <ExportButtonGoogle data={excel_data} title={title} /> */}
         </View>
       </View>
     </TouchableWithoutFeedback>

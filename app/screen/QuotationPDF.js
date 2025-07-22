@@ -16,10 +16,22 @@ const QuotationPDF = forwardRef((props, ref) => {
     return date.toISOString().split("T")[0]; // Extract only 'YYYY-MM-DD'
   };
 
+  // Function to format boolean values to 'Yes' or 'No'
+  const formatValue = (value, field) => {
+    if (field === "date") {
+      return formatDate(value); // Handle date fields
+    }
+    if (typeof value === "boolean") {
+      return value ? "Yes" : "No"; // Convert true/false to Yes/No
+    }
+    return value || ""; // Return value or empty string if null/undefined
+  };
+
   useImperativeHandle(ref, () => ({
     generateHtml: () => {
       // Add "Serial Number" header before other headers
-      const headers = `<th>Serial No.</th>` +
+      const headers =
+        `<th>Serial No.</th>` +
         fields
           .map(
             (field) =>
@@ -27,14 +39,14 @@ const QuotationPDF = forwardRef((props, ref) => {
           )
           .join("");
 
-      // Generate rows with Serial Number and formatted date
+      // Generate rows with Serial Number and formatted values
       const rows = data
         .map((row, index) => {
           return `<tr>
             <td>${index + 1}</td> <!-- Serial Number -->
             ${fields
               .map((field) => {
-                const value = field === "date" ? formatDate(row[field]) : row[field] || "";
+                const value = formatValue(row[field], field);
                 return `<td>${value}</td>`;
               })
               .join("")}

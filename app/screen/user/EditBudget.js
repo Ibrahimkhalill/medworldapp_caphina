@@ -10,6 +10,7 @@ import {
   ToastAndroid,
   Platform,
   KeyboardAvoidingView,
+  Dimensions,
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import Navbar from "../component/Navbar";
@@ -19,6 +20,7 @@ import axiosInstance from "../component/axiosInstance";
 import { useTranslation } from "react-i18next";
 
 function EditBudget({ navigation, route }) {
+  const { height } = Dimensions.get("window");
   const [date, setDate] = useState(new Date());
   const [category, setCategory] = useState("");
   const [name, setName] = useState("");
@@ -52,7 +54,7 @@ function EditBudget({ navigation, route }) {
       alert(msg);
     }
   }
-  const {t} = useTranslation()
+  const { t } = useTranslation();
 
   // Prefill data when navigating to this screen
   useEffect(() => {
@@ -157,27 +159,24 @@ function EditBudget({ navigation, route }) {
   };
 
   return (
-    <SafeAreaView style={styles.safeAreaContainer}>
+    <SafeAreaView style={styles.safeAreaContainer} className="px-5">
       <KeyboardAvoidingView
         style={{ flex: 1 }}
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-      >
+        behavior={Platform.OS === "ios" ? "padding" : "height"}>
+        <Navbar navigation={navigation} navigation_Name={"UserHome"} />
         <ScrollView
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
-          Style={{ flexGrow: 1 }}
-          keyboardShouldPersistTaps="handled"
-          className="px-5"
-        >
-          <Navbar navigation={navigation} navigation_Name={"UserHome"} />
-        <View className="flex justify-center flex-row gap-3 my-3 mb-5">
-                    <Text style={styles.navButtonText}>{t("edit_budget")} </Text>
-         </View>
+          contentContainerStyle={{ flexGrow: 1, paddingBottom: height * 0.1 }}
+          keyboardShouldPersistTaps="handled">
+          <View className="flex justify-center flex-row gap-3 my-3 mb-5">
+            <Text style={styles.navButtonText}>{t("edit_budget")} </Text>
+          </View>
           <View style={styles.container}>
             {/* Date and Category */}
             <View style={styles.inputContainerDouble}>
               <View style={styles.inputContainerFIrst}>
-                 <Text style={styles.labelFirst}>{t("date")}</Text>
+                <Text style={styles.labelFirst}>{t("date")}</Text>
                 <CustomDatePicker
                   onDateChange={handleDateChange}
                   date={date}
@@ -214,8 +213,7 @@ function EditBudget({ navigation, route }) {
                 style={[
                   styles.inputWrapper,
                   errors.name ? styles.inputErrorBorder : null,
-                ]}
-              >
+                ]}>
                 <TextInput
                   style={styles.input}
                   placeholder="Enter name"
@@ -234,7 +232,7 @@ function EditBudget({ navigation, route }) {
             {/* Fees */}
             <View className="my-5">
               <View style={styles.inputRowContainer}>
-               <Text style={styles.Rowlabel}>{t("registration_fee")}:</Text>
+                <Text style={styles.Rowlabel}>{t("registration_fee")}:</Text>
                 <View className="flex items-start flex-col w-[50%]">
                   <TextInput
                     style={[
@@ -257,7 +255,7 @@ function EditBudget({ navigation, route }) {
                 </View>
               </View>
               <View style={styles.inputRowContainer}>
-               <Text style={styles.Rowlabel}>{t("travel_fee")}:</Text>
+                <Text style={styles.Rowlabel}>{t("travel_fee")}:</Text>
                 <View className="flex items-start flex-col w-[50%]">
                   <TextInput
                     style={[
@@ -278,7 +276,7 @@ function EditBudget({ navigation, route }) {
                 </View>
               </View>
               <View style={styles.inputRowContainer}>
-                 <Text style={styles.Rowlabel}>
+                <Text style={styles.Rowlabel}>
                   {t("accommodation_expense")}:
                 </Text>
                 <View className="flex items-start flex-col w-[50%]">
@@ -305,14 +303,14 @@ function EditBudget({ navigation, route }) {
                 </View>
               </View>
               <View style={styles.inputRowContainer}>
-               <Text style={styles.Rowlabel}>{t("total_fee")}:</Text>
+                <Text style={styles.Rowlabel}>{t("total_fee")}:</Text>
                 <View className="flex items-start flex-col w-[50%]">
                   <TextInput style={styles.RowInput} value={totalFee} />
                 </View>
               </View>
             </View>
             <TouchableOpacity style={styles.loginButton} onPress={handleUpdate}>
-               <Text style={styles.loginButtonText}>{t("update")}</Text>
+              <Text style={styles.loginButtonText}>{t("update")}</Text>
             </TouchableOpacity>
 
             {/* Update Button */}
@@ -328,6 +326,7 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
     paddingTop: 40,
     backgroundColor: "white",
+    paddingHorizontal: 5,
   },
   textArea: {
     height: 80, // Adjust height as needed

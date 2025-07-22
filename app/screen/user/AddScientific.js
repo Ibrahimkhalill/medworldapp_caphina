@@ -144,32 +144,27 @@ function AddScientific({ navigation }) {
     <SafeAreaView style={styles.safeAreaContainer} className="px-5">
       <KeyboardAvoidingView
         style={{ flex: 1 }}
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-      >
+        behavior={Platform.OS === "ios" ? "padding" : "height"}>
         <Navbar navigation={navigation} navigation_Name={"UserHome"} />
         <View className="flex flex-row gap-3 my-3 mb-5">
           <TouchableOpacity
             className="py-1 border-b-4 border-[#FFDC58]"
-            onPress={() => navigation.navigate("AddScientific")}
-          >
+            onPress={() => navigation.navigate("AddScientific")}>
             <Text style={styles.navButtonText}>{t("scientific")}</Text>
           </TouchableOpacity>
           <TouchableOpacity
             className="py-1"
-            onPress={() => navigation.navigate("AddSurgeries")}
-          >
+            onPress={() => navigation.navigate("AddSurgeries")}>
             <Text style={styles.navButtonText}>{t("surgeries")}</Text>
           </TouchableOpacity>
           <TouchableOpacity
             className="py-1"
-            onPress={() => navigation.navigate("AddCourses")}
-          >
+            onPress={() => navigation.navigate("AddCourses")}>
             <Text style={styles.navButtonText}>{t("courses")}</Text>
           </TouchableOpacity>
           <TouchableOpacity
             className="py-1"
-            onPress={() => navigation.navigate("AddBudget")}
-          >
+            onPress={() => navigation.navigate("AddBudget")}>
             <Text style={styles.navButtonText}>{t("budget")}</Text>
           </TouchableOpacity>
         </View>
@@ -177,15 +172,13 @@ function AddScientific({ navigation }) {
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
           Style={{ flexGrow: 1, height: height }}
-          keyboardShouldPersistTaps="handled"
-        >
+          keyboardShouldPersistTaps="handled">
           <View style={styles.container}>
             <View
               style={[
                 styles.inputContainerDouble,
                 errors.date && styles.errorBorder,
-              ]}
-            >
+              ]}>
               <View style={styles.inputContainerFIrst}>
                 <Text style={styles.labelFirst}>{t("date")}</Text>
                 <CustomDatePicker
@@ -292,8 +285,10 @@ function AddScientific({ navigation }) {
             <View style={[styles.inputContainer]}>
               <Text style={styles.label}>{t("name")}</Text>
               <View
-                style={[styles.inputWrapper, errors.name && styles.errorBorder]}
-              >
+                style={[
+                  styles.inputWrapper,
+                  errors.name && styles.errorBorder,
+                ]}>
                 <TextInput
                   style={styles.input}
                   placeholder={t("name_placeholder")}
@@ -315,8 +310,7 @@ function AddScientific({ navigation }) {
                 style={[
                   styles.inputWrapper,
                   errors.coAuthors && styles.errorBorder,
-                ]}
-              >
+                ]}>
                 <TextInput
                   style={styles.input}
                   placeholder={t("co_author_placeholder")}
@@ -398,9 +392,7 @@ const styles = StyleSheet.create({
   },
   inputContainerDouble: {
     width: "100%",
-
     flexDirection: "row",
-
     gap: 6,
   },
   label: {
@@ -420,13 +412,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderWidth: 1,
     borderRadius: 12,
-
     paddingHorizontal: 10,
-    height: 56,
+    height: 55,
   },
   inputWrapperDouble: {
     flexDirection: "column",
-
     height: 56,
     width: "40%",
   },
@@ -441,7 +431,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderWidth: 1,
     borderRadius: 12,
-
     paddingHorizontal: 10,
     height: 56,
     width: "95%",

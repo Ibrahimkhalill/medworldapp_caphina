@@ -14,7 +14,7 @@ import { Ionicons, MaterialIcons } from "react-native-vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTranslation } from "react-i18next";
 import { WebView } from "react-native-webview";
-import Purchases from 'react-native-purchases';
+import Purchases from "react-native-purchases";
 
 import Navbar from "../component/Navbar";
 import axiosInstance from "../component/axiosInstance";
@@ -64,7 +64,7 @@ const Subscriptions = ({ navigation }) => {
   if (checkoutUrl) {
     // Render the WebView if a checkout URL is available
     return (
-      <SafeAreaView style={styles.safeArea}>
+      <SafeAreaView style={[styles.safeArea]}>
         <WebView
           source={{ uri: checkoutUrl }}
           onNavigationStateChange={handleNavigationStateChange}
@@ -77,54 +77,45 @@ const Subscriptions = ({ navigation }) => {
     );
   }
 
+  // const [premiumPackage, setPremiumPackage] = useState(null);
 
-  const [premiumPackage, setPremiumPackage] = useState(null);
+  // useEffect(() => {
+  //   const setupRevenueCat = async () => {
+  //     Purchases.configure({
+  //       apiKey: Platform.select({
+  //         ios: "appl_KUweuHaYGjDyNKcLhvtozkzFyHM",
+  //       }),
+  //     });
 
+  //     const offerings = await Purchases.getOfferings();
+  //     if (offerings.current) {
+  //       setPremiumPackage(offerings.current.availablePackages[0]); // you can choose a specific one
+  //     }
+  //   };
 
+  //   setupRevenueCat();
+  // }, []);
 
-  useEffect(() => {
-    const setupRevenueCat = async () => {
-      Purchases.configure({
-        apiKey: Platform.select({
-          ios: 'appl_KUweuHaYGjDyNKcLhvtozkzFyHM',
+  // const handlePurchase = async () => {
+  //   if (!premiumPackage) {
+  //     Alert.alert("Product not loaded");
+  //     return;
+  //   }
 
-        }),
+  //   try {
+  //     const purchaserInfo = await Purchases.purchasePackage(premiumPackage);
+  //     const isPro = purchaserInfo.entitlements.active["entl56bb5f09ad"]; // Set in RevenueCat dashboard
 
-      });
-
-      const offerings = await Purchases.getOfferings();
-      if (offerings.current) {
-        setPremiumPackage(offerings.current.availablePackages[0]); // you can choose a specific one
-      }
-    };
-
-    setupRevenueCat();
-  }, []);
-  console.log("Premium Package:", premiumPackage);
-
-  const handlePurchase = async () => {
-    if (!premiumPackage) {
-      Alert.alert("Product not loaded");
-      return;
-    }
-
-    try {
-      const purchaserInfo = await Purchases.purchasePackage(premiumPackage);
-      const isPro = purchaserInfo.entitlements.active["entl56bb5f09ad"]; // Set in RevenueCat dashboard
-
-      if (isPro) {
-        Alert.alert("Success", "You are now premium!");
-        // Optionally: Notify your Django backend
-      }
-    } catch (error) {
-      if (!error.userCancelled) {
-        Alert.alert("Error", error.message);
-      }
-    }
-  };
-
-
-
+  //     if (isPro) {
+  //       Alert.alert("Success", "You are now premium!");
+  //       // Optionally: Notify your Django backend
+  //     }
+  //   } catch (error) {
+  //     if (!error.userCancelled) {
+  //       Alert.alert("Error", error.message);
+  //     }
+  //   }
+  // };
 
   return (
     <SafeAreaView style={styles.safeArea} className="px-5">
@@ -133,8 +124,7 @@ const Subscriptions = ({ navigation }) => {
         <View className="mt-10">
           <View
             className="border border-[#FCE488] flex  py-3"
-            style={styles.shadow}
-          >
+            style={styles.shadow}>
             <View className="flex items-center justify-center my-5">
               <Text className="text-[20px] text-center border-b border-[#FCE488] pb-2 w-[185px]">
                 {t("pro_plan")}
@@ -169,9 +159,8 @@ const Subscriptions = ({ navigation }) => {
             </View>
             <TouchableOpacity
               style={styles.sentButton}
-              onPress={handlePurchase}
-              disabled={loading}
-            >
+              onPress={createCheckoutSession}
+              disabled={loading}>
               <MaterialIcons name="euro" size={24} color="white" />
               <Text style={styles.sentButtonText}>{t("price")}</Text>
             </TouchableOpacity>

@@ -19,8 +19,6 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import Feather from "react-native-vector-icons/Feather";
 import AntDesign from "react-native-vector-icons/AntDesign";
 
-
-
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useFocusEffect } from "@react-navigation/native";
 import axiosInstance from "../component/axiosInstance";
@@ -162,18 +160,18 @@ function ScientificDcoument({ navigation }) {
     }
   };
 
-  const genarateExcell = () => {
-    const excel_data = data.map((item, index) => ({
-      "Serial No": index + 1,
-      "Types Of Works": item.types_works,
-      International: item.international,
-      National: item.national,
-      Role: item.role,
-      Name: item.name,
-      "Co Author Names": item.co_author_names,
-      Date: item.date.split("T")[0], // Splitting the date to only get the YYYY-MM-DD part
-    }));
+  const excel_data = data.map((item, index) => ({
+    "Serial No": index + 1,
+    "Types Of Works": item.types_works,
+    International: item.international,
+    National: item.national,
+    Role: item.role,
+    Name: item.name,
+    "Co Author Names": item.co_author_names,
+    Date: item.date.split("T")[0], // Splitting the date to only get the YYYY-MM-DD part
+  }));
 
+  const genarateExcell = () => {
     const title = "Scientific";
     exportDataToExcel(excel_data, title);
   };
@@ -283,7 +281,11 @@ function ScientificDcoument({ navigation }) {
     );
   }
   return (
-    <TouchableWithoutFeedback onPress={() => setDownloadModal(false)}>
+    <TouchableWithoutFeedback
+      onPress={() => {
+        setDownloadModal(false);
+        setIsVisible(false);
+      }}>
       <SafeAreaView style={styles.safeArea} className="px-5">
         <View className="flex items-center justify-between flex-row w-full">
           <Image
@@ -303,26 +305,22 @@ function ScientificDcoument({ navigation }) {
         <View className="flex flex-row gap-3 my-1 ">
           <TouchableOpacity
             className="border-b-4 border-[#FFDC58] py-1"
-            onPress={() => navigation.navigate("ScientificDcoument")}
-          >
+            onPress={() => navigation.navigate("ScientificDcoument")}>
             <Text style={styles.navButtonText}>{t("scientific")}</Text>
           </TouchableOpacity>
           <TouchableOpacity
             className="  py-1"
-            onPress={() => navigation.navigate("SurgergeryDcoument")}
-          >
+            onPress={() => navigation.navigate("SurgergeryDcoument")}>
             <Text style={styles.navButtonText}>{t("surgeries")}</Text>
           </TouchableOpacity>
           <TouchableOpacity
             className=" py-1 "
-            onPress={() => navigation.navigate("CoursesDocument")}
-          >
+            onPress={() => navigation.navigate("CoursesDocument")}>
             <Text style={styles.navButtonText}>{t("courses")}</Text>
           </TouchableOpacity>
           <TouchableOpacity
             className=" py-1"
-            onPress={() => navigation.navigate("BudgetDcoument")}
-          >
+            onPress={() => navigation.navigate("BudgetDcoument")}>
             <Text style={styles.navButtonText}>{t("budget")}</Text>
           </TouchableOpacity>
         </View>
@@ -342,6 +340,8 @@ function ScientificDcoument({ navigation }) {
               setDownloadModal={setDownloadModal}
               generatePdf={generatePdf}
               exportDataToExcel={genarateExcell}
+              excel_data={excel_data}
+              title={"Scientific Report"}
             />
           </View>
         )}
@@ -349,20 +349,17 @@ function ScientificDcoument({ navigation }) {
           contentContainerStyle={{ flexGrow: 1 }}
           showsVerticalScrollIndicator={false}
           style={{ height: scrollViewHeight }}
-          onScroll={() => setDownloadModal(false)}
-        >
+          onScroll={() => setDownloadModal(false)}>
           <View className="mt-1 flex" onStartShouldSetResponder={() => true}>
             <Pressable onPress={() => setDownloadModal(false)}>
               {data.length > 0 ? (
                 data.map((item, index) => (
                   <View
                     className="flex flex-row items-center justify-between border-b border-[#AEAEAE] pb-2 my-2"
-                    key={index}
-                  >
+                    key={index}>
                     <TouchableOpacity
                       className="flex flex-row gap-3 items-center"
-                      onPress={() => handleNavigation(item)}
-                    >
+                      onPress={() => handleNavigation(item)}>
                       <Ionicons name="folder" size={40} color="#FFDC58" />
                       <View className="flex ">
                         <Text className="text-[14px] mb-1">
@@ -374,8 +371,7 @@ function ScientificDcoument({ navigation }) {
 
                     <TouchableOpacity
                       className="flex flex-row gap-3 items-start"
-                      onPress={() => confirmDelete(item)}
-                    >
+                      onPress={() => confirmDelete(item)}>
                       <AntDesign name="delete" size={20} color="#E91111" />
                     </TouchableOpacity>
                   </View>
@@ -396,7 +392,6 @@ function ScientificDcoument({ navigation }) {
           setData={setData}
           value={"types_works"}
         />
-    
       </SafeAreaView>
     </TouchableWithoutFeedback>
   );

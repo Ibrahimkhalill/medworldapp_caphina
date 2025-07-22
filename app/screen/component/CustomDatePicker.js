@@ -32,11 +32,10 @@ const CustomDatePicker = ({ onDateChange, date, setDate }) => {
   const formattedDate = date ? moment(date).format("DD/MM/YYYY") : "";
 
   return (
-    <View >
+    <View>
       <TouchableOpacity
         style={styles.datePickerContainer}
-        onPress={() => setShowPicker(true)}
-      >
+        onPress={() => setShowPicker(true)}>
         <Ionicons name="calendar" size={20} color="gray" />
         <TextInput
           style={[styles.dateTextInput, { color: date ? "#333" : "#bbb" }]}
@@ -45,7 +44,6 @@ const CustomDatePicker = ({ onDateChange, date, setDate }) => {
           value={formattedDate}
           editable={false}
           pointerEvents="none"
-          
         />
       </TouchableOpacity>
 
@@ -65,7 +63,10 @@ const CustomDatePicker = ({ onDateChange, date, setDate }) => {
           )}
 
           {Platform.OS === "ios" && (
-            <Modal transparent={true} animationType="slide" visible={showPicker}>
+            <Modal
+              transparent={true}
+              animationType="slide"
+              visible={showPicker}>
               <View style={styles.modalContainer}>
                 <View style={styles.iosPickerContainer}>
                   <DateTimePicker
@@ -77,8 +78,7 @@ const CustomDatePicker = ({ onDateChange, date, setDate }) => {
                   />
                   <TouchableOpacity
                     style={styles.closeButton}
-                    onPress={closeModal}
-                  >
+                    onPress={closeModal}>
                     <Text style={styles.closeButtonText}>Done</Text>
                   </TouchableOpacity>
                 </View>
@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     borderWidth: 1,
-    borderColor: "gray",
+
     borderRadius: 8,
     paddingHorizontal: 10,
     height: 55,
@@ -107,7 +107,6 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     fontSize: 16,
     color: "#333",
-    
   },
   modalContainer: {
     flex: 1,
