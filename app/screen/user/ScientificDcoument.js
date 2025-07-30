@@ -362,9 +362,7 @@ function ScientificDcoument({ navigation }) {
                       onPress={() => handleNavigation(item)}>
                       <Ionicons name="folder" size={40} color="#FFDC58" />
                       <View className="flex ">
-                        <Text className="text-[14px] mb-1">
-                          {item.types_works}
-                        </Text>
+                        <Text className="text-[14px] mb-1">{item.name}</Text>
                         <DateDisplay dateString={item.date} />
                       </View>
                     </TouchableOpacity>
