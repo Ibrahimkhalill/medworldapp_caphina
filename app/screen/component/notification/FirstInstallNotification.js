@@ -14,18 +14,18 @@ export default function FirstInstallNotification() {
   const [modalVisible, setModalVisible] = useState(false);
   const { t } = useTranslation();
 
-  useEffect(() => {
-    async function checkFirstLaunch() {
-      const hasShown = await AsyncStorage.getItem(
-        "firstInstallNotificationShown"
-      );
-      if (!hasShown) {
-        setModalVisible(true);
-        await AsyncStorage.setItem("firstInstallNotificationShown", "true");
-      }
-    }
-    checkFirstLaunch();
-  }, []);
+  // useEffect(() => {
+  //   async function checkFirstLaunch() {
+  //     const hasShown = await AsyncStorage.getItem(
+  //       "firstInstallNotificationShown"
+  //     );
+  //     if (!hasShown) {
+  //       setModalVisible(true);
+  //       await AsyncStorage.setItem("firstInstallNotificationShown", "true");
+  //     }
+  //   }
+  //   checkFirstLaunch();
+  // }, []);
 
   return (
     <Modal
@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   closeButtonText: {
-    color: "#00",
+    color: "#000",
     fontWeight: "600",
     textAlign: "center",
     fontSize: 16,
