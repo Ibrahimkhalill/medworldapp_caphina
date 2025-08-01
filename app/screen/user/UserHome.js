@@ -23,7 +23,7 @@ import { useFocusEffect } from "@react-navigation/native";
 import NotificationButton from "../component/NotificationButton";
 import { useTranslation } from "react-i18next";
 import { useSubscription } from "../component/SubscriptionContext";
-// import FirstInstallNotification from "../component/notification/FirstInstallNotification";
+import FirstInstallNotification from "../component/notification/FirstInstallNotification";
 
 function UserHome({ navigation }) {
   const { t } = useTranslation();
@@ -281,7 +281,7 @@ function UserHome({ navigation }) {
         navigation={navigation}
         existingSurgeryNames={surgeryData}
       />
-      {/* <FirstInstallNotification /> */}
+      <FirstInstallNotification />
     </SafeAreaView>
   );
 }
