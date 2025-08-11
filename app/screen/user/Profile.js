@@ -213,6 +213,12 @@ function Profile({ navigation }) {
     );
   }
 
+  const handleNavigate = () => {
+    if (!subscription.is_active) {
+      navigation.navigate("Subscriptions");
+    }
+  };
+
   return (
     <SafeAreaView style={styles.safeAreaContainer} className="px-5">
       <StatusBar style="dark" backgroundColor="white" />
@@ -273,11 +279,7 @@ function Profile({ navigation }) {
                     {userData.username}
                   </Text>
                   <TouchableOpacity
-                    onPress={() =>
-                      navigation.navigate(
-                        subscription?.is_active ? "" : "Subscriptions"
-                      )
-                    }
+                    onPress={() => handleNavigate()}
                     className="bg-[#FCE488] w-[166px] h-[37px] rounded-[400px] flex items-center justify-center flex-row">
                     {subscription?.is_active && (
                       <Image
