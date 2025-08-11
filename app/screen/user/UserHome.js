@@ -112,6 +112,8 @@ function UserHome({ navigation }) {
     }
   };
 
+  console.log("subscription", subscription);
+
   const handleNavigation = (screenName) => {
     if (!subscription) {
       Alert.alert(
@@ -172,23 +174,28 @@ function UserHome({ navigation }) {
   return (
     <SafeAreaView style={styles.safeArea} className="px-5">
       <View className="flex items-center justify-between flex-row w-full ">
-        <Image
-          className="w-[64px] h-[54px]"
-          source={require("../../assets/MEDLOGO.png")}
-        />
+        {/* Logo clickable */}
+        <TouchableOpacity onPress={() => navigation.navigate("UserHome")}>
+          <Image
+            className="w-[80px] h-[80px]" // size increased
+            resizeMode="contain" // keep aspect ratio
+            source={require("../../assets/MEDLOGO.png")}
+          />
+        </TouchableOpacity>
+
         <NotificationButton navigation={navigation} />
       </View>
       <ScrollView
         contentContainerStyle={{ flexGrow: 1, paddingBottom: height * 0.2 }}
         showsVerticalScrollIndicator={false}>
-        <View className="mt-1 flex">
+        <View className="flex" style={{ marginTop: -5 }}>
           {!subscription?.is_active && (
             <View className="flex items-center justify-center ">
               <TouchableOpacity
                 style={styles.shadow}
-                className="border border-[#FFDC58] px-2 rounded-[5px] flex items-center justify-center"
+                className="border border-[#FFDC58] px-2 py-2 rounded-[5px] flex items-center justify-center"
                 onPress={() => navigation.navigate("Subscriptions")}>
-                <Text className="text-[#9f8424] text-[16px]">
+                <Text className="text-[#9f8424] text-[14px]">
                   {t("get_a_plan")}
                 </Text>
               </TouchableOpacity>
@@ -218,7 +225,7 @@ function UserHome({ navigation }) {
             </ImageBackground>
           </View>
 
-          <View className="flex flex-row mt-7">
+          <View className="flex flex-row mt-10">
             <View
               style={styles.shadow}
               className="w-[47%] min-h-[67px] flex justify-between">
@@ -237,7 +244,7 @@ function UserHome({ navigation }) {
             </View>
           </View>
 
-          <View className="mt-5 mb-10 flex items-center">
+          <View className="mt-10 mb-10 flex items-center">
             <View style={styles.circle}>
               <TouchableOpacity
                 style={[styles.quadrant, styles.topLeft]}
@@ -323,10 +330,10 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   circle: {
-    width: 205,
-    height: 204,
-    borderRadius: 100,
-    backgroundColor: "#ffff",
+    width: 240,
+    height: 238,
+    borderRadius: 120, // half of width/height
+    backgroundColor: "#fff",
     justifyContent: "center",
     alignItems: "center",
     position: "relative",
@@ -367,7 +374,7 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 100,
   },
   text: {
-    fontSize: 11,
+    fontSize: 12,
     color: "black",
     fontWeight: "bold",
   },

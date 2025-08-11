@@ -175,7 +175,7 @@ function BudgetDcoument({ navigation }) {
     const title = "Budget";
     exportDataToExcel(excel_data, title);
   };
-  fields = [
+  const fields = [
     "category",
     "name",
     "registration_fee",
@@ -283,10 +283,13 @@ function BudgetDcoument({ navigation }) {
     <TouchableWithoutFeedback onPress={() => setDownloadModal(false)}>
       <SafeAreaView style={styles.safeArea} className="px-5">
         <View className="flex items-center justify-between flex-row w-full ">
-          <Image
-            className="w-[64px] h-[54px]"
-            source={require("../../assets/MEDLOGO.png")}
-          />
+          <TouchableOpacity onPress={() => navigation.navigate("UserHome")}>
+            <Image
+              className="w-[80px] h-[80px]" // size increased
+              resizeMode="contain" // keep aspect ratio
+              source={require("../../assets/MEDLOGO.png")}
+            />
+          </TouchableOpacity>
           <View className="flex flex-row  items-center">
             <TouchableOpacity onPress={() => setIsVisible(true)}>
               <Ionicons name="search-outline" size={25} color="black" />
@@ -300,26 +303,22 @@ function BudgetDcoument({ navigation }) {
         <View className="flex flex-row gap-3 my-1 ">
           <TouchableOpacity
             className=" py-1"
-            onPress={() => navigation.navigate("ScientificDcoument")}
-          >
+            onPress={() => navigation.navigate("ScientificDcoument")}>
             <Text style={styles.navButtonText}>{t("scientific")}</Text>
           </TouchableOpacity>
           <TouchableOpacity
             className="  py-1"
-            onPress={() => navigation.navigate("SurgergeryDcoument")}
-          >
+            onPress={() => navigation.navigate("SurgergeryDcoument")}>
             <Text style={styles.navButtonText}>{t("surgeries")}</Text>
           </TouchableOpacity>
           <TouchableOpacity
             className=" py-1 "
-            onPress={() => navigation.navigate("CoursesDocument")}
-          >
+            onPress={() => navigation.navigate("CoursesDocument")}>
             <Text style={styles.navButtonText}>{t("courses")}</Text>
           </TouchableOpacity>
           <TouchableOpacity
             className="border-b-4 border-[#FFDC58] py-1"
-            onPress={() => navigation.navigate("BudgetDcoument")}
-          >
+            onPress={() => navigation.navigate("BudgetDcoument")}>
             <Text style={styles.navButtonText}>{t("budget")}</Text>
           </TouchableOpacity>
         </View>
@@ -345,20 +344,17 @@ function BudgetDcoument({ navigation }) {
         <ScrollView
           contentContainerStyle={{ flexGrow: 1 }}
           showsVerticalScrollIndicator={false}
-          style={{ height: scrollViewHeight }}
-        >
+          style={{ height: scrollViewHeight }}>
           <View className="mt-1 flex" onStartShouldSetResponder={() => true}>
             <Pressable onPress={() => setDownloadModal(false)}>
               {data.length > 0 ? (
                 data.map((item, index) => (
                   <View
                     className="flex flex-row items-center justify-between border-b border-[#AEAEAE] pb-2 my-2"
-                    key={index}
-                  >
+                    key={index}>
                     <TouchableOpacity
                       className="flex flex-row gap-3 items-center"
-                      onPress={() => handleNavigation(item)}
-                    >
+                      onPress={() => handleNavigation(item)}>
                       <Ionicons name="folder" size={40} color="#FFDC58" />
                       <View className="flex ">
                         <Text className="text-[14px] mb-1">
@@ -370,8 +366,7 @@ function BudgetDcoument({ navigation }) {
 
                     <TouchableOpacity
                       className="flex flex-row gap-3 items-start"
-                      onPress={() => confirmDelete(item)}
-                    >
+                      onPress={() => confirmDelete(item)}>
                       <AntDesign name="delete" size={20} color="#E91111" />
                     </TouchableOpacity>
                   </View>
@@ -392,7 +387,6 @@ function BudgetDcoument({ navigation }) {
           setData={setData}
           value={"category"}
         />
-        
       </SafeAreaView>
     </TouchableWithoutFeedback>
   );
@@ -418,7 +412,8 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
   },
   navButtonText: {
-    fontWeight: "500",
+    fontWeight: "700",
+    fontSize: 14,
   },
   container: {
     flexDirection: "row",

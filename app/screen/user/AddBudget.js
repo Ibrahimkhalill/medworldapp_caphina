@@ -24,13 +24,14 @@ import { useFocusEffect } from "@react-navigation/native";
 import {
   SafeAreaView,
   useSafeAreaInsets,
-} from "react-native-safe-area-context"; // SafeAreaView from safe-area-context
+} from "react-native-safe-area-context";
 
 import Navbar from "../component/Navbar";
 import CustomDatePicker from "../component/CustomDatePicker";
 import { useAuth } from "../authentication/Auth";
 import axiosInstance from "../component/axiosInstance";
 import { useTranslation } from "react-i18next";
+
 function AddBudget({ navigation }) {
   const [date, setDate] = useState(new Date());
   const [category, setCategory] = useState("");
@@ -39,10 +40,11 @@ function AddBudget({ navigation }) {
   const [travelFee, setTravelFee] = useState("");
   const [accommodationExpense, setAccommodationExpense] = useState("");
   const [totalFee, setTotalFee] = useState("");
+  const [location, setLocation] = useState(""); // <-- Location state added
   const { token } = useAuth();
   const { t } = useTranslation();
   const { height } = Dimensions.get("window");
-  const scrollViewHeight = height * 0.55; // 90% of the screen height
+  const scrollViewHeight = height * 0.55; // 55% of the screen height
 
   const [errors, setErrors] = useState({
     date: "",
@@ -51,6 +53,7 @@ function AddBudget({ navigation }) {
     registrationFee: "",
     travelFee: "",
     accommodationExpense: "",
+    location: "", // <-- error for location
   });
 
   // Notify message utility
@@ -86,6 +89,7 @@ function AddBudget({ navigation }) {
       registrationFee: "",
       travelFee: "",
       accommodationExpense: "",
+      location: "",
     };
 
     if (!date) {
@@ -125,6 +129,7 @@ function AddBudget({ navigation }) {
       travel_fee: travelFee,
       accommodation_expense: accommodationExpense,
       total_fee: totalFee,
+      location, // <-- included location here
     };
 
     try {
@@ -155,13 +160,16 @@ function AddBudget({ navigation }) {
     setRegistrationFee("");
     setTravelFee("");
     setAccommodationExpense("");
+    setLocation(""); // <-- clear location on form reset
     setErrors({});
   };
+
   useFocusEffect(
     React.useCallback(() => {
       clearForm();
     }, [])
   );
+
   // Handle Date Change
   const handleDateChange = (selectedDate) => {
     setDate(selectedDate);
@@ -172,42 +180,37 @@ function AddBudget({ navigation }) {
     <SafeAreaView style={styles.safeAreaContainer} className="px-5">
       <KeyboardAvoidingView
         style={{ flex: 1 }}
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-      >
+        behavior={Platform.OS === "ios" ? "padding" : "height"}>
         <Navbar navigation={navigation} navigation_Name={"UserHome"} />
         <View className="flex flex-row gap-3 my-3 mb-5">
           <TouchableOpacity
             style={styles.navButton}
-            onPress={() => navigation.navigate("AddScientific")}
-          >
+            onPress={() => navigation.navigate("AddScientific")}>
             <Text style={styles.navButtonText}>{t("scientific")}</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.navButton}
-            onPress={() => navigation.navigate("AddSurgeries")}
-          >
+            onPress={() => navigation.navigate("AddSurgeries")}>
             <Text style={styles.navButtonText}>{t("surgeries")}</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={[styles.navButton, styles.activeNavButton]}
-            onPress={() => navigation.navigate("AddCourses")}
-          >
+            onPress={() => navigation.navigate("AddCourses")}>
             <Text style={styles.navButtonText}>{t("courses")}</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.navButton}
             onPress={() => navigation.navigate("AddBudget")}
-            className="border-b-4 border-[#FFDC58] pb-1"
-          >
+            className="border-b-4 border-[#FFDC58] pb-1">
             <Text style={styles.navButtonText}>{t("budget")}</Text>
           </TouchableOpacity>
         </View>
         <ScrollView
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
-          Style={{ flexGrow: 1, height: scrollViewHeight }}
-          keyboardShouldPersistTaps="handled"
-        >
+          Style={{ flexGrow: 1 }}
+          contentContainerStyle={{ paddingBottom: 70 }}
+          keyboardShouldPersistTaps="handled">
           <View style={styles.container}>
             {/* Date and Category */}
             <View style={styles.inputContainerDouble}>
@@ -249,8 +252,7 @@ function AddBudget({ navigation }) {
                 style={[
                   styles.inputWrapper,
                   errors.name ? styles.inputErrorBorder : null,
-                ]}
-              >
+                ]}>
                 <TextInput
                   style={styles.input}
                   placeholder={t("enter_name")}
@@ -263,6 +265,29 @@ function AddBudget({ navigation }) {
               </View>
               {errors.name ? (
                 <Text style={styles.errorText}>{errors.name}</Text>
+              ) : null}
+            </View>
+
+            {/* Location */}
+            <View style={styles.inputContainer}>
+              <Text style={styles.label}>{t("location") || "Localização"}</Text>
+              <View
+                style={[
+                  styles.inputWrapper,
+                  errors.location ? styles.inputErrorBorder : null,
+                ]}>
+                <TextInput
+                  style={styles.input}
+                  placeholder={t("enter_location") || "Digite a Localização"}
+                  value={location}
+                  onChangeText={(text) => {
+                    setLocation(text);
+                    setErrors({ ...errors, location: "" });
+                  }}
+                />
+              </View>
+              {errors.location ? (
+                <Text style={styles.errorText}>{errors.location}</Text>
               ) : null}
             </View>
 
@@ -357,6 +382,7 @@ function AddBudget({ navigation }) {
     </SafeAreaView>
   );
 }
+
 const styles = StyleSheet.create({
   safeAreaContainer: {
     flexGrow: 1,
@@ -368,7 +394,7 @@ const styles = StyleSheet.create({
     borderColor: "gray",
     borderWidth: 1,
     padding: 10,
-    textAlignVertical: "top", // Ensures text starts at the top of the TextInput
+    textAlignVertical: "top",
     borderRadius: 12,
   },
   container: {
@@ -376,23 +402,21 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#fff",
-
     paddingBottom: 10,
   },
   imageContainer: {
     marginBottom: 30,
   },
   image: {
-    width: 100, // width of the image
-    height: 80, // height of the image
+    width: 100,
+    height: 80,
   },
   Profileimage: {
-    width: 120, // width of the image
-    height: 120, // height of the image
-    borderRadius: 60, // half of width or height for circular shape
-    overflow: "hidden", // ensures content stays within the circle
+    width: 120,
+    height: 120,
+    borderRadius: 60,
+    overflow: "hidden",
   },
-
   inputContainer: {
     width: "100%",
     marginBottom: 15,
@@ -420,9 +444,7 @@ const styles = StyleSheet.create({
   },
   inputContainerDouble: {
     width: "100%",
-
     flexDirection: "row",
-
     gap: 6,
   },
   label: {
@@ -455,7 +477,6 @@ const styles = StyleSheet.create({
   },
   inputWrapperDouble: {
     flexDirection: "column",
-
     height: 56,
     width: "40%",
   },
@@ -477,7 +498,7 @@ const styles = StyleSheet.create({
   },
   loginButton: {
     height: 39,
-    backgroundColor: "#FFDC58", // Button color
+    backgroundColor: "#FFDC58",
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 5,

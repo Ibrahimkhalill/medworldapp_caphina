@@ -4,14 +4,17 @@ import {
   Text,
   Modal,
   TouchableOpacity,
-  TextInput,
   StyleSheet,
+  Alert,
 } from "react-native";
 import * as Animatable from "react-native-animatable";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { useAuth } from "../authentication/Auth";
 import axiosInstance from "./axiosInstance";
+import { useTranslation } from "react-i18next";
+
 const DeleteModal = ({ isVisible, setIsVisible, navigation }) => {
+  const { t } = useTranslation();
+
   const closeDeleteModal = () => {
     setIsVisible(false);
   };
@@ -28,63 +31,56 @@ const DeleteModal = ({ isVisible, setIsVisible, navigation }) => {
           },
         }
       );
-      console.log(response);
 
       if (response.status === 200) {
-        Alert.alert("Success", "Account deleted successfully.");
+        Alert.alert(t("success"), t("account_deleted_successfully"));
         logout();
         navigation.navigate("UserLogin");
       }
     } catch (error) {
-      console.error("Error deleting surgery:", error);
-      Alert.alert("Error", "Could not delete surgery. Please try again later.");
+      console.error("Error deleting account:", error);
+      Alert.alert(t("error"), t("could_not_delete_account"));
     }
   };
+
   return (
-    <View className=" justify-center items-center ">
-      {/* DeleteModal */}
+    <View className="justify-center items-center">
       <Modal
         animationType="fade"
         transparent={true}
         visible={isVisible}
-        onRequestClose={closeDeleteModal}
-      >
+        onRequestClose={closeDeleteModal}>
         <View className="flex-1 justify-center items-center bg-black/50">
-          {/* Animated DeleteModal */}
           <Animatable.View
             animation="zoomIn"
-            duration={500} // Animation duration (milliseconds)
-            easing="ease-out" // Optional easing
-            style={styles.container}
-          >
-            <Text style={styles.header}>Delete</Text>
+            duration={500}
+            easing="ease-out"
+            style={styles.container}>
+            <Text style={styles.header}>{t("delete")}</Text>
             <View style={{ marginTop: 20 }}>
               <Text style={styles.second_text}>
-                Do you want to delete your account ??
+                {t("delete_confirmation_line1")}
               </Text>
               <Text style={styles.second_text}>
-                It will permanently delete your al user data.
+                {t("delete_confirmation_line2")}
               </Text>
             </View>
 
             <TouchableOpacity
               onPress={handleDelete}
-              style={styles.button_first}
-            >
+              style={styles.button_first}>
               <Text
-                style={{ fontSize: 16, textAlign: "center", color: "#ffff" }}
-              >
-                DELETE
+                style={{ fontSize: 16, textAlign: "center", color: "#fff" }}>
+                {t("delete_button")}
               </Text>
             </TouchableOpacity>
+
             <TouchableOpacity
               onPress={closeDeleteModal}
-              style={styles.button_second}
-            >
+              style={styles.button_second}>
               <Text
-                style={{ fontSize: 16, textAlign: "center", color: "#00000" }}
-              >
-                CANCEL
+                style={{ fontSize: 16, textAlign: "center", color: "#000" }}>
+                {t("cancel_button")}
               </Text>
             </TouchableOpacity>
           </Animatable.View>
@@ -93,13 +89,14 @@ const DeleteModal = ({ isVisible, setIsVisible, navigation }) => {
     </View>
   );
 };
+
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "white", // bg-white
-    width: "90%", // w-[90%]
-    height: 260, // h-[200px]
-    padding: 20, // p-5 (padding 5 usually equals 20px)
-    borderRadius: 8, // rounded-lg (large border radius)
+    backgroundColor: "white",
+    width: "90%",
+    height: 260,
+    padding: 20,
+    borderRadius: 8,
   },
   header: {
     fontSize: 20,
@@ -112,16 +109,14 @@ const styles = StyleSheet.create({
   button_first: {
     backgroundColor: "#FF3B30",
     height: 48,
-    display: "flex",
     alignItems: "center",
     justifyContent: "center",
     marginTop: 15,
     borderRadius: 20,
   },
   button_second: {
-    backgroundColor: "#ffff",
+    backgroundColor: "#fff",
     height: 48,
-    display: "flex",
     alignItems: "center",
     justifyContent: "center",
     marginTop: 15,
@@ -130,4 +125,5 @@ const styles = StyleSheet.create({
     borderColor: "#FFDC58",
   },
 });
+
 export default DeleteModal;

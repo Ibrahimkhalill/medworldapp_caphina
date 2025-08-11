@@ -12,7 +12,6 @@ import {
   KeyboardAvoidingView,
   Dimensions,
 } from "react-native";
-import { StatusBar } from "expo-status-bar";
 import Navbar from "../component/Navbar";
 import CustomDatePicker from "../component/CustomDatePicker";
 import { useAuth } from "../authentication/Auth";
@@ -21,14 +20,17 @@ import { useTranslation } from "react-i18next";
 
 function EditBudget({ navigation, route }) {
   const { height } = Dimensions.get("window");
+
   const [date, setDate] = useState(new Date());
   const [category, setCategory] = useState("");
   const [name, setName] = useState("");
+  const [location, setLocation] = useState(""); // <-- added location state
   const [registrationFee, setRegistrationFee] = useState("");
   const [travelFee, setTravelFee] = useState("");
   const [accommodationExpense, setAccommodationExpense] = useState("");
   const [totalFee, setTotalFee] = useState("");
   const { token } = useAuth();
+
   const [errors, setErrors] = useState({
     date: "",
     category: "",
@@ -38,7 +40,7 @@ function EditBudget({ navigation, route }) {
     accommodationExpense: "",
   });
 
-  const { params } = route; // Retrieve passed parameters for budget data
+  const { params } = route; // passed budget data
 
   // Notify message utility
   function notifyMessage(msg) {
@@ -54,15 +56,17 @@ function EditBudget({ navigation, route }) {
       alert(msg);
     }
   }
+
   const { t } = useTranslation();
 
-  // Prefill data when navigating to this screen
+  // Prefill data when screen loads
   useEffect(() => {
     if (params && params.budget) {
       const budget = params.budget;
       setDate(new Date(budget.date));
       setCategory(budget.category);
       setName(budget.name);
+      setLocation(budget.location || ""); // <-- prefill location
       setRegistrationFee(String(budget.registration_fee || ""));
       setTravelFee(String(budget.travel_fee || ""));
       setAccommodationExpense(String(budget.accommodation_expense || ""));
@@ -75,7 +79,7 @@ function EditBudget({ navigation, route }) {
     const regFee = parseFloat(registrationFee) || 0;
     const travFee = parseFloat(travelFee) || 0;
     const accomExp = parseFloat(accommodationExpense) || 0;
-    setTotalFee((regFee + travFee + accomExp).toFixed(2)); // Keep total to 2 decimal places
+    setTotalFee((regFee + travFee + accomExp).toFixed(2));
   }, [registrationFee, travelFee, accommodationExpense]);
 
   // Handle form submission
@@ -91,38 +95,42 @@ function EditBudget({ navigation, route }) {
     };
 
     if (!date) {
-      newErrors.date = "Date is required";
+      newErrors.date = t("date_required") || "Date is required";
       hasError = true;
     }
     if (!category) {
-      newErrors.category = "Category is required";
+      newErrors.category = t("category_required") || "Category is required";
       hasError = true;
     }
     if (!name) {
-      newErrors.name = "Name is required";
+      newErrors.name = t("name_required") || "Name is required";
       hasError = true;
     }
     if (!registrationFee) {
-      newErrors.registrationFee = "Registration fee is required";
+      newErrors.registrationFee =
+        t("registration_fee_required") || "Registration fee is required";
       hasError = true;
     }
     if (!travelFee) {
-      newErrors.travelFee = "Travel fee is required";
+      newErrors.travelFee =
+        t("travel_fee_required") || "Travel fee is required";
       hasError = true;
     }
     if (!accommodationExpense) {
-      newErrors.accommodationExpense = "Accommodation expense is required";
+      newErrors.accommodationExpense =
+        t("accommodation_expense_required") ||
+        "Accommodation expense is required";
       hasError = true;
     }
 
     setErrors(newErrors);
-
     if (hasError) return;
 
     const payload = {
       date,
       category,
       name,
+      location, // <-- include location (optional)
       registration_fee: registrationFee,
       travel_fee: travelFee,
       accommodation_expense: accommodationExpense,
@@ -131,31 +139,34 @@ function EditBudget({ navigation, route }) {
 
     try {
       const response = await axiosInstance.put(
-        `/budgets/${params.budget.id}/`, // Use PUT method to update the budget
+        `/budgets/${params.budget.id}/`,
         payload,
         {
           headers: {
-            Authorization: `Token ${token}`, // Include token for authorization
+            Authorization: `Token ${token}`,
           },
         }
       );
 
       if (response.status === 200) {
-        notifyMessage("Budget updated successfully!");
-        navigation.goBack(); // Navigate back to the previous screen
+        notifyMessage(
+          t("budget_updated_success") || "Budget updated successfully!"
+        );
+        navigation.goBack();
       } else {
-        notifyMessage("Failed to update budget.");
+        notifyMessage(t("budget_update_failed") || "Failed to update budget.");
       }
     } catch (error) {
       console.error("Error updating budget:", error);
-      notifyMessage("An error occurred. Please try again.");
+      notifyMessage(
+        t("error_generic") || "An error occurred. Please try again."
+      );
     }
   };
 
-  // Handle Date Change
   const handleDateChange = (selectedDate) => {
     setDate(selectedDate);
-    setErrors({ ...errors, date: "" }); // Clear error when value changes
+    setErrors({ ...errors, date: "" });
   };
 
   return (
@@ -170,8 +181,9 @@ function EditBudget({ navigation, route }) {
           contentContainerStyle={{ flexGrow: 1, paddingBottom: height * 0.1 }}
           keyboardShouldPersistTaps="handled">
           <View className="flex justify-center flex-row gap-3 my-3 mb-5">
-            <Text style={styles.navButtonText}>{t("edit_budget")} </Text>
+            <Text style={styles.navButtonText}>{t("edit_budget")}</Text>
           </View>
+
           <View style={styles.container}>
             {/* Date and Category */}
             <View style={styles.inputContainerDouble}>
@@ -186,6 +198,7 @@ function EditBudget({ navigation, route }) {
                   <Text style={styles.errorText}>{errors.date}</Text>
                 ) : null}
               </View>
+
               <View style={styles.inputContainerFIrst}>
                 <Text style={styles.labelFirst}>{t("category")}</Text>
                 <TextInput
@@ -229,11 +242,24 @@ function EditBudget({ navigation, route }) {
               ) : null}
             </View>
 
+            {/* Location (optional) */}
+            <View style={styles.inputContainer}>
+              <Text style={styles.label}>{t("location") || "Location"}</Text>
+              <View style={styles.inputWrapper}>
+                <TextInput
+                  style={styles.input}
+                  placeholder={t("enter_location") || "Enter location"}
+                  value={location}
+                  onChangeText={(text) => setLocation(text)}
+                />
+              </View>
+            </View>
+
             {/* Fees */}
-            <View className="my-5">
+            <View style={{ marginVertical: 20 }}>
               <View style={styles.inputRowContainer}>
                 <Text style={styles.Rowlabel}>{t("registration_fee")}:</Text>
-                <View className="flex items-start flex-col w-[50%]">
+                <View style={{ flex: 1 }}>
                   <TextInput
                     style={[
                       styles.RowInput,
@@ -254,9 +280,10 @@ function EditBudget({ navigation, route }) {
                   ) : null}
                 </View>
               </View>
+
               <View style={styles.inputRowContainer}>
                 <Text style={styles.Rowlabel}>{t("travel_fee")}:</Text>
-                <View className="flex items-start flex-col w-[50%]">
+                <View style={{ flex: 1 }}>
                   <TextInput
                     style={[
                       styles.RowInput,
@@ -275,11 +302,12 @@ function EditBudget({ navigation, route }) {
                   ) : null}
                 </View>
               </View>
+
               <View style={styles.inputRowContainer}>
                 <Text style={styles.Rowlabel}>
                   {t("accommodation_expense")}:
                 </Text>
-                <View className="flex items-start flex-col w-[50%]">
+                <View style={{ flex: 1 }}>
                   <TextInput
                     style={[
                       styles.RowInput,
@@ -302,24 +330,30 @@ function EditBudget({ navigation, route }) {
                   ) : null}
                 </View>
               </View>
+
               <View style={styles.inputRowContainer}>
                 <Text style={styles.Rowlabel}>{t("total_fee")}:</Text>
-                <View className="flex items-start flex-col w-[50%]">
-                  <TextInput style={styles.RowInput} value={totalFee} />
+                <View style={{ flex: 1 }}>
+                  <TextInput
+                    style={styles.RowInput}
+                    value={totalFee}
+                    editable={false}
+                  />
                 </View>
               </View>
             </View>
+
+            {/* Update Button */}
             <TouchableOpacity style={styles.loginButton} onPress={handleUpdate}>
               <Text style={styles.loginButtonText}>{t("update")}</Text>
             </TouchableOpacity>
-
-            {/* Update Button */}
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }
+
 const styles = StyleSheet.create({
   safeAreaContainer: {
     flexGrow: 1,
@@ -328,36 +362,13 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     paddingHorizontal: 5,
   },
-  textArea: {
-    height: 80, // Adjust height as needed
-    borderColor: "gray",
-    borderWidth: 1,
-    padding: 10,
-    textAlignVertical: "top", // Ensures text starts at the top of the TextInput
-    borderRadius: 12,
-  },
   container: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#fff",
-
     paddingBottom: 10,
   },
-  imageContainer: {
-    marginBottom: 30,
-  },
-  image: {
-    width: 100, // width of the image
-    height: 80, // height of the image
-  },
-  Profileimage: {
-    width: 120, // width of the image
-    height: 120, // height of the image
-    borderRadius: 60, // half of width or height for circular shape
-    overflow: "hidden", // ensures content stays within the circle
-  },
-
   inputContainer: {
     width: "100%",
     marginBottom: 15,
@@ -365,13 +376,10 @@ const styles = StyleSheet.create({
   inputRowContainer: {
     width: "100%",
     marginBottom: 15,
-    display: "flex",
     flexDirection: "row",
     alignItems: "center",
   },
   RowInput: {
-    flexDirection: "row",
-    alignItems: "center",
     borderWidth: 1,
     borderRadius: 12,
     borderColor: "gray",
@@ -385,9 +393,7 @@ const styles = StyleSheet.create({
   },
   inputContainerDouble: {
     width: "100%",
-
     flexDirection: "row",
-
     gap: 6,
   },
   label: {
@@ -418,18 +424,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     height: 50,
   },
-  inputWrapperDouble: {
-    flexDirection: "column",
-
-    height: 56,
-    width: "40%",
-  },
-  input: {
-    flex: 1,
-    fontSize: 16,
-    color: "#333",
-    paddingLeft: 10,
-  },
   inputFirst: {
     flexDirection: "row",
     alignItems: "center",
@@ -440,9 +434,15 @@ const styles = StyleSheet.create({
     height: 54,
     width: "95%",
   },
+  input: {
+    flex: 1,
+    fontSize: 16,
+    color: "#333",
+    paddingLeft: 10,
+  },
   loginButton: {
     height: 39,
-    backgroundColor: "#FFDC58", // Button color
+    backgroundColor: "#FFDC58",
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 5,
@@ -452,35 +452,7 @@ const styles = StyleSheet.create({
   loginButtonText: {
     fontSize: 18,
     fontWeight: "700",
-    color: "#00000",
-  },
-  alreadySignInContainer: {
-    marginTop: 15,
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  alreadySignInText: {
-    fontSize: 14,
-    color: "#777",
-  },
-  link: {
-    fontSize: 14,
-    color: "#FFDC58",
-    marginLeft: 5,
-    textDecorationLine: "underline",
-  },
-  forgotPasswordContainer: {
-    width: "100%",
-    marginBottom: 20,
-  },
-  forgotPasswordText: {
-    fontSize: 14,
-    color: "#E91111",
-    textAlign: "right",
-  },
-  icon: {
-    width: 12.5,
-    height: 11.5,
+    color: "#000000",
   },
   navButtonText: {
     fontWeight: "400",

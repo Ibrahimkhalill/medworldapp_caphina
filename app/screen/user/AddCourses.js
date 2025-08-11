@@ -33,7 +33,7 @@ function AddCourses({ navigation }) {
   const [location, setLocation] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const { token } = useAuth();
-  const [errors, setErrors] = useState({ date: "", name: "" , location: "" });
+  const [errors, setErrors] = useState({ date: "", name: "", location: "" });
   const { t } = useTranslation();
   const { height } = Dimensions.get("window");
   const scrollViewHeight = height * 0.55; // 90% of the screen height
@@ -55,7 +55,7 @@ function AddCourses({ navigation }) {
   // Handle Add Course
   const handleAdd = async () => {
     let hasError = false;
-    let newErrors = { date: "", name: "" , location : ""};
+    let newErrors = { date: "", name: "", location: "" };
 
     if (!date) {
       newErrors.date = "Date is required";
@@ -75,7 +75,7 @@ function AddCourses({ navigation }) {
     const payload = {
       date,
       name,
-      location
+      location,
     };
 
     setIsLoading(true);
@@ -106,7 +106,7 @@ function AddCourses({ navigation }) {
   const clearForm = () => {
     setDate(new Date());
     setName("");
-    setErrors({ date: "", name: "" , location: "" });
+    setErrors({ date: "", name: "", location: "" });
   };
 
   // Handle Date Change
@@ -123,33 +123,28 @@ function AddCourses({ navigation }) {
     <SafeAreaView style={styles.safeAreaContainer} className="px-5">
       <KeyboardAvoidingView
         style={{ flex: 1 }}
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-      >
+        behavior={Platform.OS === "ios" ? "padding" : "height"}>
         <Navbar navigation={navigation} navigation_Name={"UserHome"} />
         <View className="flex flex-row gap-3 my-3 mb-5">
           <TouchableOpacity
             style={styles.navButton}
-            onPress={() => navigation.navigate("AddScientific")}
-          >
+            onPress={() => navigation.navigate("AddScientific")}>
             <Text style={styles.navButtonText}>{t("scientific")}</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.navButton}
-            onPress={() => navigation.navigate("AddSurgeries")}
-          >
+            onPress={() => navigation.navigate("AddSurgeries")}>
             <Text style={styles.navButtonText}>{t("surgeries")}</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={[styles.navButton, styles.activeNavButton]}
             onPress={() => navigation.navigate("AddCourses")}
-            className="border-b-4 border-[#FFDC58] pb-1"
-          >
+            className="border-b-4 border-[#FFDC58] pb-1">
             <Text style={styles.navButtonText}>{t("courses")}</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.navButton}
-            onPress={() => navigation.navigate("AddBudget")}
-          >
+            onPress={() => navigation.navigate("AddBudget")}>
             <Text style={styles.navButtonText}>{t("budget")}</Text>
           </TouchableOpacity>
         </View>
@@ -157,8 +152,7 @@ function AddCourses({ navigation }) {
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
           Style={{ flexGrow: 1, height: scrollViewHeight }}
-          keyboardShouldPersistTaps="handled"
-        >
+          keyboardShouldPersistTaps="handled">
           <View style={styles.container}>
             {/* Date Input */}
             <View style={styles.inputContainerDouble}>
@@ -183,8 +177,7 @@ function AddCourses({ navigation }) {
                 style={[
                   styles.inputWrapper,
                   errors.name ? styles.inputErrorBorder : null, // Apply red border if error exists
-                ]}
-              >
+                ]}>
                 <TextInput
                   style={styles.input}
                   placeholder={t("enter_course_name")}
@@ -206,19 +199,16 @@ function AddCourses({ navigation }) {
                 style={[
                   styles.inputWrapper,
                   errors.name ? styles.inputErrorBorder : null, // Apply red border if error exists
-                ]}
-              >
+                ]}>
                 <TextInput
                   style={styles.input}
                   placeholder={t("enter_location")}
                   value={location}
                   onChangeText={(text) => {
                     setLocation(text);
-                   
                   }}
                 />
               </View>
-            
             </View>
           </View>
           <View className="flex items-center justify-center mb-10">

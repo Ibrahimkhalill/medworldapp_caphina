@@ -288,10 +288,13 @@ function ScientificDcoument({ navigation }) {
       }}>
       <SafeAreaView style={styles.safeArea} className="px-5">
         <View className="flex items-center justify-between flex-row w-full">
-          <Image
-            className="w-[64px] h-[54px]"
-            source={require("../../assets/MEDLOGO.png")}
-          />
+          <TouchableOpacity onPress={() => navigation.navigate("UserHome")}>
+            <Image
+              className="w-[80px] h-[80px]" // size increased
+              resizeMode="contain" // keep aspect ratio
+              source={require("../../assets/MEDLOGO.png")}
+            />
+          </TouchableOpacity>
           <View className="flex flex-row  items-center">
             <TouchableOpacity onPress={() => setIsVisible(true)}>
               <Ionicons name="search-outline" size={25} color="black" />
@@ -415,7 +418,8 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
   },
   navButtonText: {
-    fontWeight: "500",
+    fontWeight: "700",
+    fontSize: 14,
   },
   container: {
     flexDirection: "row",

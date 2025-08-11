@@ -8,9 +8,11 @@ import {
   StyleSheet,
 } from "react-native";
 import * as Animatable from "react-native-animatable";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { useAuth } from "../authentication/Auth";
+import { useTranslation } from "react-i18next";
 const LogoutModal = ({ isVisible, setIsVisible, navigation }) => {
+  const { t } = useTranslation();
+
   const closeLogoutModal = () => {
     setIsVisible(false);
   };
@@ -31,39 +33,33 @@ const LogoutModal = ({ isVisible, setIsVisible, navigation }) => {
         animationType="fade"
         transparent={true}
         visible={isVisible}
-        onRequestClose={closeLogoutModal}
-      >
+        onRequestClose={closeLogoutModal}>
         <View className="flex-1 justify-center items-center bg-black/50">
           {/* Animated LogoutModal */}
           <Animatable.View
             animation="zoomIn"
             duration={500} // Animation duration (milliseconds)
             easing="ease-out" // Optional easing
-            style={styles.container}
-          >
-            <Text style={styles.header}>Logout</Text>
+            style={styles.container}>
+            <Text style={styles.header}>{t("logout")}</Text>
             <View style={{ marginTop: 20 }}>
-              <Text style={styles.second_text}>Are you confirm to logout?</Text>
+              <Text style={styles.second_text}>{t("logout_confirmation")}</Text>
             </View>
 
             <TouchableOpacity
               onPress={handleLogout}
-              style={styles.button_first}
-            >
+              style={styles.button_first}>
               <Text
-                style={{ fontSize: 16, textAlign: "center", color: "#ffff" }}
-              >
-                LOGOUT
+                style={{ fontSize: 16, textAlign: "center", color: "#ffff" }}>
+                {t("logout_button")}
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
               onPress={closeLogoutModal}
-              style={styles.button_second}
-            >
+              style={styles.button_second}>
               <Text
-                style={{ fontSize: 16, textAlign: "center", color: "#00000" }}
-              >
-                CANCEL
+                style={{ fontSize: 16, textAlign: "center", color: "#00000" }}>
+                {t("cancel_button")}
               </Text>
             </TouchableOpacity>
           </Animatable.View>

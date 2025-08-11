@@ -13,7 +13,7 @@ import {
   Keyboard,
   KeyboardAvoidingView,
   Pressable,
-  Dimensions
+  Dimensions,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Navbar from "../component/Navbar";
@@ -25,7 +25,7 @@ import { useTranslation } from "react-i18next";
 import { useFocusEffect } from "@react-navigation/native";
 
 function AddSurgeries({ route, navigation }) {
-  const windowHeight = Dimensions.get('window').height;
+  const windowHeight = Dimensions.get("window").height;
   const { t } = useTranslation();
   const [fieldOfSurgery, setFieldOfSurgery] = useState("");
   const [surgeryName, setSurgeryName] = useState("");
@@ -60,17 +60,17 @@ function AddSurgeries({ route, navigation }) {
   const validateFields = () => {
     const newErrors = {};
 
-    if (!fieldOfSurgery) {
-      newErrors.fieldOfSurgery = "Field of surgery is required.";
-    }
+    // if (!fieldOfSurgery) {
+    //   newErrors.fieldOfSurgery = "Field of surgery is required.";
+    // }
 
     if (!surgeryName) {
       newErrors.surgeryName = "Surgery name is required.";
     }
 
-    if (!typeOfSurgery) {
-      newErrors.typeOfSurgery = "Type of surgery is required.";
-    }
+    // if (!typeOfSurgery) {
+    //   newErrors.typeOfSurgery = "Type of surgery is required.";
+    // }
 
     if (!date) {
       newErrors.date = "Date is required.";
@@ -220,14 +220,12 @@ function AddSurgeries({ route, navigation }) {
       <SafeAreaView style={styles.safeAreaContainer} className="px-5">
         <KeyboardAvoidingView
           style={{ flex: 1 }}
-          behavior={Platform.OS === "ios" ? "padding" : "height"}
-        >
+          behavior={Platform.OS === "ios" ? "padding" : "height"}>
           <Navbar navigation={navigation} navigation_Name={"UserHome"} />
           <View className="flex flex-row gap-3 my-3 mb-5">
             <TouchableOpacity
               className=" py-1"
-              onPress={() => navigation.navigate("AddScientific")}
-            >
+              onPress={() => navigation.navigate("AddScientific")}>
               <Text style={styles.navButtonText}>{t("scientific")}</Text>
             </TouchableOpacity>
             <TouchableOpacity className="border-b-4 border-[#FFDC58] py-1">
@@ -235,29 +233,24 @@ function AddSurgeries({ route, navigation }) {
             </TouchableOpacity>
             <TouchableOpacity
               className=" py-1"
-              onPress={() => navigation.navigate("AddCourses")}
-            >
+              onPress={() => navigation.navigate("AddCourses")}>
               <Text style={styles.navButtonText}>{t("courses")}</Text>
             </TouchableOpacity>
             <TouchableOpacity
               className=" py-1"
-              onPress={() => navigation.navigate("AddBudget")}
-            >
+              onPress={() => navigation.navigate("AddBudget")}>
               <Text style={styles.navButtonText}>{t("budget")}</Text>
             </TouchableOpacity>
           </View>
           <ScrollView
             showsVerticalScrollIndicator={false}
             keyboardShouldPersistTaps="handled"
-            contentContainerStyle ={{paddingBottom: 50}}
-           
-            onScroll={() => setDropdownVisible(false)}
-          >
+            contentContainerStyle={{ paddingBottom: 50 }}
+            onScroll={() => setDropdownVisible(false)}>
             <Pressable
               style={[styles.container]}
               onStartShouldSetResponder={() => true}
-              onPress={() => setDropdownVisible(false)}
-            >
+              onPress={() => setDropdownVisible(false)}>
               <View style={[styles.inputContainerDouble]}>
                 <View style={styles.inputContainerFirst}>
                   <Text style={styles.label}>{t("field_of_surgery")}</Text>
@@ -308,8 +301,7 @@ function AddSurgeries({ route, navigation }) {
                         <TouchableOpacity
                           key={index.toString()}
                           onPress={() => handleSuggestionSelect(item)}
-                          style={styles.suggestionItem}
-                        >
+                          style={styles.suggestionItem}>
                           <Text style={styles.suggestionText}>{item}</Text>
                         </TouchableOpacity>
                       ))}
@@ -325,8 +317,7 @@ function AddSurgeries({ route, navigation }) {
                 style={[
                   styles.inputContainer,
                   errors.typeOfSurgery && styles.errorBorder,
-                ]}
-              >
+                ]}>
                 <Text style={styles.label}>{t("type_of_surgery")}</Text>
                 <TextInput
                   style={[
@@ -351,12 +342,11 @@ function AddSurgeries({ route, navigation }) {
                   style={[
                     styles.inputContainerFirst,
                     errors.mainSurgeon && styles.errorBorder,
-                  ]}
-                >
+                  ]}>
                   <Text style={styles.labelFirst}>{t("main_surgeon")}</Text>
                   <View style={{ flexDirection: "row" }}>
                     <CustomCheckbox
-                        label={t("yes")}
+                      label={t("yes")}
                       onValueChange={() => {
                         setMainSurgeon(true);
                         setErrors((prevErrors) => ({
@@ -368,7 +358,7 @@ function AddSurgeries({ route, navigation }) {
                     />
                     <View className="ml-3">
                       <CustomCheckbox
-                      label={t("no")}
+                        label={t("no")}
                         onValueChange={() => {
                           setMainSurgeon(false);
                           setErrors((prevErrors) => ({
@@ -388,12 +378,11 @@ function AddSurgeries({ route, navigation }) {
                   style={[
                     styles.inputContainerFirst,
                     errors.histology && styles.errorBorder,
-                  ]}
-                >
+                  ]}>
                   <Text style={styles.labelFirst}>{t("histology")}</Text>
                   <View style={{ flexDirection: "row" }}>
                     <CustomCheckbox
-                        label={t("yes")}
+                      label={t("yes")}
                       onValueChange={() => {
                         setHistology(true);
                         setErrors((prevErrors) => ({
@@ -405,7 +394,7 @@ function AddSurgeries({ route, navigation }) {
                     />
                     <View className="ml-3">
                       <CustomCheckbox
-                      label={t("no")}
+                        label={t("no")}
                         onValueChange={() => {
                           setHistology(false);
                           setErrors((prevErrors) => ({
@@ -426,14 +415,13 @@ function AddSurgeries({ route, navigation }) {
                 style={[
                   styles.inputContainerDouble,
                   errors.complications && styles.errorBorder,
-                ]}
-              >
+                ]}>
                 <View style={styles.inputContainerFirst}>
                   <Text style={styles.labelFirst}>{t("complications")}</Text>
 
                   <View className="flex  flex-row ">
                     <CustomCheckbox
-                        label={t("yes")}
+                      label={t("yes")}
                       onValueChange={() => {
                         setComplications(true);
                         setErrors((prevErrors) => ({
@@ -445,7 +433,7 @@ function AddSurgeries({ route, navigation }) {
                     />
                     <View className="ml-3">
                       <CustomCheckbox
-                      label={t("no")}
+                        label={t("no")}
                         onValueChange={() => {
                           setComplications(false);
                           setErrors((prevErrors) => ({
@@ -541,7 +529,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#fff",
     paddingBottom: 40,
-   
   },
   imageContainer: {
     marginBottom: 30,

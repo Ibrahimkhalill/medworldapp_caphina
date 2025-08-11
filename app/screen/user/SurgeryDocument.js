@@ -248,10 +248,13 @@ function SurgeryDocument({ navigation }) {
       <SafeAreaView style={styles.safeArea} className="px-5">
         <View>
           <View className="flex items-center justify-between flex-row w-full ">
-            <Image
-              className="w-[64px] h-[54px]"
-              source={require("../../assets/MEDLOGO.png")}
-            />
+            <TouchableOpacity onPress={() => navigation.navigate("UserHome")}>
+              <Image
+                className="w-[80px] h-[80px]" // size increased
+                resizeMode="contain" // keep aspect ratio
+                source={require("../../assets/MEDLOGO.png")}
+              />
+            </TouchableOpacity>
             <View className="flex flex-row">
               <TouchableOpacity onPress={() => setIsVisible(true)}>
                 <Ionicons name="search-outline" size={25} color="black" />
@@ -265,26 +268,22 @@ function SurgeryDocument({ navigation }) {
           <View className="flex flex-row gap-3 my-1 ">
             <TouchableOpacity
               className=" py-1"
-              onPress={() => navigation.navigate("ScientificDcoument")}
-            >
+              onPress={() => navigation.navigate("ScientificDcoument")}>
               <Text style={styles.navButtonText}>{t("scientific")}</Text>
             </TouchableOpacity>
             <TouchableOpacity
               className=" border-b-4 border-[#FFDC58] py-1"
-              onPress={() => navigation.navigate("SurgeryDocument")}
-            >
+              onPress={() => navigation.navigate("SurgeryDocument")}>
               <Text style={styles.navButtonText}>{t("surgeries")}</Text>
             </TouchableOpacity>
             <TouchableOpacity
               className=" py-1 "
-              onPress={() => navigation.navigate("CoursesDocument")}
-            >
+              onPress={() => navigation.navigate("CoursesDocument")}>
               <Text style={styles.navButtonText}>{t("courses")}</Text>
             </TouchableOpacity>
             <TouchableOpacity
               className=" py-1"
-              onPress={() => navigation.navigate("BudgetDcoument")}
-            >
+              onPress={() => navigation.navigate("BudgetDcoument")}>
               <Text style={styles.navButtonText}>{t("budget")}</Text>
             </TouchableOpacity>
           </View>
@@ -293,20 +292,19 @@ function SurgeryDocument({ navigation }) {
               <TouchableOpacity
                 onPress={() => {
                   setInCompleteVisible(false);
-                }}
-              >
+                }}>
                 <Text
-                  className={`text-[14px] font-[600]  ${incompleteVisible ? "" : "border-b-4 border-[#FFDC58] pb-1"
-                    }`}
-                >
+                  className={`text-[13px] font-[600]  ${
+                    incompleteVisible ? "" : "border-b-4 border-[#FFDC58] pb-1"
+                  }`}>
                   {t("complete")}
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity onPress={() => setInCompleteVisible(true)}>
                 <Text
-                  className={`text-[14px] font-[600] ml-3 ${incompleteVisible ? "border-b-4 border-[#FFDC58] pb-1" : ""
-                    }`}
-                >
+                  className={`text-[13px] font-[600] ml-3 ${
+                    incompleteVisible ? "border-b-4 border-[#FFDC58] pb-1" : ""
+                  }`}>
                   {t("incomplete")}
                 </Text>
               </TouchableOpacity>
@@ -314,16 +312,11 @@ function SurgeryDocument({ navigation }) {
 
             <View className="flex flex-row  my-2 items-center relative">
               <TouchableOpacity
-                onPress={() => navigation.navigate("PercantagePage")}
-              >
-                <MaterialCommunityIcons
-                  name="brightness-percent"
-                  size={25}
-                  color="black"
-                />
+                onPress={() => navigation.navigate("PercantagePage")}>
+                <Feather name="percent" size={25} color="black" />
               </TouchableOpacity>
               {data.length > 0 && (
-                <View className="ml-5">
+                <View className="ml-3">
                   <TouchableOpacity onPress={() => handleCheck()}>
                     <Feather name="download" size={25} color="black" />
                   </TouchableOpacity>
@@ -351,8 +344,7 @@ function SurgeryDocument({ navigation }) {
           contentContainerStyle={{ flexGrow: 1 }}
           showsVerticalScrollIndicator={false}
           style={{ height: scrollViewHeight }}
-          onScroll={() => setDownloadModal(false)}
-        >
+          onScroll={() => setDownloadModal(false)}>
           <View className="mt-1 flex" onStartShouldSetResponder={() => true}>
             <Pressable onPress={() => setDownloadModal(false)}>
               {incompleteVisible ? (
@@ -385,8 +377,6 @@ function SurgeryDocument({ navigation }) {
           setData={setData}
           value={"name_of_surgery"}
         />
-
-
       </SafeAreaView>
     </TouchableWithoutFeedback>
   );
@@ -412,7 +402,8 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
   },
   navButtonText: {
-    fontWeight: "500",
+    fontWeight: "700",
+    fontSize: 14,
   },
   container: {
     flexDirection: "row",

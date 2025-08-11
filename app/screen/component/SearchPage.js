@@ -57,35 +57,30 @@ const SearchPage = ({
     if (selectedDate) {
       const { formattedDate } = formatDate(selectedDate);
       setSearch(formattedDate); // Set search input to selected date
-      const filtered = filterData.filter((item) => {
-        const nameMatch = item[value]
-          ?.toString()
-          .toLowerCase()
-          .includes(formattedDate.toLowerCase());
-        const { formattedDate: itemFormattedDate } = formatDate(item.date);
-        const dateMatch = itemFormattedDate.includes(formattedDate);
-        return nameMatch || dateMatch;
-      });
-      setData(filtered);
+      // Note: no filtering here, filtering happens on search icon or OK button press
     }
   };
 
-  // Filter the dataset dynamically based on search input
-  const handleSearch = (searchValue) => {
+  // Just update search text on typing — no filtering here
+  const handleSearchChange = (searchValue) => {
     setSearch(searchValue);
-    if (searchValue.trim()) {
+  };
+
+  // Filter the dataset based on current search text
+  const applySearchFilter = () => {
+    if (search.trim()) {
       const filtered = filterData.filter((item) => {
         const nameMatch = item[value]
           ?.toString()
           .toLowerCase()
-          .includes(searchValue.toLowerCase());
+          .includes(search.toLowerCase());
         const { formattedDate } = formatDate(item.date);
-        const dateMatch = formattedDate.includes(searchValue);
-        return nameMatch || dateMatch; // Return true if either matches
+        const dateMatch = formattedDate.includes(search);
+        return nameMatch || dateMatch;
       });
       setData(filtered);
     } else {
-      setData(filterData); // Reset to original dataset if input is cleared
+      setData(filterData);
     }
   };
 
@@ -103,15 +98,21 @@ const SearchPage = ({
             animation="zoomIn"
             duration={500}
             easing="ease-out"
-            style={[styles.container, { top: insets.top }]} // Use SafeArea inset for top
+            style={[styles.container, { top: insets.top - 52 }]} // Use SafeArea inset for top
           >
             <View style={styles.searchBarContainer}>
               <View style={styles.searchBar}>
-                <Ionicons name="search-outline" size={20} color="gray" />
+                <TouchableOpacity
+                  onPress={() => {
+                    applySearchFilter();
+                    setIsVisible(false); // close modal on search press
+                  }}>
+                  <Ionicons name="search-outline" size={20} color="gray" />
+                </TouchableOpacity>
                 <TextInput
                   style={styles.input}
                   placeholder={t("search")}
-                  onChangeText={handleSearch}
+                  onChangeText={handleSearchChange}
                   value={search}
                 />
                 <TouchableOpacity onPress={() => setShowDatePicker(true)}>
@@ -128,11 +129,33 @@ const SearchPage = ({
                   </TouchableOpacity>
                 )}
               </View>
-              <TouchableOpacity
-                style={styles.cancelButton}
-                onPress={closeSearchPage}>
-                <Text style={styles.cancelText}>{t("cancel")}</Text>
-              </TouchableOpacity>
+              <View style={{ flexDirection: "row", marginLeft: 10 }}>
+                <TouchableOpacity
+                  style={{
+                    backgroundColor: "#f3ce47",
+                    paddingVertical: 5,
+                    paddingHorizontal: 10,
+                    borderRadius: 5,
+                    marginRight: 10,
+                  }}
+                  onPress={() => {
+                    applySearchFilter();
+                    setIsVisible(false); // close modal on OK
+                  }}>
+                  <Text style={{ color: "#000", fontWeight: "bold" }}>OK</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  style={{
+                    backgroundColor: "#ccc",
+                    paddingVertical: 5,
+                    paddingHorizontal: 10,
+                    borderRadius: 5,
+                  }}
+                  onPress={closeSearchPage}>
+                  <Text style={{ color: "#000" }}>Cancel</Text>
+                </TouchableOpacity>
+              </View>
             </View>
             {showDatePicker && (
               <DateTimePicker

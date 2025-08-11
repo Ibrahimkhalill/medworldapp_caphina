@@ -20,10 +20,14 @@ const Navbar = ({ isVisible, setIsVisible, navigation, navigation_Name }) => {
         <SimpleLineIcon name="arrow-back" size={24} color="black" />
       </TouchableOpacity>
 
-      <Image
-        className="w-[80px] h-[66px] mx-auto"
-        source={require("../../assets/MEDLOGO.png")}
-      />
+      <TouchableOpacity onPress={() => navigation.navigate("UserHome")}>
+        <Image
+          className="w-[80px] h-[80px]" // size increased
+          resizeMode="contain" // keep aspect ratio
+          source={require("../../assets/MEDLOGO.png")}
+        />
+      </TouchableOpacity>
+      <View></View>
     </View>
   );
 };
