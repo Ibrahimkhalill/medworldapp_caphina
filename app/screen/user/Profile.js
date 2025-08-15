@@ -28,6 +28,8 @@ import { useTranslation } from "react-i18next";
 import * as ImagePicker from "expo-image-picker";
 import { useSubscription } from "../component/SubscriptionContext";
 import { Picker } from "@react-native-picker/picker";
+import RNPickerSelect from 'react-native-picker-select';
+import CustomDropdown from "../component/CustomDropdown";
 
 function Profile({ navigation }) {
   const { t } = useTranslation();
@@ -255,8 +257,8 @@ function Profile({ navigation }) {
                           imageUri
                             ? { uri: imageUri }
                             : {
-                                uri: `https://admin.medworld.online${profile_picture}`,
-                              }
+                              uri: `https://admin.medworld.online${profile_picture}`,
+                            }
                         }
                         style={styles.Profileimage}
                       />
@@ -409,21 +411,12 @@ function Profile({ navigation }) {
 
             <View style={styles.inputContainer}>
               <Text style={styles.label}>{t("gender")}</Text>
-              <View style={[styles.inputWrapper, { paddingHorizontal: 0 }]}>
-                <Picker
+              <View style={[, { paddingHorizontal: 0 }]}>
+                <CustomDropdown
                   selectedValue={gender}
-                  enabled={isEdit} // editable only if editing
-                  style={{ flex: 1, color: isEdit ? "#000" : "#000" }}
-                  onValueChange={(itemValue) => setGender(itemValue)}
-                  mode="dropdown">
-                  <Picker.Item label={t("select_gender")} value="" />
-                  <Picker.Item label={t("female") || "Female"} value="Female" />
-                  <Picker.Item label={t("male") || "Male"} value="Male" />
-                  <Picker.Item
-                    label={t("rather_not_say") || "Rather not say"}
-                    value="Rather not say"
-                  />
-                </Picker>
+                  onValueChange={setGender}
+                  disabled={!isEdit}
+                />
               </View>
             </View>
             {isEdit ? (

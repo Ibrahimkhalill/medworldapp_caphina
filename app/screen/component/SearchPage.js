@@ -5,6 +5,7 @@ import {
   Text,
   Modal,
   TouchableOpacity,
+  TouchableWithoutFeedback,
   TextInput,
   StyleSheet,
   Platform,
@@ -28,16 +29,16 @@ const SearchPage = ({
   const [search, setSearch] = useState("");
   const [showDatePicker, setShowDatePicker] = useState(false);
   const { t } = useTranslation();
-  const insets = useSafeAreaInsets(); // Get SafeArea insets
+  const insets = useSafeAreaInsets();
 
   // Format date to MM/DD/YY
   const formatDate = (dateString) => {
     if (!dateString) return { formattedDate: "" };
     const date = new Date(dateString);
-    if (isNaN(date.getTime())) return { formattedDate: "" }; // Handle invalid dates
-    const mm = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-based
+    if (isNaN(date.getTime())) return { formattedDate: "" };
+    const mm = String(date.getMonth() + 1).padStart(2, "0");
     const dd = String(date.getDate()).padStart(2, "0");
-    const yy = String(date.getFullYear()).slice(-2); // Last 2 digits of the year
+    const yy = String(date.getFullYear()).slice(-2);
     const formattedDate = `${mm}/${dd}/${yy}`;
     return { formattedDate };
   };
@@ -46,27 +47,27 @@ const SearchPage = ({
   const closeSearchPage = () => {
     setIsVisible(false);
     setSearch("");
-    setData(filterData); // Reset to the original dataset
+    setData(filterData);
+    setShowDatePicker(false);
   };
 
   // Handle date selection from DateTimePicker
   const onDateChange = (event, selectedDate) => {
     if (Platform.OS === "android") {
-      setShowDatePicker(false); // Close picker on Android after selection
+      setShowDatePicker(false);
     }
     if (selectedDate) {
       const { formattedDate } = formatDate(selectedDate);
-      setSearch(formattedDate); // Set search input to selected date
-      // Note: no filtering here, filtering happens on search icon or OK button press
+      setSearch(formattedDate);
     }
   };
 
-  // Just update search text on typing — no filtering here
+  // Just update search text on typing
   const handleSearchChange = (searchValue) => {
     setSearch(searchValue);
   };
 
-  // Filter the dataset based on current search text
+  // Filter dataset based on search text
   const applySearchFilter = () => {
     if (search.trim()) {
       const filtered = filterData.filter((item) => {
@@ -84,29 +85,30 @@ const SearchPage = ({
     }
   };
 
-  console.log("SearchPage rendered with search:", filterData);
-
   return (
     <Modal
       animationType="fade"
       transparent={true}
       visible={isVisible}
-      onRequestClose={closeSearchPage}>
+      onRequestClose={closeSearchPage}
+    >
       <View style={styles.overlay}>
         <SafeAreaView style={styles.safeAreaContainer}>
           <Animatable.View
             animation="zoomIn"
             duration={500}
             easing="ease-out"
-            style={[styles.container, { top: insets.top - 52 }]} // Use SafeArea inset for top
+            style={[styles.container, { top: insets.top }]}
           >
             <View style={styles.searchBarContainer}>
               <View style={styles.searchBar}>
                 <TouchableOpacity
                   onPress={() => {
                     applySearchFilter();
-                    setIsVisible(false); // close modal on search press
-                  }}>
+                    setIsVisible(false);
+                    setShowDatePicker(false);
+                  }}
+                >
                   <Ionicons name="search-outline" size={20} color="gray" />
                 </TouchableOpacity>
                 <TextInput
@@ -115,19 +117,22 @@ const SearchPage = ({
                   onChangeText={handleSearchChange}
                   value={search}
                 />
-                <TouchableOpacity onPress={() => setShowDatePicker(true)}>
+                <TouchableOpacity
+                  onPress={() => setShowDatePicker(!showDatePicker)}
+                >
                   <Ionicons name="calendar-outline" size={20} color="gray" />
                 </TouchableOpacity>
-                {search && (
+                {search ? (
                   <TouchableOpacity
                     style={{ marginLeft: 3 }}
                     onPress={() => {
                       setSearch("");
-                      setData(filterData); // Reset dataset
-                    }}>
+                      setData(filterData);
+                    }}
+                  >
                     <Ionicons name="close-circle" size={23} color="gray" />
                   </TouchableOpacity>
-                )}
+                ) : null}
               </View>
               <View style={{ flexDirection: "row", marginLeft: 10 }}>
                 <TouchableOpacity
@@ -140,8 +145,10 @@ const SearchPage = ({
                   }}
                   onPress={() => {
                     applySearchFilter();
-                    setIsVisible(false); // close modal on OK
-                  }}>
+                    setIsVisible(false);
+                    setShowDatePicker(false);
+                  }}
+                >
                   <Text style={{ color: "#000", fontWeight: "bold" }}>OK</Text>
                 </TouchableOpacity>
 
@@ -152,18 +159,67 @@ const SearchPage = ({
                     paddingHorizontal: 10,
                     borderRadius: 5,
                   }}
-                  onPress={closeSearchPage}>
+                  onPress={closeSearchPage}
+                >
                   <Text style={{ color: "#000" }}>Cancel</Text>
                 </TouchableOpacity>
               </View>
             </View>
-            {showDatePicker && (
+
+            {/* iOS Spinner Picker Modal */}
+            {Platform.OS === "ios" && (
+              <Modal
+                transparent
+                animationType="slide"
+                visible={showDatePicker}
+                onRequestClose={() => setShowDatePicker(false)}
+              >
+                <TouchableWithoutFeedback
+                  onPress={() => setShowDatePicker(false)}
+                >
+                  <View
+                    style={{
+                      flex: 1,
+                      backgroundColor: "rgba(0,0,0,0.3)",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <TouchableWithoutFeedback>
+                      <View
+                        style={{
+                          backgroundColor: "#fff",
+                          borderRadius: 10,
+                          padding: 10,
+                          width: "80%",
+                        }}
+                      >
+                        <DateTimePicker
+                          value={new Date()}
+                          mode="date"
+                          display="spinner"
+                          onChange={(event, date) => {
+                            onDateChange(event, date);
+                            if (date) setShowDatePicker(false);
+                          }}
+                        />
+                      </View>
+                    </TouchableWithoutFeedback>
+                  </View>
+                </TouchableWithoutFeedback>
+              </Modal>
+            )}
+
+            {/* Android DateTimePicker inline (if needed) */}
+            {Platform.OS === "android" && showDatePicker && (
               <DateTimePicker
-                value={new Date()} // Default to current date
+                value={new Date()}
                 mode="date"
-                display={Platform.OS === "ios" ? "inline" : "default"}
-                onChange={onDateChange}
-                maximumDate={new Date()} // Optional: Restrict to past and current dates
+                display="default"
+                onChange={(event, date) => {
+                  onDateChange(event, date);
+                  if (event.type !== "dismissed") setShowDatePicker(false);
+                }}
               />
             )}
           </Animatable.View>
@@ -186,7 +242,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     width: "100%",
     padding: 20,
-    position: "absolute", // Position absolutely to stick to the top
+    position: "absolute",
     left: 0,
     right: 0,
   },
@@ -209,15 +265,7 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 16,
     paddingLeft: 10,
-    paddingRight: 10, // Add padding to prevent overlap with icons
-  },
-  cancelButton: {
-    marginLeft: 15,
-  },
-  cancelText: {
-    color: "#f3ce47",
-    fontSize: 14,
-    fontWeight: "600",
+    paddingRight: 10,
   },
 });
 
