@@ -91,7 +91,7 @@ function Profile({ navigation }) {
         setAddress(data.address);
         setResidencyDuration(data.residencyDuration);
         setResidencyYear(data.residencyYear);
-        setPhone_number(data.phone_number);
+        setPhone_number(data.phone_number || "");
         setGender(data.gender);
         setUserName(data.username);
         setSpecialty(data.specialty);
@@ -216,16 +216,18 @@ function Profile({ navigation }) {
   }
 
   const handleNavigate = () => {
-    if (!subscription.is_active) {
-      navigation.navigate("Subscriptions");
-    }
+
+    navigation.navigate("Subscriptions");
+
   };
 
   return (
     <SafeAreaView style={styles.safeAreaContainer} className="px-5">
       <StatusBar style="dark" backgroundColor="white" />
       <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : "height"}>
+        behavior={Platform.OS === "ios" ? "padding" : ""}
+
+      >
         <ScrollView
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}

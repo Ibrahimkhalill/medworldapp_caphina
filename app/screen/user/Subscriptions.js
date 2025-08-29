@@ -19,6 +19,7 @@ import Purchases from "react-native-purchases";
 import Navbar from "../component/Navbar";
 import axiosInstance from "../component/axiosInstance";
 import { useAuth } from "../authentication/Auth";
+import { useSubscription } from "../component/SubscriptionContext";
 
 const { height } = Dimensions.get("window"); // Get screen height
 const scrollViewHeight = height * 0.8;
@@ -26,7 +27,7 @@ const scrollViewHeight = height * 0.8;
 const Subscriptions = ({ navigation }) => {
   const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
-
+  const { subscription } = useSubscription();
   const { token } = useAuth();
   const [checkoutUrl, setCheckoutUrl] = useState(null); // Store the checkout URL
 
@@ -158,12 +159,19 @@ const Subscriptions = ({ navigation }) => {
               </View>
             </View>
             <TouchableOpacity
-              style={styles.sentButton}
+              style={[
+                styles.sentButton,
+                subscription.is_active && { backgroundColor: "#AAAAAA" }, // gray if subscribed
+              ]}
               onPress={createCheckoutSession}
-              disabled={loading}>
+              disabled={loading || subscription.is_active} // disable if active or loading
+            >
               <MaterialIcons name="euro" size={24} color="white" />
-              <Text style={styles.sentButtonText}>{t("price")}</Text>
+              <Text style={styles.sentButtonText}>
+                {subscription.is_active ? t("subscribed") : t("price")}
+              </Text>
             </TouchableOpacity>
+
           </View>
         </View>
       </ScrollView>

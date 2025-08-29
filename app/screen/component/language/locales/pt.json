@@ -17,6 +17,7 @@
   "full_name": "Nome Completo",
   "placeholder_full_name": "Digite seu nome completo",
   "email": "E-mail",
+  "subscribed": "Inscrito",
   "placeholder_email": "Digite seu e-mail",
   "specialty": "Especialidade",
   "placeholder_specialty": "Digite sua especialidade",
@@ -109,9 +110,7 @@
   "course_added_success": "Curso adicionado com sucesso!",
   "error_adding_course": "Falha ao adicionar o curso.",
   "title": "Adicionar Orçamento",
-
   "category": "Categoria",
-
   "registration_fee": "Custo de Inscrição",
   "travel_fee": "Custo de Viagem",
   "accommodation_expense": "Despesa de Acomodação",
@@ -122,7 +121,6 @@
   "enter_registration_fee": "Insira a Custo de inscrição",
   "enter_travel_fee": "Insira a Custo de viagem",
   "enter_accommodation_expense": "Insira a despesa de acomodação",
-
   "budget_added_success": "Orçamento adicionado com sucesso!",
   "error_adding_budget": "Falha ao adicionar orçamento.",
   "how_many_surgeries": "Quantas cirurgias necessita como cirurgião principal?",

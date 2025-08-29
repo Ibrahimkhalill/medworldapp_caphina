@@ -1,12 +1,32 @@
-import React from "react";
-import { View, TouchableOpacity, StyleSheet } from "react-native";
+import React, { useEffect, useState } from "react";
+import {
+  View,
+  TouchableOpacity,
+  StyleSheet,
+  Keyboard,
+} from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import FontAwesome6 from "react-native-vector-icons/FontAwesome6";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 
 export default function NavigationBar({ state, navigation }) {
-  const insets = useSafeAreaInsets(); // safe area values
+  const insets = useSafeAreaInsets();
+  const [isKeyboardVisible, setKeyboardVisible] = useState(false);
+
+  useEffect(() => {
+    const keyboardDidShow = Keyboard.addListener("keyboardDidShow", () =>
+      setKeyboardVisible(true)
+    );
+    const keyboardDidHide = Keyboard.addListener("keyboardDidHide", () =>
+      setKeyboardVisible(false)
+    );
+
+    return () => {
+      keyboardDidShow.remove();
+      keyboardDidHide.remove();
+    };
+  }, []);
 
   const tabs = [
     { name: "UserHome", icon: <FontAwesome6 name="house" size={20} /> },
@@ -24,6 +44,9 @@ export default function NavigationBar({ state, navigation }) {
     if (route.state) return getActiveRouteName(route.state);
     return route.name;
   };
+
+  // 👉 Hide NavigationBar when keyboard visible
+  if (isKeyboardVisible) return null;
 
   return (
     <View style={[styles.navBar, { bottom: insets.bottom + 8 }]}>
@@ -45,7 +68,8 @@ export default function NavigationBar({ state, navigation }) {
           <TouchableOpacity
             key={tab.name}
             onPress={onPress}
-            style={styles.navItem}>
+            style={styles.navItem}
+          >
             <View style={styles.iconContainer}>{iconWithColor}</View>
           </TouchableOpacity>
         );

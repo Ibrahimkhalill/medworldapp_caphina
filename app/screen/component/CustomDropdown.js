@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
     View,
     Text,
@@ -7,33 +8,37 @@ import {
     FlatList,
     StyleSheet,
 } from 'react-native';
-
-const genderOptions = [
-    { label: 'Female', value: 'Female' },
-    { label: 'Male', value: 'Male' },
-    { label: 'Rather not say', value: 'Rather not say' },
-];
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 
 const CustomDropdown = ({ selectedValue, onValueChange, disabled = false }) => {
     const [visible, setVisible] = useState(false);
+    const { t } = useTranslation();
+
+    // Define options inside the component so `t` works correctly
+    const genderOptions = [
+        { label: t('female'), value: 'Female' },
+        { label: t('male'), value: 'Male' },
+        { label: t('rather_not_say'), value: 'Rather not say' },
+    ];
 
     const selectedLabel = genderOptions.find(opt => opt.value === selectedValue)?.label;
 
     const handleSelect = (item) => {
-        onValueChange(item.value); // Update parent state
-        setVisible(false); // Close dropdown
+        onValueChange(item.value);
+        setVisible(false);
     };
 
     return (
         <View>
             {/* Dropdown button */}
             <TouchableOpacity
-                style={[styles.dropdown, { backgroundColor: disabled ? '' : '#fff' }]}
+                style={[styles.dropdown, { backgroundColor: disabled ? 'transparent' : '#fff' }]}
                 onPress={() => !disabled && setVisible(true)}
                 activeOpacity={0.7}
             >
-                <Text style={{ color: selectedLabel ? '#000' : '#999' }}>
-                    {selectedLabel || 'Select Gender'}
+                <MaterialCommunityIcons name="gender-male-female-variant" size={24} color="#999" />
+                <Text style={{ color: selectedLabel ? '#000' : '#999', fontSize: 16 }}>
+                    {selectedLabel || t("select_gender")}
                 </Text>
             </TouchableOpacity>
 
@@ -54,7 +59,7 @@ const CustomDropdown = ({ selectedValue, onValueChange, disabled = false }) => {
                                     <TouchableOpacity
                                         style={[
                                             styles.option,
-                                            isSelected && styles.selectedOption, // highlight selected item
+                                            isSelected && styles.selectedOption,
                                         ]}
                                         onPress={() => handleSelect(item)}
                                     >
@@ -77,13 +82,14 @@ export default CustomDropdown;
 const styles = StyleSheet.create({
     dropdown: {
         borderWidth: 1,
-        borderColor: 'gray',
-        borderRadius: 5,
-        borderRadius: 12,
         borderColor: "#D1D5DB",
+        borderRadius: 12,
         paddingHorizontal: 10,
         paddingVertical: 19,
         marginVertical: 8,
+        flexDirection: "row",
+        alignItems: "center",
+        gap: 10,
     },
     modalOverlay: {
         flex: 1,
@@ -102,16 +108,9 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
         borderBottomWidth: 1,
         borderColor: '#eee',
-    },
-    option: {
-        paddingVertical: 12,
-        paddingHorizontal: 10,
-        borderBottomWidth: 1,
-        borderColor: '#eee',
         borderRadius: 10,
     },
-
     selectedOption: {
-        backgroundColor: '#d6c80eff', // You can use your theme color
+        backgroundColor: '#d6c80eff', // theme color
     },
 });

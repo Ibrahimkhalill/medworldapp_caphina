@@ -291,7 +291,7 @@ function AddScientific({ navigation }) {
                 ]}>
                 <TextInput
                   style={styles.input}
-                  placeholder={t("name_placeholder")}
+                  // placeholder={t("name_placeholder")}
                   value={name}
                   onChangeText={(text) => {
                     setName(text);
@@ -313,7 +313,7 @@ function AddScientific({ navigation }) {
                 ]}>
                 <TextInput
                   style={styles.input}
-                  placeholder={t("co_author_placeholder")}
+
                   value={coAuthors}
                   onChangeText={(text) => {
                     setCoAuthors(text);

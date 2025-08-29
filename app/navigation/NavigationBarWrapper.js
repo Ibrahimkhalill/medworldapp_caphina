@@ -40,6 +40,7 @@ export default function NavigationBarWrapper() {
   if (hideOnScreens.includes(currentRoute)) return null;
 
   return (
+
     <View style={styles.wrapper}>
       <NavigationBar navigation={navigation} state={state} />
     </View>

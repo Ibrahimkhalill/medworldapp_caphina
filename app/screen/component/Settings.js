@@ -227,18 +227,15 @@ const Settings = ({ navigation }) => {
           <View>
             <Text style={styles.smallText}>{t("notification")}</Text>
             <View style={styles.option}>
-              <View
-                style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  alignItems: "center",
-                }}>
-                <Ionicons
-                  name="notifications-outline"
-                  size={21}
-                  color="black"
-                />
-                <Text style={styles.optionText}>{t("writting_reminder")}</Text>
+              <View style={styles.optionLeft}>
+                <Ionicons name="notifications-outline" size={21} color="black" />
+                <Text
+                  style={styles.optionText}
+                  numberOfLines={1}
+                  ellipsizeMode="tail"
+                >
+                  {t("writting_reminder")}
+                </Text>
               </View>
 
               <Switch
@@ -281,7 +278,7 @@ const Settings = ({ navigation }) => {
         setIsVisible={setDeleteModalVisible}
         navigation={navigation}
       />
-    </SafeAreaView>
+    </SafeAreaView >
   );
 };
 
@@ -323,6 +320,16 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: "black",
     lineHeight: 20,
+  },
+  optionLeft: {
+    flexDirection: "row",
+    alignItems: "center",
+    flex: 1, // <-- allow text to shrink inside available space
+  },
+  optionText: {
+    marginLeft: 8,
+    fontSize: 16,
+    flexShrink: 1, // <-- text will shrink instead of overflow
   },
 });
 
