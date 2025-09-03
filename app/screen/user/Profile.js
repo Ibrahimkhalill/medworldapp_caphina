@@ -28,7 +28,7 @@ import { useTranslation } from "react-i18next";
 import * as ImagePicker from "expo-image-picker";
 import { useSubscription } from "../component/SubscriptionContext";
 import { Picker } from "@react-native-picker/picker";
-import RNPickerSelect from 'react-native-picker-select';
+import RNPickerSelect from "react-native-picker-select";
 import CustomDropdown from "../component/CustomDropdown";
 
 function Profile({ navigation }) {
@@ -216,18 +216,13 @@ function Profile({ navigation }) {
   }
 
   const handleNavigate = () => {
-
     navigation.navigate("Subscriptions");
-
   };
 
   return (
     <SafeAreaView style={styles.safeAreaContainer} className="px-5">
       <StatusBar style="dark" backgroundColor="white" />
-      <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : ""}
-
-      >
+      <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : ""}>
         <ScrollView
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
@@ -259,8 +254,8 @@ function Profile({ navigation }) {
                           imageUri
                             ? { uri: imageUri }
                             : {
-                              uri: `https://admin.medworld.online${profile_picture}`,
-                            }
+                                uri: `https://admin.medworld.online${profile_picture}`,
+                              }
                         }
                         style={styles.Profileimage}
                       />

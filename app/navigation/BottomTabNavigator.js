@@ -1,10 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  View,
-  TouchableOpacity,
-  StyleSheet,
-  Keyboard,
-} from "react-native";
+import { View, TouchableOpacity, StyleSheet, Keyboard } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import FontAwesome6 from "react-native-vector-icons/FontAwesome6";
@@ -34,8 +29,9 @@ export default function NavigationBar({ state, navigation }) {
       name: "SurgergeryDcoument",
       icon: <FontAwesome name="file-text-o" size={22} />,
     },
-    { name: "Settings", icon: <AntDesign name="setting" size={25} /> },
+
     { name: "Profile", icon: <FontAwesome6 name="circle-user" size={23} /> },
+    { name: "Settings", icon: <AntDesign name="setting" size={25} /> },
   ];
 
   const getActiveRouteName = (state) => {
@@ -68,8 +64,7 @@ export default function NavigationBar({ state, navigation }) {
           <TouchableOpacity
             key={tab.name}
             onPress={onPress}
-            style={styles.navItem}
-          >
+            style={styles.navItem}>
             <View style={styles.iconContainer}>{iconWithColor}</View>
           </TouchableOpacity>
         );

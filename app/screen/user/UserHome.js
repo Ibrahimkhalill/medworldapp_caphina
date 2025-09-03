@@ -189,18 +189,16 @@ function UserHome({ navigation }) {
         contentContainerStyle={{ flexGrow: 1, paddingBottom: height * 0.2 }}
         showsVerticalScrollIndicator={false}>
         <View className="flex" style={{ marginTop: -5 }}>
-          {!subscription?.is_active && (
-            <View className="flex items-center justify-center ">
-              <TouchableOpacity
-                style={styles.shadow}
-                className="border border-[#FFDC58] px-2 py-2 rounded-[5px] flex items-center justify-center"
-                onPress={() => navigation.navigate("Subscriptions")}>
-                <Text className="text-[#9f8424] text-[14px]">
-                  {t("get_a_plan")}
-                </Text>
-              </TouchableOpacity>
-            </View>
-          )}
+          <View className="flex items-center justify-center ">
+            <TouchableOpacity
+              style={styles.shadow}
+              className="border border-[#FFDC58] px-2 py-2 rounded-[5px] flex items-center justify-center"
+              onPress={() => navigation.navigate("Subscriptions")}>
+              <Text className="text-[#9f8424] text-[14px]">
+                {t("get_a_plan")}
+              </Text>
+            </TouchableOpacity>
+          </View>
 
           <View className="mt-5">
             <ImageBackground
