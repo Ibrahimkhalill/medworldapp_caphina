@@ -200,7 +200,7 @@ function Notification({ navigation }) {
         <Text style={styles.titleText}>{t("notification")}</Text>
         <View></View>
       </View>
-      <View style={{ flex: 1, paddingBottom: 60 }}>
+      <View style={{ flex: 1, paddingBottom: 70 }}>
         <ScrollView
           contentContainerStyle={{ flexGrow: 1 }}
           showsVerticalScrollIndicator={false}>
