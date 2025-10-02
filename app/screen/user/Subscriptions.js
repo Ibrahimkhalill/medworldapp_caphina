@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -27,8 +27,13 @@ const Subscriptions = ({ navigation }) => {
     handlePurchase,
     purchaseLoading,
     loading,
+    fetchSubscription,
     isSubscribed,
   } = useSubscription();
+
+  useEffect(() => {
+    fetchSubscription();
+  }, []);
 
   if (loading) {
     return (

@@ -8,6 +8,7 @@ import {
   Dimensions,
   ToastAndroid,
   Platform,
+  ActivityIndicator,
 } from "react-native";
 import SimpleLineIcon from "react-native-vector-icons/MaterialIcons";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -22,7 +23,7 @@ function Notification({ navigation }) {
   const [isLoading, setIsLoading] = useState(false);
   const { token } = useAuth();
   const { height } = Dimensions.get("window");
-  const scrollViewHeight = height * 0.4; // 90% of the screen height
+  const [markingRead, setMarkingRead] = useState(false);
 
   const { t } = useTranslation();
 
@@ -108,6 +109,7 @@ function Notification({ navigation }) {
   // Mark all notifications as read
   const markAllAsRead = async () => {
     try {
+      setMarkingRead(true);
       const unreadNotifications = notifications.filter((n) => !n.is_read);
       for (const notification of unreadNotifications) {
         await axiosInstance.post(
@@ -120,7 +122,12 @@ function Notification({ navigation }) {
           }
         );
       }
-      fetchNotifications(); // Refresh notifications
+      const response = await axiosInstance.get("/notifications/", {
+        headers: {
+          Authorization: `Token ${token}`,
+        },
+      });
+      setNotifications(response.data);
       ToastAndroid.show(
         "All notifications marked as read.",
         ToastAndroid.SHORT
@@ -131,6 +138,8 @@ function Notification({ navigation }) {
         "Failed to mark notifications as read.",
         ToastAndroid.SHORT
       );
+    } finally {
+      setMarkingRead(false);
     }
   };
 
@@ -208,7 +217,9 @@ function Notification({ navigation }) {
 
           {/* Loading or No Notifications */}
           {isLoading ? (
-            <Text style={styles.loadingText}>{t("loading")}</Text>
+            <View style={styles.loaderContainer}>
+              <ActivityIndicator size="large" color="black" />
+            </View>
           ) : notifications.length === 0 ? (
             <Text style={styles.noNotificationsText}>
               {t("no_notifications")}
@@ -290,12 +301,16 @@ function Notification({ navigation }) {
           )}
 
           {/* Mark All as Read */}
-          {notifications.some((notification) => !notification.is_read) && (
-            <TouchableOpacity style={styles.sentButton} onPress={markAllAsRead}>
-              <Text style={styles.sentButtonText}>{t("read_all")}</Text>
-            </TouchableOpacity>
-          )}
         </ScrollView>
+        {notifications.some((notification) => !notification.is_read) && (
+          <TouchableOpacity style={styles.sentButton} onPress={markAllAsRead}>
+            {markingRead ? (
+              <ActivityIndicator size="small" color="#000" />
+            ) : (
+              <Text style={styles.sentButtonText}>{t("read_all")}</Text>
+            )}
+          </TouchableOpacity>
+        )}
       </View>
     </SafeAreaView>
   );
@@ -316,6 +331,12 @@ const styles = StyleSheet.create({
   logo: {
     width: 64,
     height: 54,
+  },
+  loaderContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "white",
   },
   titleContainer: {
     flexDirection: "row",
@@ -357,7 +378,7 @@ const styles = StyleSheet.create({
     textAlign: "right",
   },
   sentButton: {
-    height: 50,
+    height: 40,
     backgroundColor: "#FFDC58",
     justifyContent: "center",
     alignItems: "center",
@@ -365,7 +386,7 @@ const styles = StyleSheet.create({
     marginVertical: 20,
   },
   sentButtonText: {
-    fontSize: 20,
+    fontSize: 14,
     fontWeight: "400",
   },
   loadingText: {

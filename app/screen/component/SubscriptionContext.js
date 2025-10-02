@@ -57,8 +57,9 @@ export const SubscriptionProvider = ({ children }) => {
       });
 
       const data = response.data?.subscription;
+      console.log("Fetched subscription:", data);
       setSubscription(data);
-      setIsSubscribed(response.data?.subscription?.is_active ?? false);
+      setIsSubscribed(data.is_active || false);
       // Configure RevenueCat & fetch offerings
       configurePurchases(data.user);
       fetchOfferings();
@@ -79,8 +80,8 @@ export const SubscriptionProvider = ({ children }) => {
 
       await Purchases.logIn(String(subscription.user));
       const purchaserInfo = await Purchases.purchasePackage(premiumPackage);
-      printent("Purchase Info:", purchaserInfo);
-      fetchSubscription(); // Refresh subscription status
+      console.log("Purchase Info:", purchaserInfo);
+      setIsSubscribed(true);
       alert("Subscription successful! You are now a Pro user.");
       // const entitlementId = "Premium Plan";
       // const entitlements = purchaserInfo?.entitlements?.active ?? {};
