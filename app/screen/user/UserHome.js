@@ -36,8 +36,8 @@ function UserHome({ navigation }) {
   const { token } = useAuth();
   const [completeSurgeries, setCompleteSurgeries] = useState([]);
   const [incompleteSurgeries, setIncompleteSurgeries] = useState([]);
-  const { subscription, fetchSubscription } = useSubscription();
-  const [isLoading, setIsLoading] = useState(true); // Track overall loading state
+  const { subscription, fetchSubscription, isSubscribed } = useSubscription();
+  const [isLoading, setIsLoading] = useState(false); // Track overall loading state
 
   useFocusEffect(
     useCallback(() => {
@@ -124,7 +124,7 @@ function UserHome({ navigation }) {
     }
 
     if (subscription.free_trial) {
-      if (subscription.free_trial_end) {
+      if (subscription.free_trial_end && !isSubscribed) {
         if (screenName === "AddSurgeries") {
           setIsItSurgies(true);
           return;
@@ -140,7 +140,7 @@ function UserHome({ navigation }) {
       }
     }
 
-    if (subscription.free_trial_end) {
+    if (subscription.free_trial_end && !isSubscribed) {
       Alert.alert(
         "Access Denied",
         "Your free trial has expired. Please upgrade your account to access this feature."
@@ -148,7 +148,7 @@ function UserHome({ navigation }) {
       return;
     }
 
-    if (subscription.is_active) {
+    if (isSubscribed) {
       if (screenName === "AddSurgeries") {
         setIsItSurgies(true);
         return;
@@ -328,8 +328,8 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   circle: {
-    width: 240,
-    height: 238,
+    width: 220,
+    height: 220,
     borderRadius: 120, // half of width/height
     backgroundColor: "#fff",
     justifyContent: "center",

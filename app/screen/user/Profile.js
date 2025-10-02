@@ -47,7 +47,7 @@ function Profile({ navigation }) {
   const [isSubmitLoading, setIsSubmitLoading] = useState(false);
   const [imageUri, setImageUri] = useState(null);
   const [isEdit, setIsEdit] = useState(false);
-  const { subscription, fetchSubscription } = useSubscription();
+  const { subscription, isSubscribed, fetchSubscription } = useSubscription();
   const insets = useSafeAreaInsets();
 
   const notifyMessage = (msg) => {
@@ -176,8 +176,8 @@ function Profile({ navigation }) {
   };
 
   const handleCheck = () => {
-    if (subscription.free_trial) {
-      if (subscription.free_trial_end) {
+    if (subscription.free_trial && !isSubscribed) {
+      if (subscription.free_trial_end && !isSubscribed) {
         updatedProfileData();
         return;
       } else {
@@ -189,7 +189,7 @@ function Profile({ navigation }) {
       }
     }
 
-    if (subscription.free_trial_end) {
+    if (subscription.free_trial_end && !isSubscribed) {
       Alert.alert(
         "Access Denied",
         "Your free trial has expired. Please upgrade your account to access this feature."
@@ -197,7 +197,7 @@ function Profile({ navigation }) {
       return;
     }
 
-    if (subscription.is_active) {
+    if (isSubscribed) {
       updatedProfileData();
     } else {
       Alert.alert(
@@ -280,16 +280,14 @@ function Profile({ navigation }) {
                   <TouchableOpacity
                     onPress={() => handleNavigate()}
                     className="bg-[#FCE488] w-[166px] h-[37px] rounded-[400px] flex items-center justify-center flex-row">
-                    {subscription?.is_active && (
+                    {isSubscribed && (
                       <Image
                         source={require("../../assets/premium.png")}
                         style={styles.icon}
                       />
                     )}
                     <Text className="text-[14px] font-[600] ml-2">
-                      {subscription?.is_active
-                        ? "Premium account"
-                        : "Free Account"}
+                      {isSubscribed ? "Premium account" : "Free Account"}
                     </Text>
                   </TouchableOpacity>
                 </View>

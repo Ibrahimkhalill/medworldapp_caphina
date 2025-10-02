@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import {
   Image,
@@ -47,8 +47,11 @@ function CoursesDocument({ navigation }) {
   const [isVisible, setIsVisible] = useState(false);
   const { t } = useTranslation();
   const componentRef = useRef();
-  const [isLoading, setIsLoading] = useState(false);
-  const { subscription, loading, error, fetchSubscription } = useSubscription();
+  const [isLoading, setIsLoading] = useState(true);
+  const { subscription, loading, isSubscribed, fetchSubscription } =
+    useSubscription();
+
+  console.log("subscription dddd", isSubscribed);
   const [downloadModal, setDownloadModal] = useState(false);
   const handleDelete = async (id) => {
     try {
@@ -100,13 +103,12 @@ function CoursesDocument({ navigation }) {
     }
   };
 
-  useFocusEffect(
-    React.useCallback(() => {
-      fetchCourseData();
-      fetchSubscription();
-      setDownloadModal(false);
-    }, [])
-  );
+  useEffect(() => {
+    fetchCourseData();
+    setDownloadModal(false);
+    fetchSubscription();
+  }, []);
+
   const generatePdf = async () => {
     try {
       const htmlContent = componentRef.current.generateHtml();
@@ -173,8 +175,9 @@ function CoursesDocument({ navigation }) {
   const fields = ["name", "date"];
 
   const handleCheck = () => {
-    if (subscription.free_trial) {
-      if (subscription.free_trial_end) {
+    if (subscription.free_trial && !isSubscribed) {
+      print("subscription.free_trial_end && !isSubscribed");
+      if (subscription.free_trial_end && !isSubscribed) {
         // Free trial is still active
         setDownloadModal(true);
         return;
@@ -188,7 +191,8 @@ function CoursesDocument({ navigation }) {
       }
     }
 
-    if (subscription.free_trial_end) {
+    if (subscription.free_trial_end && !isSubscribed) {
+      print("subscription.free_trial_end && !isSubscribed");
       Alert.alert(
         "Access Denied",
         "Your free trial has expired. Please upgrade your account to access this feature."
@@ -197,7 +201,7 @@ function CoursesDocument({ navigation }) {
     }
 
     // Check Subscription Status
-    if (subscription.is_active) {
+    if (isSubscribed) {
       // Subscription is active
       setDownloadModal(true);
     } else {
@@ -219,7 +223,7 @@ function CoursesDocument({ navigation }) {
     }
 
     // Check Free Trial Status
-    if (subscription.free_trial) {
+    if (subscription.free_trial && !isSubscribed) {
       if (subscription.free_trial) {
         // Free trial is still active
         navigation.navigate("EditCourse", {
@@ -236,7 +240,7 @@ function CoursesDocument({ navigation }) {
       }
     }
 
-    if (subscription.free_trial_end) {
+    if (subscription.free_trial_end && !isSubscribed) {
       // Free trial has expired
       Alert.alert(
         "Access Denied",
@@ -246,7 +250,7 @@ function CoursesDocument({ navigation }) {
     }
 
     // Check Subscription Status
-    if (subscription.is_active) {
+    if (isSubscribed) {
       // Subscription is active
       navigation.navigate("EditCourse", {
         data: item,

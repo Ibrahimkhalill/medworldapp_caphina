@@ -13,12 +13,7 @@ import {
 import { Ionicons, MaterialIcons } from "react-native-vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTranslation } from "react-i18next";
-import { WebView } from "react-native-webview";
-import Purchases from "react-native-purchases";
-
 import Navbar from "../component/Navbar";
-import axiosInstance from "../component/axiosInstance";
-import { useAuth } from "../authentication/Auth";
 import { useSubscription } from "../component/SubscriptionContext";
 
 const { height } = Dimensions.get("window"); // Get screen height
@@ -26,97 +21,22 @@ const scrollViewHeight = height * 0.8;
 
 const Subscriptions = ({ navigation }) => {
   const { t } = useTranslation();
-  const [loading, setLoading] = useState(false);
-  const { subscription } = useSubscription();
-  const { token } = useAuth();
-  const [checkoutUrl, setCheckoutUrl] = useState(null); // Store the checkout URL
+  const {
+    subscription,
+    premiumPackage,
+    handlePurchase,
+    purchaseLoading,
+    loading,
+    isSubscribed,
+  } = useSubscription();
 
-  const createCheckoutSession = async () => {
-    try {
-      setLoading(true);
-      const response = await axiosInstance.post(
-        "/create-checkout-session/", // Your backend endpoint
-        {}, // Replace with the actual price ID
-        {
-          headers: {
-            Authorization: `Token ${token}`,
-          },
-        }
-      );
-      setCheckoutUrl(response.data.checkout_url); // Save the checkout URL
-    } catch (error) {
-      Alert.alert("Error", "Failed to create checkout session.");
-      console.error(error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleNavigationStateChange = (navState) => {
-    if (navState.url.includes("/checkout/success/")) {
-      setCheckoutUrl(null); // Close the WebView
-      navigation.navigate("UserHome");
-      Alert.alert("Success", "Subscription successful!");
-    } else if (navState.url.includes("/checkout/cancel/")) {
-      setCheckoutUrl(null); // Close the WebView
-    }
-  };
-
-  if (checkoutUrl) {
-    // Render the WebView if a checkout URL is available
+  if (loading) {
     return (
-      <SafeAreaView style={[styles.safeArea]}>
-        <WebView
-          source={{ uri: checkoutUrl }}
-          onNavigationStateChange={handleNavigationStateChange}
-          startInLoadingState
-          renderLoading={() => (
-            <ActivityIndicator size="large" color="#FFDC58" />
-          )}
-        />
-      </SafeAreaView>
+      <View style={styles.loaderContainer}>
+        <ActivityIndicator size="large" color="black" />
+      </View>
     );
   }
-
-  // const [premiumPackage, setPremiumPackage] = useState(null);
-
-  // useEffect(() => {
-  //   const setupRevenueCat = async () => {
-  //     Purchases.configure({
-  //       apiKey: Platform.select({
-  //         ios: "appl_KUweuHaYGjDyNKcLhvtozkzFyHM",
-  //       }),
-  //     });
-
-  //     const offerings = await Purchases.getOfferings();
-  //     if (offerings.current) {
-  //       setPremiumPackage(offerings.current.availablePackages[0]); // you can choose a specific one
-  //     }
-  //   };
-
-  //   setupRevenueCat();
-  // }, []);
-
-  // const handlePurchase = async () => {
-  //   if (!premiumPackage) {
-  //     Alert.alert("Product not loaded");
-  //     return;
-  //   }
-
-  //   try {
-  //     const purchaserInfo = await Purchases.purchasePackage(premiumPackage);
-  //     const isPro = purchaserInfo.entitlements.active["entl56bb5f09ad"]; // Set in RevenueCat dashboard
-
-  //     if (isPro) {
-  //       Alert.alert("Success", "You are now premium!");
-  //       // Optionally: Notify your Django backend
-  //     }
-  //   } catch (error) {
-  //     if (!error.userCancelled) {
-  //       Alert.alert("Error", error.message);
-  //     }
-  //   }
-  // };
 
   return (
     <SafeAreaView style={styles.safeArea} className="px-5">
@@ -159,19 +79,23 @@ const Subscriptions = ({ navigation }) => {
               </View>
             </View>
             <TouchableOpacity
+              onPress={handlePurchase}
               style={[
                 styles.sentButton,
-                subscription.is_active && { backgroundColor: "#AAAAAA" }, // gray if subscribed
+                isSubscribed && { backgroundColor: "#AAAAAA" }, // gray if subscribed
               ]}
-              onPress={createCheckoutSession}
-              disabled={loading || subscription.is_active} // disable if active or loading
+              disabled={purchaseLoading || isSubscribed} // disable if active or loading
             >
-              <MaterialIcons name="euro" size={24} color="white" />
-              <Text style={styles.sentButtonText}>
-                {subscription.is_active ? t("subscribed") : t("price")}
-              </Text>
+              {purchaseLoading ? (
+                <ActivityIndicator size="small" color="#000" />
+              ) : (
+                <Text style={styles.sentButtonText}>
+                  {isSubscribed
+                    ? t("subscribed")
+                    : t(premiumPackage?.product.pricePerMonthString)}
+                </Text>
+              )}
             </TouchableOpacity>
-
           </View>
         </View>
       </ScrollView>
@@ -188,6 +112,12 @@ const styles = StyleSheet.create({
   safeArea: {
     flexGrow: 1,
     paddingBottom: 10,
+    backgroundColor: "white",
+  },
+  loaderContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
     backgroundColor: "white",
   },
   shadow: {
@@ -231,8 +161,8 @@ const styles = StyleSheet.create({
   },
   sentButtonText: {
     fontSize: 18,
-    fontWeight: "400",
-    color: "white",
+    fontWeight: "500",
+    color: "black",
     lineHeight: 24,
     marginLeft: 5,
   },

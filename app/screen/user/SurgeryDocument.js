@@ -16,10 +16,8 @@ import {
   TouchableWithoutFeedback,
   Pressable,
 } from "react-native";
-import SimpleLineIcon from "react-native-vector-icons/MaterialIcons";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Feather from "react-native-vector-icons/Feather";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { SafeAreaView } from "react-native-safe-area-context";
 import CompeleteDcoument from "../component/CompeleteDcoument";
 import InCompeleteDocument from "../component/InCompeleteDocument";
@@ -47,7 +45,7 @@ function SurgeryDocument({ navigation }) {
   const [incompleteSurgeries, setIncompleteSurgeries] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [downloadModal, setDownloadModal] = useState(false);
-  const { subscription, loading, error, fetchSubscription } = useSubscription();
+  const { subscription, isSubscribed, fetchSubscription } = useSubscription();
   const [data, setData] = useState([]);
   const { t } = useTranslation();
   const componentRef = useRef();
@@ -73,14 +71,12 @@ function SurgeryDocument({ navigation }) {
     }
   };
 
-  useFocusEffect(
-    React.useCallback(() => {
-      fetchSurgeries();
-      fetchSubscription();
-      setInCompleteVisible(false);
-      setDownloadModal(false);
-    }, [])
-  );
+  useEffect(() => {
+    fetchSurgeries();
+    setInCompleteVisible(false);
+    setDownloadModal(false);
+    fetchSubscription();
+  }, []);
 
   useEffect(() => {
     if (incompleteVisible) {
@@ -199,8 +195,8 @@ function SurgeryDocument({ navigation }) {
     "date",
   ];
   const handleCheck = async () => {
-    if (subscription.free_trial) {
-      if (subscription.free_trial_end) {
+    if (subscription.free_trial && !isSubscribed) {
+      if (subscription.free_trial_end && !isSubscribed) {
         // Free trial is still active
         setDownloadModal(true);
         return;
@@ -214,7 +210,7 @@ function SurgeryDocument({ navigation }) {
       }
     }
 
-    if (subscription.free_trial_end) {
+    if (subscription.free_trial_end && !isSubscribed) {
       Alert.alert(
         "Access Denied",
         "Your free trial has expired. Please upgrade your account to access this feature."
@@ -223,7 +219,7 @@ function SurgeryDocument({ navigation }) {
     }
 
     // Check Subscription Status
-    if (subscription.is_active) {
+    if (isSubscribed) {
       // Subscription is active
       setDownloadModal(true);
       return;
@@ -236,7 +232,7 @@ function SurgeryDocument({ navigation }) {
     }
   };
 
-  if (loading) {
+  if (isLoading) {
     return (
       <View style={styles.loaderContainer}>
         <ActivityIndicator size="large" color="black" />
@@ -354,6 +350,7 @@ function SurgeryDocument({ navigation }) {
                     fetchSurgeries={fetchSurgeries}
                     navigation={navigation}
                     subscription={subscription}
+                    isSubscribed={isSubscribed}
                   />
                 </>
               ) : (
@@ -362,6 +359,7 @@ function SurgeryDocument({ navigation }) {
                   fetchSurgeries={fetchSurgeries}
                   navigation={navigation}
                   subscription={subscription}
+                  isSubscribed={isSubscribed}
                 />
               )}
             </Pressable>

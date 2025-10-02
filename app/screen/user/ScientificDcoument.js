@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { StatusBar } from "expo-status-bar";
 import {
   Image,
@@ -47,7 +47,7 @@ function ScientificDcoument({ navigation }) {
   const [isVisible, setIsVisible] = useState(false);
   const { t } = useTranslation();
   const { token } = useAuth();
-  const { subscription, loading, error, fetchSubscription } = useSubscription();
+  const { subscription, loading, isSubscribed } = useSubscription();
   const [downloadModal, setDownloadModal] = useState(false);
 
   const componentRef = useRef();
@@ -101,13 +101,11 @@ function ScientificDcoument({ navigation }) {
     }
   };
 
-  useFocusEffect(
-    React.useCallback(() => {
-      fetchSurgeries();
-      fetchSubscription();
-      setDownloadModal(false);
-    }, [])
-  );
+  useEffect(() => {
+    fetchSurgeries();
+    setDownloadModal(false);
+  }, []);
+
   const generatePdf = async () => {
     try {
       const htmlContent = componentRef.current.generateHtml();
@@ -187,8 +185,8 @@ function ScientificDcoument({ navigation }) {
   ];
 
   const handleCheck = () => {
-    if (subscription.free_trial) {
-      if (subscription.free_trial_end) {
+    if (subscription.free_trial && !isSubscribed) {
+      if (subscription.free_trial_end && !isSubscribed) {
         // Free trial is still active
         setDownloadModal(true);
         return;
@@ -202,7 +200,7 @@ function ScientificDcoument({ navigation }) {
       }
     }
 
-    if (subscription.free_trial_end) {
+    if (subscription.free_trial_end && !isSubscribed) {
       Alert.alert(
         "Access Denied",
         "Your free trial has expired. Please upgrade your account to access this feature."
@@ -211,7 +209,7 @@ function ScientificDcoument({ navigation }) {
     }
 
     // Check Subscription Status
-    if (subscription.is_active) {
+    if (isSubscribed) {
       // Subscription is active
       setDownloadModal(true);
     } else {
@@ -250,7 +248,7 @@ function ScientificDcoument({ navigation }) {
       }
     }
 
-    if (subscription.free_trial_end) {
+    if (subscription.free_trial_end && !isSubscribed) {
       // Free trial has expired
       Alert.alert(
         "Access Denied",
@@ -260,7 +258,7 @@ function ScientificDcoument({ navigation }) {
     }
 
     // Check Subscription Status
-    if (subscription.is_active) {
+    if (isSubscribed) {
       // Subscription is active
       navigation.navigate("EditScientific", {
         data: item,
@@ -273,7 +271,7 @@ function ScientificDcoument({ navigation }) {
       );
     }
   };
-  if (loading) {
+  if (isLoading) {
     return (
       <View style={styles.loaderContainer}>
         <ActivityIndicator size="large" color="black" />

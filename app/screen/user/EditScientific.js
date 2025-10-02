@@ -53,7 +53,7 @@ function EditScientific({ navigation, route }) {
       alert(msg); // Fallback for iOS
     }
   }
-  const {t} = useTranslation()
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (params && params.data) {
@@ -120,18 +120,18 @@ function EditScientific({ navigation, route }) {
     <SafeAreaView style={styles.safeAreaContainer} className="px-5">
       <KeyboardAvoidingView
         style={{ flex: 1 }}
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-      >
+        behavior={Platform.OS === "ios" ? "padding" : "height"}>
         <Navbar navigation={navigation} navigation_Name={"UserHome"} />
         <ScrollView
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
           Style={{ flexGrow: 1 }}
           contentContainerStyle={{ flexGrow: 1, paddingBottom: height * 0.1 }}
-          keyboardShouldPersistTaps="handled"
-        >
+          keyboardShouldPersistTaps="handled">
           <View className="flex justify-center flex-row gap-3 my-3 mb-5">
-           <Text style={styles.navButtonText} className="text-xl">{t("edit_scientific")} </Text>
+            <Text style={styles.navButtonText} className="text-xl">
+              {t("edit_scientific")}{" "}
+            </Text>
           </View>
           <View style={styles.container}>
             <View style={styles.inputContainerDouble}>
@@ -144,7 +144,7 @@ function EditScientific({ navigation, route }) {
                 />
               </View>
               <View style={styles.inputContainerFIrst}>
-                   <Text style={styles.labelFirst}>{t("type_of_work")}</Text>
+                <Text style={styles.labelFirst}>{t("type_of_work")}</Text>
                 <TextInput
                   style={styles.inputFirst}
                   placeholder="Type of Works"
@@ -179,7 +179,7 @@ function EditScientific({ navigation, route }) {
             </View>
             <View style={styles.inputContainerDouble}>
               <View style={styles.inputContainerFIrst}>
-                 <Text style={styles.labelFirst}>{t("role")}</Text>
+                <Text style={styles.labelFirst}>{t("role")}</Text>
                 <View className="flex flex-row">
                   <CustomCheckbox
                     label={t("author")}
@@ -189,7 +189,7 @@ function EditScientific({ navigation, route }) {
                   />
                   <View className="ml-3">
                     <CustomCheckbox
-                    label={t("coauthor")}
+                      label={t("coauthor")}
                       fontSize={16}
                       onValueChange={() => setRole("Co-Author")}
                       value={role === "Co-Author"}
@@ -199,7 +199,7 @@ function EditScientific({ navigation, route }) {
               </View>
             </View>
             <View style={styles.inputContainer}>
-           <Text style={styles.label}>{t("name")}</Text>
+              <Text style={styles.label}>{t("name")}</Text>
               <View style={styles.inputWrapper}>
                 <TextInput
                   style={styles.input}
@@ -243,7 +243,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
   },
   container: {
-    flex: 1,
+    // flex: 1,
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#fff",

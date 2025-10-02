@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import {
   Image,
@@ -47,10 +47,11 @@ function BudgetDcoument({ navigation }) {
   const [BudgetData, setCousesData] = useState([]);
   const [data, setData] = useState([]);
   const [isVisible, setIsVisible] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const { t } = useTranslation();
   const componentRef = useRef();
-  const { subscription, loading, error, fetchSubscription } = useSubscription();
+  const { subscription, loading, isSubscribed, fetchSubscription } =
+    useSubscription();
   const [downloadModal, setDownloadModal] = useState(false);
   const handleDelete = async (id) => {
     try {
@@ -102,12 +103,11 @@ function BudgetDcoument({ navigation }) {
     }
   };
 
-  useFocusEffect(
-    React.useCallback(() => {
-      fetchBudgetData();
-      setDownloadModal(false);
-    }, [])
-  );
+  useEffect(() => {
+    fetchBudgetData();
+    setDownloadModal(false);
+    fetchSubscription();
+  }, []);
 
   const generatePdf = async () => {
     try {
@@ -186,8 +186,8 @@ function BudgetDcoument({ navigation }) {
   ];
 
   const handleCheck = () => {
-    if (subscription.free_trial) {
-      if (subscription.free_trial_end) {
+    if (subscription.free_trial && !isSubscribed) {
+      if (subscription.free_trial_end && !isSubscribed) {
         // Free trial is still active
         setDownloadModal(true);
         return;
@@ -201,7 +201,7 @@ function BudgetDcoument({ navigation }) {
       }
     }
 
-    if (subscription.free_trial_end) {
+    if (subscription.free_trial_end && !isSubscribed) {
       Alert.alert(
         "Access Denied",
         "Your free trial has expired. Please upgrade your account to access this feature."
@@ -210,7 +210,7 @@ function BudgetDcoument({ navigation }) {
     }
 
     // Check Subscription Status
-    if (subscription.is_active) {
+    if (isSubscribed) {
       // Subscription is active
       setDownloadModal(true);
     } else {
@@ -249,7 +249,7 @@ function BudgetDcoument({ navigation }) {
       }
     }
 
-    if (subscription.free_trial_end) {
+    if (subscription.free_trial_end && !isSubscribed) {
       // Free trial has expired
       Alert.alert(
         "Access Denied",
@@ -259,7 +259,7 @@ function BudgetDcoument({ navigation }) {
     }
 
     // Check Subscription Status
-    if (subscription.is_active) {
+    if (isSubscribed) {
       // Subscription is active
       navigation.navigate("EditBudget", {
         budget: item,

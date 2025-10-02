@@ -19,6 +19,7 @@ const CompeleteDocument = ({
   fetchSurgeries,
   navigation,
   subscription,
+  isSubscribed,
 }) => {
   const { token } = useAuth();
 
@@ -62,7 +63,7 @@ const CompeleteDocument = ({
       return;
     }
 
-    if (subscription.free_trial) {
+    if (subscription.free_trial && !isSubscribed) {
       if (subscription.free_trial) {
         navigation.navigate("EidtSurgeries", { data: item });
         return;
@@ -74,7 +75,7 @@ const CompeleteDocument = ({
       return;
     }
 
-    if (subscription.free_trial_end || !subscription.is_active) {
+    if ((subscription.free_trial_end && !isSubscribed) || !isSubscribed) {
       Alert.alert(
         "Access Denied",
         "Your subscription has expired. Please renew to access this feature."
@@ -89,18 +90,15 @@ const CompeleteDocument = ({
     <ScrollView
       style={styles.container}
       contentContainerStyle={{ flexGrow: 1 }}
-      showsVerticalScrollIndicator={false}
-    >
+      showsVerticalScrollIndicator={false}>
       {data.length > 0 ? (
         data.map((item, index) => (
           <View
             className="flex flex-row items-center justify-between border-b border-[#AEAEAE] pb-2 my-2"
-            key={index}
-          >
+            key={index}>
             <TouchableOpacity
               className="flex flex-row gap-3 items-start"
-              onPress={() => handleNavigation(item)}
-            >
+              onPress={() => handleNavigation(item)}>
               <Ionicons name="folder" size={40} color="#FFDC58" />
               <View className="flex ">
                 <Text className="text-[14px]">{item.name_of_surgery}</Text>
@@ -123,8 +121,7 @@ const CompeleteDocument = ({
 
             <TouchableOpacity
               className="flex flex-row gap-3 items-start"
-              onPress={() => confirmDelete(item)}
-            >
+              onPress={() => confirmDelete(item)}>
               <AntDesign name="delete" size={20} color="#E91111" />
             </TouchableOpacity>
           </View>

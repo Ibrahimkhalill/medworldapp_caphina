@@ -10,7 +10,7 @@ import {
   ToastAndroid,
   Platform,
   KeyboardAvoidingView,
-  Dimensions
+  Dimensions,
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import Navbar from "../component/Navbar";
@@ -27,7 +27,7 @@ function EditCourse({ navigation, route }) {
   const [errors, setErrors] = useState({ date: "", name: "" });
   const { token } = useAuth();
   const { params } = route; // Get route params for the course data
-  const {t} = useTranslation()
+  const { t } = useTranslation();
   const { height } = Dimensions.get("window");
   // Notify message utility
   function notifyMessage(msg) {
@@ -77,7 +77,7 @@ function EditCourse({ navigation, route }) {
     const payload = {
       date,
       name,
-      location
+      location,
     };
 
     setIsLoading(true);
@@ -117,17 +117,14 @@ function EditCourse({ navigation, route }) {
     <SafeAreaView style={styles.safeAreaContainer}>
       <KeyboardAvoidingView
         style={{ flex: 1 }}
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-      >
+        behavior={Platform.OS === "ios" ? "padding" : "height"}>
         <Navbar navigation={navigation} navigation_Name={"UserHome"} />
         <ScrollView
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
-       
           keyboardShouldPersistTaps="handled"
           className="px-5"
-          contentContainerStyle={{ flexGrow: 1, paddingBottom: height * 0.1 }}
-        >
+          contentContainerStyle={{ flexGrow: 1, paddingBottom: height * 0.1 }}>
           <View className="flex justify-center flex-row gap-3 my-3 mb-5">
             <Text style={styles.navButtonText}>{t("edit_courses")} </Text>
           </View>
@@ -156,8 +153,7 @@ function EditCourse({ navigation, route }) {
                 style={[
                   styles.inputWrapper,
                   errors.name ? styles.inputErrorBorder : null, // Apply red border if error exists
-                ]}
-              >
+                ]}>
                 <TextInput
                   style={styles.input}
                   placeholder="Enter Course Name"
@@ -171,27 +167,24 @@ function EditCourse({ navigation, route }) {
                 <Text style={styles.errorText}>{errors.name}</Text>
               ) : null}
             </View>
-             <View style={styles.inputContainer}>
-                          <Text style={styles.label}>{t("location")}</Text>
-            
-                          <View
-                            style={[
-                              styles.inputWrapper,
-                              errors.name ? styles.inputErrorBorder : null, // Apply red border if error exists
-                            ]}
-                          >
-                            <TextInput
-                              style={styles.input}
-                              placeholder={t("enter_location")}
-                              value={location}
-                              onChangeText={(text) => {
-                                setLocation(text);
-                               
-                              }}
-                            />
-                          </View>
-                        
-                        </View>
+            <View style={styles.inputContainer}>
+              <Text style={styles.label}>{t("location")}</Text>
+
+              <View
+                style={[
+                  styles.inputWrapper,
+                  errors.name ? styles.inputErrorBorder : null, // Apply red border if error exists
+                ]}>
+                <TextInput
+                  style={styles.input}
+                  placeholder={t("enter_location")}
+                  value={location}
+                  onChangeText={(text) => {
+                    setLocation(text);
+                  }}
+                />
+              </View>
+            </View>
           </View>
           <View className="flex items-center justify-center mb-10">
             <TouchableOpacity style={styles.loginButton} onPress={handleUpdate}>
@@ -213,7 +206,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   container: {
-    flex: 1,
+    // flex: 1,
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#fff",
@@ -283,7 +276,7 @@ const styles = StyleSheet.create({
   },
   navButtonText: {
     fontWeight: "400",
-    fontSize: 20
+    fontSize: 20,
   },
 });
 
