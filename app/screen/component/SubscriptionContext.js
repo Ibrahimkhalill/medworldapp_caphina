@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { Platform } from "react-native";
+import { Platform, Alert} from "react-native";
 import axiosInstance from "../component/axiosInstance";
 import { useAuth } from "../authentication/Auth";
 import Purchases, { LOG_LEVEL } from "react-native-purchases";
@@ -22,6 +22,9 @@ export const SubscriptionProvider = ({ children }) => {
   // Configure RevenueCat only once
   const configurePurchases = (userId) => {
     if (!userId || purchasesConfigured) return;
+    if (__DEV__) {
+      Purchases.setLogLevel(LOG_LEVEL.VERBOSE);
+    }
     Purchases.setLogLevel(LOG_LEVEL.VERBOSE);
     Purchases.configure({
       apiKey:
@@ -31,6 +34,7 @@ export const SubscriptionProvider = ({ children }) => {
       appUserID: String(userId),
     });
     setPurchasesConfigured(true);
+    fetchOfferings();
   };
 
   // Fetch RevenueCat offerings only once
@@ -41,6 +45,7 @@ export const SubscriptionProvider = ({ children }) => {
       if (offerings.current && offerings.current.monthly) {
         setPremiumPackage(offerings.current.monthly);
         setOfferingsFetched(true);
+        console.log("Fetched offerings:", offerings);
       }
     } catch (err) {
       console.log("Error fetching offerings:", err);
@@ -60,9 +65,9 @@ export const SubscriptionProvider = ({ children }) => {
       console.log("Fetched subscription:", data);
       setSubscription(data);
       setIsSubscribed(data.is_active || false);
-      // Configure RevenueCat & fetch offerings
       configurePurchases(data.user);
-      fetchOfferings();
+      
+    
     } catch (err) {
       console.log("Error fetching subscription:", err);
       setError("Failed to load subscription data.");
@@ -72,29 +77,27 @@ export const SubscriptionProvider = ({ children }) => {
   };
 
   // Handle purchase
-  const handlePurchase = async () => {
-    if (!premiumPackage || !subscription.user) return;
+const handlePurchase = async () => {
+  if (!premiumPackage || !subscription.user) return;
 
-    try {
-      setPurchaseLoading(true);
+  try {
+    setPurchaseLoading(true);
 
-      await Purchases.logIn(String(subscription.user));
-      const purchaserInfo = await Purchases.purchasePackage(premiumPackage);
-      console.log("Purchase Info:", purchaserInfo);
-      setIsSubscribed(true);
-      alert("Subscription successful! You are now a Pro user.");
-      // const entitlementId = "Premium Plan";
-      // const entitlements = purchaserInfo?.entitlements?.active ?? {};
-      // const isPro = !!entitlements[entitlementId];
+    await Purchases.logIn(String(subscription.user));
 
-      // if (isPro) alert("Subscription successful! You are now a Pro user.");
-    } catch (err) {
-      console.log("Purchase error:", err);
-    } finally {
-      setPurchaseLoading(false);
-    }
-  };
+    const purchaserInfo = await Purchases.purchasePackage(premiumPackage);
 
+    console.log("✅ Purchase Info:", purchaserInfo);
+    Alert.alert("Purchase Successful", "You are now a premium user!");
+    setIsSubscribed(true);
+  } catch (err) {
+    console.log("❌ Purchase error:", err);
+    Alert.alert("Purchase Failed", err?.message || "An unknown error occurred");
+    
+  } finally {
+    setPurchaseLoading(false);
+  }
+};
   // On mount, fetch subscription
   useEffect(() => {
     if (token) fetchSubscription();

@@ -21,7 +21,8 @@
           "NSAllowsArbitraryLoads": true
         },
         "ITSAppUsesNonExemptEncryption": false
-      }
+      },
+      "appleTeamId": "5VJZ7T8DF3"
     },
     "android": {
       "package": "com.mariana.medworldapp",

@@ -39,9 +39,33 @@ function UserHome({ navigation }) {
   const { subscription, fetchSubscription, isSubscribed } = useSubscription();
   const [isLoading, setIsLoading] = useState(false); // Track overall loading state
 
-  useFocusEffect(
-    useCallback(() => {
-      const fetchAllData = async () => {
+  // useFocusEffect(
+  //   useCallback(() => {
+  //     const fetchAllData = async () => {
+  //       setIsLoading(true);
+  //       try {
+  //         // Fetch all data concurrently
+  //         await Promise.all([
+  //           fetchProfileData(),
+  //           fetchPerCantageData(),
+  //           fetchSurgeries(),
+  //           fetchSubscription(),
+  //         ]);
+  //       } catch (error) {
+  //         // Silently handle any errors (no notification)
+  //         console.error("Error fetching data:", error);
+  //       } finally {
+  //         setIsLoading(false); // Stop loading regardless of success or failure
+  //         setIsItSurgies(false);
+  //       }
+  //     };
+
+  //     fetchAllData();
+  //   }, [])
+  // );
+
+  useEffect(() => {
+    const fetchAllData = async () => {
         setIsLoading(true);
         try {
           // Fetch all data concurrently
@@ -61,8 +85,7 @@ function UserHome({ navigation }) {
       };
 
       fetchAllData();
-    }, [])
-  );
+    }, []);
 
   const fetchProfileData = async () => {
     try {

@@ -42,6 +42,7 @@ const Subscriptions = ({ navigation }) => {
       </View>
     );
   }
+  
 
   return (
     <SafeAreaView style={styles.safeArea} className="px-5">

@@ -300,6 +300,7 @@ function Profile({ navigation }) {
                     editable={isEdit}
                     value={userName}
                     onChangeText={setUserName}
+                    placeholder={t("placeholder_name")}
                     placeholderTextColor={"#B5B5B5"}
                   />
                 </View>
@@ -327,7 +328,7 @@ function Profile({ navigation }) {
                 <TextInput
                   style={styles.input}
                   editable={isEdit}
-                  placeholder={t("placeholder_speciality")}
+                  placeholder={t("placeholder_specialty")}
                   value={specialty}
                   placeholderTextColor={"#B5B5B5"}
                   onChangeText={setSpecialty}
@@ -340,7 +341,7 @@ function Profile({ navigation }) {
                 <TextInput
                   style={styles.input}
                   editable={isEdit}
-                  placeholder={t("placeholder_speciality")}
+                  placeholder={t("placeholder_residency_duration")}
                   value={residencyDuration}
                   onChangeText={setResidencyDuration}
                   maxLength={2}
@@ -355,7 +356,7 @@ function Profile({ navigation }) {
                 <TextInput
                   style={styles.input}
                   editable={isEdit}
-                  placeholder={t("placeholder_speciality")}
+                  placeholder={t("placeholder_residency_year")}
                   value={residencyYear}
                   onChangeText={setResidencyYear}
                   maxLength={2}
