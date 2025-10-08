@@ -193,7 +193,7 @@ export default function UserLogin({ navigation }) {
 						onPress={handleUserLogin}
 						disabled={isLoading}>
 						{isLoading ? (
-							<ActivityIndicator color="#fff" />
+							<ActivityIndicator color="#000" />
 						) : (
 							<Text style={styles.loginButtonText}>Login</Text>
 						)}

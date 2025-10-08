@@ -1,4 +1,4 @@
-import React, { use, useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import {
   View,
   Text,
@@ -7,22 +7,21 @@ import {
   ScrollView,
   Dimensions,
   Platform,
-  Alert,
   ActivityIndicator,
+  Linking,
 } from "react-native";
-import { Ionicons, MaterialIcons } from "react-native-vector-icons";
+import { Ionicons } from "react-native-vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTranslation } from "react-i18next";
 import Navbar from "../component/Navbar";
 import { useSubscription } from "../component/SubscriptionContext";
 
-const { height } = Dimensions.get("window"); // Get screen height
+const { height } = Dimensions.get("window");
 const scrollViewHeight = height * 0.8;
 
 const Subscriptions = ({ navigation }) => {
   const { t } = useTranslation();
   const {
-    subscription,
     premiumPackage,
     handlePurchase,
     purchaseLoading,
@@ -42,66 +41,127 @@ const Subscriptions = ({ navigation }) => {
       </View>
     );
   }
-  
+
+  const priceString = premiumPackage?.product.priceString || "$2.99/month";
 
   return (
-    <SafeAreaView style={styles.safeArea} className="px-5">
+    <SafeAreaView style={styles.safeArea}>
+      <View style={{paddingLeft:12}}>
+
       <Navbar navigation_Name={t("user_home")} navigation={navigation} />
+      </View>
       <ScrollView contentContainerStyle={styles.container}>
-        <View className="mt-10">
-          <View
-            className="border border-[#FCE488] flex  py-3"
-            style={styles.shadow}>
-            <View className="flex items-center justify-center my-5">
-              <Text className="text-[20px] text-center border-b border-[#FCE488] pb-2 w-[185px]">
-                {t("pro_plan")}
-              </Text>
+        <View style={{ marginTop: 30 }}>
+          <View style={[styles.shadow, styles.card]}>
+            <View style={styles.titleContainer}>
+              <Text style={styles.planTitle}>{t("premium_plan")}</Text>
             </View>
-            <View className="my-5 flex gap-2 items-start pr-5 ">
-              <View className="flex flex-row gap-2">
+
+            {/* Features List */}
+            <View style={styles.featuresContainer}>
+              <View style={styles.row}>
                 <Ionicons name="checkbox" size={20} color="#FFDC58" />
-                <Text className="text-[16px]">{t("free_trial")}</Text>
+                <Text style={styles.featureText}>{t("free_trial")}</Text>
               </View>
-              <View className="flex flex-row gap-2">
+              <View style={styles.row}>
                 <Ionicons name="checkbox" size={20} color="#FFDC58" />
-                <Text className="text-[16px]">{t("access_all_features")}</Text>
+                <Text style={styles.featureText}>{t("access_all_features")}</Text>
               </View>
-              <View className="flex flex-row gap-2">
+              <View style={styles.row}>
                 <Ionicons name="checkbox" size={20} color="#FFDC58" />
-                <Text className="text-[16px]">
+                <Text style={styles.featureText}>
                   {t("advanced_progress_monitoring")}
                 </Text>
               </View>
-
-              <View className="flex flex-row gap-2">
+              <View style={styles.row}>
                 <Ionicons name="checkbox" size={20} color="#FFDC58" />
-                <Text className="text-[16px]">
-                  {t("notification_histology")}
-                </Text>
+                <Text style={styles.featureText}>{t("notification_histology")}</Text>
               </View>
-              <View className="flex flex-row gap-2">
+              <View style={styles.row}>
                 <Ionicons name="checkbox" size={20} color="#FFDC58" />
-                <Text className="text-[16px]">{t("exportable_reports")}</Text>
+                <Text style={styles.featureText}>{t("exportable_reports")}</Text>
               </View>
             </View>
+
+            {/* Price info (always visible) */}
+            <Text style={styles.priceInfo}>
+              {t("price_info", { price: priceString })}
+            </Text>
+
+            {/* Subscribe button */}
             <TouchableOpacity
               onPress={handlePurchase}
               style={[
                 styles.sentButton,
-                isSubscribed && { backgroundColor: "#AAAAAA" }, // gray if subscribed
+                isSubscribed && { backgroundColor: "#AAAAAA" },
               ]}
-              disabled={purchaseLoading || isSubscribed} // disable if active or loading
+              disabled={purchaseLoading || isSubscribed}
             >
               {purchaseLoading ? (
                 <ActivityIndicator size="small" color="#000" />
               ) : (
                 <Text style={styles.sentButtonText}>
                   {isSubscribed
-                    ? t("subscribed")
-                    : t(premiumPackage?.product.pricePerMonthString)}
+                    ? t("subscribeds")
+                    : t("subscribe_button", { price: priceString })}
                 </Text>
               )}
             </TouchableOpacity>
+
+            {/* Apple Required Legal Section */}
+            <View style={styles.subscriptionDetails}>
+                {Platform.OS === 'ios' ? (
+            <>
+              <Text style={styles.detailsText}>{t("subscription_terms_1")}</Text>
+              <Text style={styles.detailsText}>{t("subscription_terms_2")}</Text>
+              <Text style={styles.detailsText}>{t("subscription_terms_3")}</Text>
+              <View style={styles.linkRow}>
+                <Text
+                  style={styles.linkText}
+                  onPress={() => navigation.navigate("PrivacyPolicy")}
+                >
+                  {t("privacy_policy")}
+                </Text>
+                <Text style={{ color: "black" }}> | </Text>
+                <Text
+                  style={styles.linkText}
+                  onPress={() =>
+                    Linking.openURL(
+                      "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/"
+                    )
+                  }
+                >
+                  {t("terms_of_use")}
+                </Text>
+              </View>
+            </>
+          ) : (
+            <>
+              <Text style={styles.detailsText}>{t("subscription_terms_android_1")}</Text>
+              <Text style={styles.detailsText}>{t("subscription_terms_android_2")}</Text>
+              <Text style={styles.detailsText}>{t("subscription_terms_android_3")}</Text>
+              <View style={styles.linkRow}>
+                <Text
+                  style={styles.linkText}
+                  onPress={() => navigation.navigate("PrivacyPolicy")}
+                >
+                  {t("privacy_policy")}
+                </Text>
+                <Text style={{ color: "black" }}> | </Text>
+                <Text
+                  style={styles.linkText}
+                  onPress={() =>
+                    Linking.openURL(
+                      "https://support.google.com/googleplay/answer/2476088"
+                    )
+                  }
+                >
+                  {t("terms_of_use")}
+                </Text>
+              </View>
+            </>
+          )}
+            </View>
           </View>
         </View>
       </ScrollView>
@@ -110,21 +170,28 @@ const Subscriptions = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: "white",
+  },
   container: {
     flexGrow: 1,
     backgroundColor: "white",
     height: scrollViewHeight,
-  },
-  safeArea: {
-    flexGrow: 1,
-    paddingBottom: 10,
-    backgroundColor: "white",
+    paddingHorizontal: 20,
   },
   loaderContainer: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "white",
+  },
+  card: {
+    borderWidth: 1,
+    borderColor: "#FCE488",
+    borderRadius: 5,
+    backgroundColor: "white",
+    padding: 15,
   },
   shadow: {
     ...Platform.select({
@@ -138,51 +205,72 @@ const styles = StyleSheet.create({
         elevation: 4,
       },
     }),
-    margin: 5,
-    padding: 10,
-    backgroundColor: "white",
-    borderRadius: 5,
+  },
+  titleContainer: {
+    alignItems: "center",
+    marginVertical: 10,
+  },
+  planTitle: {
+    fontSize: 20,
+    fontWeight: "600",
+    color: "black",
+    borderBottomWidth: 1,
+    borderColor: "#FCE488",
+    paddingBottom: 5,
+    width: 185,
+    textAlign: "center",
+  },
+  featuresContainer: {
+    marginVertical: 15,
+  },
+  row: {
+    flexDirection: "row",
+    alignItems: "flex-start",
+    gap: 10,
+    marginBottom: 10,
+  },
+  featureText: {
+    fontSize: 16,
+    color: "black",
+  },
+  priceInfo: {
+    fontSize: 13,
+    color: "gray",
+    marginVertical: 5,
+    textAlign: "center",
   },
   sentButton: {
-    width: "98%",
+    width: "100%",
     height: 50,
-    backgroundColor: "#FFDC58", // Button color
+    backgroundColor: "#FFDC58",
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 30,
-    marginLeft: 4,
-    flexDirection: "row",
-  },
-  option: {
-    flexDirection: "row",
-    alignItems: "center",
-    paddingVertical: 10,
-    justifyContent: "space-between",
-    paddingLeft: 10,
-  },
-  optionText: {
-    marginLeft: 15,
-    fontSize: 17,
-    color: "black",
+    marginVertical: 10,
   },
   sentButtonText: {
-    fontSize: 18,
-    fontWeight: "500",
+    fontSize: 17,
+    fontWeight: "600",
     color: "black",
-    lineHeight: 24,
-    marginLeft: 5,
   },
-  LebelText: {
-    fontSize: 23,
-    color: "black",
-    lineHeight: 22,
-    fontWeight: "700",
+  subscriptionDetails: {
+    marginTop: 10,
   },
-  smallText: {
-    fontSize: 20,
-    color: "black",
-    lineHeight: 22,
-    marginTop: 15,
+  detailsText: {
+    fontSize: 12,
+    color: "gray",
+    marginBottom: 4,
+    textAlign: "center",
+  },
+  linkRow: {
+    flexDirection: "row",
+    justifyContent: "center",
+    marginTop: 8,
+  },
+  linkText: {
+    color: "#007AFF",
+    textDecorationLine: "underline",
+    fontSize: 12,
   },
 });
 

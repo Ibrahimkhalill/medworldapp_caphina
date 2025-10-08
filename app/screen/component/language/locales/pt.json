@@ -218,5 +218,17 @@
   "changesToPolicy": "10. Alterações a Esta Política",
   "changesToPolicyContent": "Poderemos atualizar esta Política de Privacidade periodicamente. Quaisquer alterações serão publicadas na Aplicação ou enviadas por email. A continuação da utilização da Aplicação após essas alterações constitui aceitação dos novos termos.",
   "finalStatement": "Declaração Final",
-  "finalStatementContent": "Ao utilizar a MEDworld, confirma que leu e compreendeu esta Política de Privacidade e consente com as práticas aqui descritas."
+  "finalStatementContent": "Ao utilizar a MEDworld, confirma que leu e compreendeu esta Política de Privacidade e consente com as práticas aqui descritas.",
+  "premium_plan": "Plano Premium",
+  "subscribe_button": "Assinar por {{price}}",
+  "subscribeds": "Você já é assinante",
+  "price_info": "Plano Premium – {{price}} (cobrança mensal). Renovação automática, a menos que seja cancelada 24 horas antes da renovação.",
+  "subscription_terms_1": "O pagamento será cobrado da sua conta Apple ID na confirmação da compra.",
+  "subscription_terms_2": "As assinaturas são renovadas automaticamente, a menos que sejam canceladas pelo menos 24 horas antes do final do período atual.",
+  "subscription_terms_3": "Você pode gerenciar ou cancelar sua assinatura a qualquer momento nas configurações da sua conta da App Store.",
+  "terms_of_use": "Termos de Uso",
+  "subscription_terms_android_1": "O pagamento será cobrado na sua conta do Google Play após a confirmação da compra.",
+  "subscription_terms_android_2": "As assinaturas são renovadas automaticamente, a menos que sejam canceladas pelo menos 24 horas antes do final do período atual.",
+  "subscription_terms_android_3": "Você pode gerenciar ou cancelar sua assinatura a qualquer momento nas configurações da sua conta do Google Play."
+
 }

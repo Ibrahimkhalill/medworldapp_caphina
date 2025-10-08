@@ -27,8 +27,6 @@ import axiosInstance from "../component/axiosInstance";
 import { useTranslation } from "react-i18next";
 import * as ImagePicker from "expo-image-picker";
 import { useSubscription } from "../component/SubscriptionContext";
-import { Picker } from "@react-native-picker/picker";
-import RNPickerSelect from "react-native-picker-select";
 import CustomDropdown from "../component/CustomDropdown";
 
 function Profile({ navigation }) {
