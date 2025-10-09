@@ -17,6 +17,7 @@ import { useAuth } from "../authentication/Auth";
 import moment from "moment"; // For date formatting and comparison
 import { useTranslation } from "react-i18next";
 import * as Notifications from "expo-notifications";
+import Icon from "react-native-vector-icons/MaterialIcons";
 
 function Notification({ navigation }) {
   const [notifications, setNotifications] = useState([]);
@@ -221,9 +222,12 @@ function Notification({ navigation }) {
               <ActivityIndicator size="large" color="black" />
             </View>
           ) : notifications.length === 0 ? (
-            <Text style={styles.noNotificationsText}>
-              {t("no_notifications")}
-            </Text>
+            <View style={{ flex: 1, justifyContent: "center", height: height - 200 }}>  
+              <Icon name="notifications-off" size={80} color="#ccc" style={{ textAlign: "center", marginBottom: 10 }} />
+              <Text style={styles.noNotificationsText}>
+                {t("no_notifications")}
+              </Text>
+            </View>
           ) : (
             <>
               {/* Today */}

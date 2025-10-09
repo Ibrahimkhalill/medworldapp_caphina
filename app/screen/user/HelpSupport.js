@@ -197,7 +197,7 @@ const styles = StyleSheet.create({
   sentButtonText: {
     fontSize: 18,
     fontWeight: "600",
-    color: "white",
+    color: "black",
   },
     errorBorder: {
     borderColor: "red",
