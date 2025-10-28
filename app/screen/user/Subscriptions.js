@@ -46,9 +46,8 @@ const Subscriptions = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <View style={{paddingLeft:12}}>
-
-      <Navbar navigation_Name={t("user_home")} navigation={navigation} />
+      <View style={{ paddingLeft: 12 }}>
+        <Navbar navigation_Name={t("user_home")} navigation={navigation} />
       </View>
       <ScrollView contentContainerStyle={styles.container}>
         <View style={{ marginTop: 30 }}>
@@ -65,7 +64,15 @@ const Subscriptions = ({ navigation }) => {
               </View>
               <View style={styles.row}>
                 <Ionicons name="checkbox" size={20} color="#FFDC58" />
-                <Text style={styles.featureText}>{t("access_all_features")}</Text>
+                <Text style={styles.featureText}>
+                  {t("length_of_subscription")}
+                </Text>
+              </View>
+              <View style={styles.row}>
+                <Ionicons name="checkbox" size={20} color="#FFDC58" />
+                <Text style={styles.featureText}>
+                  {t("access_all_features")}
+                </Text>
               </View>
               <View style={styles.row}>
                 <Ionicons name="checkbox" size={20} color="#FFDC58" />
@@ -75,11 +82,15 @@ const Subscriptions = ({ navigation }) => {
               </View>
               <View style={styles.row}>
                 <Ionicons name="checkbox" size={20} color="#FFDC58" />
-                <Text style={styles.featureText}>{t("notification_histology")}</Text>
+                <Text style={styles.featureText}>
+                  {t("notification_histology")}
+                </Text>
               </View>
               <View style={styles.row}>
                 <Ionicons name="checkbox" size={20} color="#FFDC58" />
-                <Text style={styles.featureText}>{t("exportable_reports")}</Text>
+                <Text style={styles.featureText}>
+                  {t("exportable_reports")}
+                </Text>
               </View>
             </View>
 
@@ -95,8 +106,7 @@ const Subscriptions = ({ navigation }) => {
                 styles.sentButton,
                 isSubscribed && { backgroundColor: "#AAAAAA" },
               ]}
-              disabled={purchaseLoading || isSubscribed}
-            >
+              disabled={purchaseLoading || isSubscribed}>
               {purchaseLoading ? (
                 <ActivityIndicator size="small" color="#000" />
               ) : (
@@ -110,57 +120,65 @@ const Subscriptions = ({ navigation }) => {
 
             {/* Apple Required Legal Section */}
             <View style={styles.subscriptionDetails}>
-                {Platform.OS === 'ios' ? (
-            <>
-              <Text style={styles.detailsText}>{t("subscription_terms_1")}</Text>
-              <Text style={styles.detailsText}>{t("subscription_terms_2")}</Text>
-              <Text style={styles.detailsText}>{t("subscription_terms_3")}</Text>
-              <View style={styles.linkRow}>
-                <Text
-                  style={styles.linkText}
-                  onPress={() => navigation.navigate("PrivacyPolicy")}
-                >
-                  {t("privacy_policy")}
-                </Text>
-                <Text style={{ color: "black" }}> | </Text>
-                <Text
-                  style={styles.linkText}
-                  onPress={() =>
-                    Linking.openURL(
-                      "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/"
-                    )
-                  }
-                >
-                  {t("terms_of_use")}
-                </Text>
-              </View>
-            </>
-          ) : (
-            <>
-              <Text style={styles.detailsText}>{t("subscription_terms_android_1")}</Text>
-              <Text style={styles.detailsText}>{t("subscription_terms_android_2")}</Text>
-              <Text style={styles.detailsText}>{t("subscription_terms_android_3")}</Text>
-              <View style={styles.linkRow}>
-                <Text
-                  style={styles.linkText}
-                  onPress={() => navigation.navigate("PrivacyPolicy")}
-                >
-                  {t("privacy_policy")}
-                </Text>
-                <Text style={{ color: "black" }}> | </Text>
-                <Text
-                  style={styles.linkText}
-                  onPress={() =>
-                    Linking.openURL(
-                      "https://support.google.com/googleplay/answer/2476088"
-                    )
-                  }
-                >
-                  {t("terms_of_use")}
-                </Text>
-              </View>
-            </>
-          )}
+              {Platform.OS === "ios" ? (
+                <>
+                  <Text style={styles.detailsText}>
+                    {t("subscription_terms_1")}
+                  </Text>
+                  <Text style={styles.detailsText}>
+                    {t("subscription_terms_2")}
+                  </Text>
+                  <Text style={styles.detailsText}>
+                    {t("subscription_terms_3")}
+                  </Text>
+                  <View style={styles.linkRow}>
+                    <Text
+                      style={styles.linkText}
+                      onPress={() => navigation.navigate("PrivacyPolicy")}>
+                      {t("privacy_policy")}
+                    </Text>
+                    <Text style={{ color: "black" }}> | </Text>
+                    <Text
+                      style={styles.linkText}
+                      onPress={() =>
+                        Linking.openURL(
+                          "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/"
+                        )
+                      }>
+                      {t("terms_of_use")}
+                    </Text>
+                  </View>
+                </>
+              ) : (
+                <>
+                  <Text style={styles.detailsText}>
+                    {t("subscription_terms_android_1")}
+                  </Text>
+                  <Text style={styles.detailsText}>
+                    {t("subscription_terms_android_2")}
+                  </Text>
+                  <Text style={styles.detailsText}>
+                    {t("subscription_terms_android_3")}
+                  </Text>
+                  <View style={styles.linkRow}>
+                    <Text
+                      style={styles.linkText}
+                      onPress={() => navigation.navigate("PrivacyPolicy")}>
+                      {t("privacy_policy")}
+                    </Text>
+                    <Text style={{ color: "black" }}> | </Text>
+                    <Text
+                      style={styles.linkText}
+                      onPress={() =>
+                        Linking.openURL(
+                          "https://support.google.com/googleplay/answer/2476088"
+                        )
+                      }>
+                      {t("terms_of_use")}
+                    </Text>
+                  </View>
+                </>
+              )}
             </View>
           </View>
         </View>

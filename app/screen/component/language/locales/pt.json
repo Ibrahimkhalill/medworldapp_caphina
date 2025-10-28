@@ -153,6 +153,7 @@
   "type_of_work_required": "Tipo de trabalho é obrigatório.",
   "role_required": "Função é obrigatória.",
   "name_required": "Nome é obrigatório.",
+  "length_of_subscription": "Duração da Subscrição - 1 mês",
   "co_authors_required": "Co-autores são obrigatórios.",
   "select_international_or_national": "Por favor, selecione Internacional ou Nacional.",
   "export_pdf": "Exportar PDF",
@@ -230,5 +231,4 @@
   "subscription_terms_android_1": "O pagamento será cobrado na sua conta do Google Play após a confirmação da compra.",
   "subscription_terms_android_2": "As assinaturas são renovadas automaticamente, a menos que sejam canceladas pelo menos 24 horas antes do final do período atual.",
   "subscription_terms_android_3": "Você pode gerenciar ou cancelar sua assinatura a qualquer momento nas configurações da sua conta do Google Play."
-
 }

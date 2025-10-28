@@ -16,14 +16,13 @@
       "supportsTablet": true,
       "googleServicesFile": "./GoogleService-Info.plist",
       "bundleIdentifier": "com.mariana.medworldapp",
-      
+
       "infoPlist": {
         "NSAppTransportSecurity": {
           "NSAllowsArbitraryLoads": true
         },
         "ITSAppUsesNonExemptEncryption": false,
         "NSPhotoLibraryUsageDescription": "We use your photo library so you can select and upload photos for your profile picture."
-
       },
       "appleTeamId": "5VJZ7T8DF3"
     },
@@ -48,33 +47,33 @@
       "enabled": false
     },
     "plugins": [
-  "expo-font",
-  [
-    "expo-image-picker",
-    {
-      "photosPermission": "We need access to your photo library to upload profile pictures."
-    }
-  ],
-  "expo-localization",
-  [
-    "expo-splash-screen",
-    {
-      "backgroundColor": "#ffffff",
-      "image": "./app/assets/splash-icon.png",
-      "imageWidth": 200
-    }
-  ],
-  [
-    "expo-build-properties",
-    {
-      "android": {
-        "targetSdkVersion": 35,
-        "compileSdkVersion": 35,
-        "buildToolsVersion": "35.0.0"
-      }
-    }
-  ]
-],
+      "expo-font",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "We need access to your photo library to upload profile pictures."
+        }
+      ],
+      "expo-localization",
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#ffffff",
+          "image": "./app/assets/splash-icon.png",
+          "imageWidth": 200
+        }
+      ],
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "targetSdkVersion": 35,
+            "compileSdkVersion": 35,
+            "buildToolsVersion": "35.0.0"
+          }
+        }
+      ]
+    ],
 
     "extra": {
       "eas": {
