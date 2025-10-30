@@ -86,9 +86,9 @@ function Profile({ navigation }) {
         const data = response.data;
         console.log(data);
         setEmail(data.email);
-        setAddress(data.address);
-        setResidencyDuration(data.residencyDuration);
-        setResidencyYear(data.residencyYear);
+        setAddress(data.address == "null" ? "" : data.address);
+        setResidencyDuration(data.residencyDuration || "");
+        setResidencyYear(data.residencyYear || "");
         setPhone_number(data.phone_number || "");
         setGender(data.gender);
         setUserName(data.username);
@@ -396,7 +396,7 @@ function Profile({ navigation }) {
                   style={styles.input}
                   editable={isEdit}
                   placeholder={t("placeholder_address")}
-                  value={address}
+                  value={address || ""}
                   onChangeText={setAddress}
                   placeholderTextColor={"#B5B5B5"}
                 />

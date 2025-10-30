@@ -46,8 +46,8 @@ const PrivacyPolicy = ({ navigation }) => {
 						<Text style={styles.text}>{t('dataRetentionContent')}</Text>
 
 						{/* Third-Party Services */}
-						<Text style={styles.header}>{t('thirdPartyServices')}</Text>
-						<Text style={styles.text}>{t('thirdPartyServicesContent')}</Text>
+						{/* <Text style={styles.header}>{t('thirdPartyServices')}</Text>
+						<Text style={styles.text}>{t('thirdPartyServicesContent')}</Text> */}
 
 						{/* International Data Transfers */}
 						<Text style={styles.header}>{t('internationalDataTransfers')}</Text>
